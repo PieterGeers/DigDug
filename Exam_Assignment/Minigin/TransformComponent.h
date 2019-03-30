@@ -15,6 +15,7 @@ public:
 	void Update() override;
 	void FixedUpdate() override;
 	void Render() override;
+	void SetTransform(float x, float y, float z) override;
 
 	const glm::vec3& GetPosition() const { return m_Position; }
 

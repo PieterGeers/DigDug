@@ -15,4 +15,5 @@ SDL_Texture* dae::Texture2D::GetSDLTexture() const
 dae::Texture2D::Texture2D(SDL_Texture* texture)
 {
 	mTexture = texture;
+	SDL_QueryTexture(texture, NULL, NULL, &m_Width, &m_Height);
 }

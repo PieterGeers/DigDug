@@ -3,10 +3,11 @@
 
 #include "SceneObject.h"
 #include "BaseComponent.h"
+#include "TransformComponent.h"
 
 namespace dae
 {
-	class GameObject : public SceneObject
+	class GameObject final: public SceneObject
 	{
 	public:
 		void Update() override;
@@ -20,6 +21,8 @@ namespace dae
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
+		void Translate(float x, float y, float z) const;
+		void SetPosition(float x, float y, float z) const;
 		void AddComponent(std::shared_ptr<BaseComponent> pComp);
 		//void RemoveComponent(std::shared_ptr<BaseComponent> pComp); //add this when / if needed
 
@@ -38,5 +41,7 @@ namespace dae
 	private:
 		//component based
 		std::vector<std::shared_ptr<BaseComponent>> m_pComponents;
+		std::shared_ptr<TransformComponent> m_Transform = std::make_shared<TransformComponent>();
+		void SetComponentTransform() const;
 	};
 }

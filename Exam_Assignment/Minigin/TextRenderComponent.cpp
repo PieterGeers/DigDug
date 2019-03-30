@@ -37,6 +37,7 @@ void TextRenderComponent::Update()
 		SDL_FreeSurface(surf);
 		
 		m_Texture = std::make_shared<dae::Texture2D>(texture);
+		m_NeedsUpdate = false;
 	}
 }
 
@@ -52,14 +53,15 @@ void TextRenderComponent::Render()
 	}
 }
 
+void TextRenderComponent::SetTransform(float x, float y, float z)
+{
+	m_X = x;
+	m_Y = y;
+	UNREFERENCED_PARAMETER(z);
+}
+
 void TextRenderComponent::SetText(const std::string& text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;
-}
-
-void TextRenderComponent::SetPosition(float x, float y)
-{
-	m_X = x;
-	m_Y = y;
 }

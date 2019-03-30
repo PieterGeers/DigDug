@@ -12,9 +12,10 @@ public:
 	void Update() override;
 	void FixedUpdate() override;
 	void Render() override;
+	void SetTransform(float x, float y, float z) override;
 
 	void SetText(const std::string& text);
-	void SetPosition(float x, float y);
+
 private:
 	bool m_NeedsUpdate;
 	std::string m_Text;

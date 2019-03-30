@@ -56,30 +56,28 @@ void dae::Minigin::LoadGame() const
 	scene.Add(go);
 
 	go = std::make_shared<GameObject>();
-	std::shared_ptr<TransformComponent> go_transform = std::make_shared<TransformComponent>();
-	go_transform->SetPosition(216, 180, 0);
 	go_texture = std::make_shared<TextureRenderComponent>("logo.png");
-	go_texture->SetPosition(go_transform->GetPosition().x, go_transform->GetPosition().y);
-	go->AddComponent(go_transform);
 	go->AddComponent(go_texture);
+	go->SetPosition(216, 180, 0);
 	scene.Add(go);
 
+	go = std::make_shared<GameObject>();
+	go_texture = std::make_shared<TextureRenderComponent>("digdug_spriteP1.png", 7, 7, 3);
+	go_texture->SetSpritePosition(0, 0, 6, 6);
+	go->AddComponent(go_texture);
+	go->SetPosition(216, 100, 0);
+	scene.Add(go);
+
+
 	auto to = std::make_shared<GameObject>();
-	std::shared_ptr<TransformComponent> to_transform = std::make_shared<TransformComponent>();
 	std::shared_ptr<TextRenderComponent> to_text = std::make_shared<TextRenderComponent>("Programming 4 Assignment", font);
-	to_transform->SetPosition(80, 20, 0);
-	to_text->SetPosition(to_transform->GetPosition().x, to_transform->GetPosition().y);
-	to->AddComponent(to_transform);
 	to->AddComponent(to_text);
+	to->SetPosition(80, 20, 0);
 	scene.Add(to);
 
 	auto fpsCounter = std::make_shared<GameObject>();
 	std::shared_ptr<FPSComponent> fps_component = std::make_shared<FPSComponent>(fpsFont, SDL_Color{153,153,0,255});
-	std::shared_ptr<TransformComponent> fps_transform = std::make_shared<TransformComponent>();
-	fps_transform->SetPosition(0, 0, 0);
-	fps_component->SetPosition(fps_transform->GetPosition().x, fps_transform->GetPosition().y);
 	fpsCounter->AddComponent(fps_component);
-	fpsCounter->AddComponent(fps_transform);
 	scene.Add(fpsCounter);
 }
 
@@ -128,7 +126,6 @@ void dae::Minigin::Run()
 
 			sceneManager.Update();
 			renderer.Render();
-
 		}
 	}
 
