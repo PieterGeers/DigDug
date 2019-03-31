@@ -2,41 +2,13 @@
 #include "InputManager.h"
 #include <SDL.h>
 
-
-bool dae::InputManager::ProcessInput()
+bool dae::PlayerInput::ProcessInput(int id)
 {
-	ZeroMemory(&currentState, sizeof(XINPUT_STATE));
-	XInputGetState(0, &currentState);
-
-	SDL_Event e;
-	while (SDL_PollEvent(&e)) {
-		if (e.type == SDL_QUIT) {
-			return false;
-		}
-		if (e.type == SDL_KEYDOWN) {
-			
-		}
-		if (e.type == SDL_MOUSEBUTTONDOWN) {
-			
-		}
-	}
-
-	return true;
+	XInputGetState(id, &currentState);
+	return !((DWORD(ControllerButton::ButtonX) & currentState.Gamepad.wButtons) != 0);
 }
 
-bool dae::InputManager::IsPressed(ControllerButton button) const
+bool dae::PlayerInput::IsPressed(ControllerButton button) const
 {
-	switch (button)
-	{
-	case ControllerButton::ButtonA:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_A;
-	case ControllerButton::ButtonB:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_B;
-	case ControllerButton::ButtonX:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_X;
-	case ControllerButton::ButtonY:
-		return currentState.Gamepad.wButtons & XINPUT_GAMEPAD_Y;
-	default: return false;
-	}
+	return (DWORD(button) & currentState.Gamepad.wButtons) != 0;
 }
-

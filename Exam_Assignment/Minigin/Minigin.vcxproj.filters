@@ -90,6 +90,9 @@
     <ClInclude Include="TextureRenderComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -145,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="TextureRenderComponent.cpp">
       <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Header Files\Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

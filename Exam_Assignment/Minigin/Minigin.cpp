@@ -14,6 +14,7 @@
 #include "TextRenderComponent.h"
 #include "TransformComponent.h"
 #include "TextureRenderComponent.h"
+#include "ServiceLocator.h"
 
 
 void dae::Minigin::Initialize()
@@ -44,6 +45,10 @@ void dae::Minigin::Initialize()
  */
 void dae::Minigin::LoadGame() const
 {
+	std::shared_ptr<dae::Input> service = std::make_shared<dae::PlayerInput>();
+	ServiceLocator::RegisterInputP1Service(service);
+	ServiceLocator::RegisterInputP2Service(nullptr);
+
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto fpsFont = ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
@@ -102,7 +107,8 @@ void dae::Minigin::Run()
 		auto t = std::chrono::high_resolution_clock::now();
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
-		auto& input = InputManager::GetInstance();
+		auto& p1Input = ServiceLocator::GetInputP1();
+		auto& p2Input = ServiceLocator::GetInputP2();
 		auto& time = GameTime::GetInstance();
 
 
@@ -116,7 +122,10 @@ void dae::Minigin::Run()
 			lastTime = currentTime;
 			lag += time.DeltaT();
 
-			doContinue = input.ProcessInput();
+			if (&p1Input != nullptr)
+				doContinue = p1Input.ProcessInput(0);
+			if (&p2Input != nullptr)
+				p2Input.ProcessInput(1);
 
 			while (lag >= msPerFrame)
 			{
