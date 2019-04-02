@@ -2,7 +2,7 @@
 #include "BaseComponent.h"
 #include "Texture2D.h"
 
-class TextureRenderComponent final : public BaseComponent 
+class TextureRenderComponent final : public BaseComponent
 {
 public:
 	TextureRenderComponent(std::string path);

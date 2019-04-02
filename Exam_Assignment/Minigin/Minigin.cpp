@@ -12,14 +12,13 @@
 #include "GameTime.h"
 #include "FPSComponent.h"
 #include "TextRenderComponent.h"
-#include "TransformComponent.h"
 #include "TextureRenderComponent.h"
 #include "ServiceLocator.h"
 
 
 void dae::Minigin::Initialize()
 {
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
@@ -32,7 +31,7 @@ void dae::Minigin::Initialize()
 		480,
 		SDL_WINDOW_OPENGL
 	);
-	if (window == nullptr) 
+	if (window == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
@@ -45,9 +44,9 @@ void dae::Minigin::Initialize()
  */
 void dae::Minigin::LoadGame() const
 {
-	std::shared_ptr<dae::Input> service = std::make_shared<dae::PlayerInput>();
+	std::shared_ptr<Input> service = std::make_shared<PlayerInput>();
 	ServiceLocator::RegisterInputP1Service(service);
-	ServiceLocator::RegisterInputP2Service(nullptr);
+	//ServiceLocator::RegisterInputP2Service(nullptr);
 
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
@@ -81,7 +80,7 @@ void dae::Minigin::LoadGame() const
 	scene.Add(to);
 
 	auto fpsCounter = std::make_shared<GameObject>();
-	std::shared_ptr<FPSComponent> fps_component = std::make_shared<FPSComponent>(fpsFont, SDL_Color{153,153,0,255});
+	std::shared_ptr<FPSComponent> fps_component = std::make_shared<FPSComponent>(fpsFont, SDL_Color{ 153,153,0,255 });
 	fpsCounter->AddComponent(fps_component);
 	scene.Add(fpsCounter);
 }
@@ -104,7 +103,6 @@ void dae::Minigin::Run()
 	LoadGame();
 
 	{
-		auto t = std::chrono::high_resolution_clock::now();
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
 		auto& p1Input = ServiceLocator::GetInputP1();

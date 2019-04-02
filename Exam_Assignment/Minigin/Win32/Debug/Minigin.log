@@ -1,4 +1,24 @@
-﻿  Minigin.cpp
+﻿  MiniginPCH.cpp
+  BaseComponent.cpp
+  Font.cpp
+  FPSComponent.cpp
+  GameObject.cpp
+  GameTime.cpp
+  InputManager.cpp
+  Log.cpp
+  Main.cpp
+  Minigin.cpp
+  Renderer.cpp
+  ResourceManager.cpp
+  Scene.cpp
+  SceneManager.cpp
+  ServiceLocator.cpp
+  TextRenderComponent.cpp
+  Texture2D.cpp
+  TextureRenderComponent.cpp
+  TransformComponent.cpp
+  Generating Code...
+     Creating library E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\Win32\Debug\Minigin.lib and object E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\Win32\Debug\Minigin.exp
   Minigin.vcxproj -> E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\Win32\Debug\Minigin.exe
   E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\3rdParty\SDL2\lib\x86\SDL2.dll
   1 File(s) copied

@@ -20,13 +20,13 @@ namespace dae
 		Scene& operator=(const Scene& other) = delete;
 		Scene& operator=(Scene&& other) = delete;
 
-	private: 
+	private:
 		explicit Scene(const std::string& name);
 
 		std::string mName{};
 		std::vector < std::shared_ptr<SceneObject>> mObjects{};
 
-		static unsigned int idCounter; 
+		static unsigned int idCounter;
 	};
 
 }

@@ -6,7 +6,7 @@
 void dae::Renderer::Init(SDL_Window * window)
 {
 	mRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED /*| SDL_RENDERER_PRESENTVSYNC*/);
-	if (mRenderer == nullptr) 
+	if (mRenderer == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
 	}
@@ -17,7 +17,7 @@ void dae::Renderer::Render()
 	SDL_RenderClear(mRenderer);
 
 	SceneManager::GetInstance().Render();
-	
+
 	SDL_RenderPresent(mRenderer);
 }
 

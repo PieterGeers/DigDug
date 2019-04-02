@@ -26,7 +26,7 @@ void FPSComponent::Update()
 
 }
 
-void FPSComponent::FixedUpdate(){}
+void FPSComponent::FixedUpdate() {}
 
 void FPSComponent::Render()
 {

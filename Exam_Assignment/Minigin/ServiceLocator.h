@@ -1,6 +1,6 @@
 #pragma once
 #include "InputManager.h"
-using namespace dae;
+
 class ServiceLocator
 {
 public:

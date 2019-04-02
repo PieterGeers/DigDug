@@ -7,7 +7,7 @@
 
 namespace dae
 {
-	class GameObject final: public SceneObject
+	class GameObject final : public SceneObject
 	{
 	public:
 		void Update() override;

@@ -14,19 +14,19 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\Base">
-      <UniqueIdentifier>{7862224a-8c38-4679-baf9-9ef9bb68498d}</UniqueIdentifier>
+      <UniqueIdentifier>{5e25f6a4-ca12-4960-a152-f546e108b0ed}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Components">
-      <UniqueIdentifier>{2ddb0a73-a0e9-420c-9296-701b6f23d436}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Graphics">
-      <UniqueIdentifier>{572d1285-e32c-48d8-a689-8b46fc3f6e90}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Scenegraph">
-      <UniqueIdentifier>{b164aac6-d690-4248-81be-9adfa2f247e2}</UniqueIdentifier>
+      <UniqueIdentifier>{c1aed6da-6214-48f2-b511-1ce08c5c7505}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Diagnostic">
-      <UniqueIdentifier>{6f6a10bc-cc64-4423-8d33-233204e7303e}</UniqueIdentifier>
+      <UniqueIdentifier>{57740fc3-cd01-40f0-a5c4-84f4dff88d13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{e2f668b3-cd75-444f-8abb-cd4a28ae9eb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scenegraph">
+      <UniqueIdentifier>{6bda028e-2496-488d-9a8b-859f3368bc3e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -39,34 +39,13 @@
     <ClInclude Include="ResourceManager.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
+    <ClInclude Include="GameTime.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
     <ClInclude Include="Singleton.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files\Scenegraph</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files\Scenegraph</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneObject.h">
-      <Filter>Header Files\Scenegraph</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files\Scenegraph</Filter>
-    </ClInclude>
-    <ClInclude Include="Log.h">
-      <Filter>Header Files\Diagnostic</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="Minigin.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniginPCH.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameTime.h">
+    <ClInclude Include="ServiceLocator.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
     <ClInclude Include="BaseComponent.h">
@@ -78,20 +57,41 @@
     <ClInclude Include="TextRenderComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="TextureRenderComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Header Files\Diagnostic</Filter>
+    </ClInclude>
     <ClInclude Include="Font.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="Texture2D.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="TransformComponent.h">
-      <Filter>Header Files\Components</Filter>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\Scenegraph</Filter>
     </ClInclude>
-    <ClInclude Include="TextureRenderComponent.h">
-      <Filter>Header Files\Components</Filter>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scenegraph</Filter>
     </ClInclude>
-    <ClInclude Include="ServiceLocator.h">
-      <Filter>Header Files\Base</Filter>
+    <ClInclude Include="SceneObject.h">
+      <Filter>Header Files\Scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="Minigin.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniginPCH.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -110,22 +110,10 @@
     <ClCompile Include="ResourceManager.cpp">
       <Filter>Header Files\Base</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Header Files\Scenegraph</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Header Files\Scenegraph</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Header Files\Scenegraph</Filter>
-    </ClCompile>
-    <ClCompile Include="Log.cpp">
-      <Filter>Header Files\Diagnostic</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer.cpp">
-      <Filter>Header Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="GameTime.cpp">
+      <Filter>Header Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
       <Filter>Header Files\Base</Filter>
     </ClCompile>
     <ClCompile Include="BaseComponent.cpp">
@@ -137,20 +125,32 @@
     <ClCompile Include="TextRenderComponent.cpp">
       <Filter>Header Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="TextureRenderComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Header Files\Diagnostic</Filter>
+    </ClCompile>
     <ClCompile Include="Font.cpp">
+      <Filter>Header Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
       <Filter>Header Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Texture2D.cpp">
       <Filter>Header Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="TransformComponent.cpp">
-      <Filter>Header Files\Components</Filter>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Header Files\Scenegraph</Filter>
     </ClCompile>
-    <ClCompile Include="TextureRenderComponent.cpp">
-      <Filter>Header Files\Components</Filter>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Header Files\Scenegraph</Filter>
     </ClCompile>
-    <ClCompile Include="ServiceLocator.cpp">
-      <Filter>Header Files\Base</Filter>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Header Files\Scenegraph</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -56,16 +56,15 @@ void TextureRenderComponent::Render()
 		if (!m_IsSprite)
 			dae::Renderer::GetInstance().RenderTexture(*m_Texture, m_X, m_Y, static_cast<float>(m_Texture->GetWidth())* m_Scale, static_cast<float>(m_Texture->GetHeight())*m_Scale);
 		else
-			dae::Renderer::GetInstance().RenderTexture(*m_Texture, SDL_Rect{ int(m_X), int(m_Y), m_Texture->GetWidth()/m_Columns*m_Scale, m_Texture->GetHeight()/m_Rows * m_Scale },
-				SDL_Rect{m_CurrentColumn*(m_Texture->GetWidth() / m_Columns), m_CurrentRow*(m_Texture->GetHeight()/m_Rows), m_Texture->GetWidth() / m_Columns , m_Texture->GetHeight() / m_Rows });
+			dae::Renderer::GetInstance().RenderTexture(*m_Texture, SDL_Rect{ int(m_X), int(m_Y), m_Texture->GetWidth() / m_Columns * m_Scale, m_Texture->GetHeight() / m_Rows * m_Scale },
+				SDL_Rect{ m_CurrentColumn*(m_Texture->GetWidth() / m_Columns), m_CurrentRow*(m_Texture->GetHeight() / m_Rows), m_Texture->GetWidth() / m_Columns , m_Texture->GetHeight() / m_Rows });
 	}
 }
 
-void TextureRenderComponent::SetTransform(float x, float y, float z)
+void TextureRenderComponent::SetTransform(float x, float y, float)
 {
 	m_X = x;
 	m_Y = y;
-	UNREFERENCED_PARAMETER(z);
 }
 
 void TextureRenderComponent::SetSpritePosition(int row, int col, int rowOffset, int colOffset)
