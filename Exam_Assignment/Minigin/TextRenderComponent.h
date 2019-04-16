@@ -15,6 +15,7 @@ public:
 	void SetTransform(float x, float y, float z) override;
 
 	void SetText(const std::string& text);
+	void ChangeColor(const SDL_Color& color);
 
 private:
 	bool m_NeedsUpdate;

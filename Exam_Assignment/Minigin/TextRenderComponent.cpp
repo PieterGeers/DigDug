@@ -64,3 +64,9 @@ void TextRenderComponent::SetText(const std::string& text)
 	m_Text = text;
 	m_NeedsUpdate = true;
 }
+
+void TextRenderComponent::ChangeColor(const SDL_Color& color)
+{
+	m_Color = color;
+	m_NeedsUpdate = true;
+}

@@ -15,6 +15,8 @@ public:
 	void SetTransform(float x, float y, float z) override;
 
 	void SetSpritePosition(int row, int col, int rowOffset, int colOffset);
+	int GetWidth() const { return m_Texture->GetWidth(); }
+	int GetHeight() const { return m_Texture->GetHeight(); }
 
 private:
 	std::shared_ptr<dae::Texture2D> m_Texture;

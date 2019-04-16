@@ -28,6 +28,9 @@
     <Filter Include="Header Files\Scenegraph">
       <UniqueIdentifier>{6bda028e-2496-488d-9a8b-859f3368bc3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Scenes">
+      <UniqueIdentifier>{746375bd-c95b-4d8d-a0cc-cdd6f1b88c5d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -78,9 +81,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files\Scenegraph</Filter>
     </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files\Scenegraph</Filter>
-    </ClInclude>
     <ClInclude Include="SceneObject.h">
       <Filter>Header Files\Scenegraph</Filter>
     </ClInclude>
@@ -92,6 +92,36 @@
     </ClInclude>
     <ClInclude Include="MiniginPCH.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Level.h">
+      <Filter>Source Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Header Files\Scenegraph</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="StartScreen.h">
+      <Filter>Source Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonManager.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="BinaryReader.h">
+      <Filter>Header Files\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -146,11 +176,35 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Header Files\Scenegraph</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Header Files\Scenegraph</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Header Files\Scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Level.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Header Files\Scenegraph</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="StartScreen.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonComponent.cpp">
+      <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonManager.cpp">
+      <Filter>Header Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="BinaryReader.cpp">
+      <Filter>Header Files\Base</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

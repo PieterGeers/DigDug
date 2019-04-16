@@ -24,16 +24,17 @@ namespace dae
 		void Translate(float x, float y, float z) const;
 		void SetPosition(float x, float y, float z) const;
 		void AddComponent(std::shared_ptr<BaseComponent> pComp);
+		const std::shared_ptr<TransformComponent>& GetTransform() const { return m_Transform; }
 		//void RemoveComponent(std::shared_ptr<BaseComponent> pComp); //add this when / if needed
 
 		template <class T>
 		std::shared_ptr<T> GetComponent()
 		{
 			const type_info& ti = typeid(T);
-			for (auto* component : m_pComponents)
+			for (const auto component : m_pComponents)
 			{
 				if (component && typeid(*component) == ti)
-					return static_cast<T*>(component);
+					return std::static_pointer_cast<T>(component);
 			}
 			return nullptr;
 		}

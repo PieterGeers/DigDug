@@ -15,5 +15,6 @@ public:
 	virtual void FixedUpdate() = 0;
 	virtual void Render() = 0;
 	virtual void SetTransform(float x, float y, float z) = 0;
+
 };
 

@@ -1,34 +1,14 @@
-﻿  MiniginPCH.cpp
-  BaseComponent.cpp
-  Font.cpp
-  FPSComponent.cpp
-  GameObject.cpp
-  GameTime.cpp
-  InputManager.cpp
-  Log.cpp
-  Main.cpp
-  Minigin.cpp
-  Renderer.cpp
-  ResourceManager.cpp
-  Scene.cpp
-  SceneManager.cpp
-  ServiceLocator.cpp
-  TextRenderComponent.cpp
-  Texture2D.cpp
-  TextureRenderComponent.cpp
-  TransformComponent.cpp
-  Generating Code...
-     Creating library E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\Win32\Debug\Minigin.lib and object E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\Win32\Debug\Minigin.exp
-  Minigin.vcxproj -> E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\Win32\Debug\Minigin.exe
-  E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\3rdParty\SDL2\lib\x86\SDL2.dll
+﻿  Level.cpp
+  Minigin.vcxproj -> E:\_Howest DAE\SEASON 3_4\SEASON 4\Programming4\DigDugExam\Exam_Assignment\Win32\Debug\Minigin.exe
+  E:\_Howest DAE\SEASON 3_4\SEASON 4\Programming4\DigDugExam\Exam_Assignment\3rdParty\SDL2\lib\x86\SDL2.dll
   1 File(s) copied
-  E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\3rdParty\SDL2_image\lib\x86\libjpeg-9.dll
-  E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\3rdParty\SDL2_image\lib\x86\libpng16-16.dll
-  E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\3rdParty\SDL2_image\lib\x86\libtiff-5.dll
-  E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\3rdParty\SDL2_image\lib\x86\libwebp-7.dll
-  E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\3rdParty\SDL2_image\lib\x86\SDL2_image.dll
-  E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\3rdParty\SDL2_image\lib\x86\zlib1.dll
+  E:\_Howest DAE\SEASON 3_4\SEASON 4\Programming4\DigDugExam\Exam_Assignment\3rdParty\SDL2_image\lib\x86\libjpeg-9.dll
+  E:\_Howest DAE\SEASON 3_4\SEASON 4\Programming4\DigDugExam\Exam_Assignment\3rdParty\SDL2_image\lib\x86\libpng16-16.dll
+  E:\_Howest DAE\SEASON 3_4\SEASON 4\Programming4\DigDugExam\Exam_Assignment\3rdParty\SDL2_image\lib\x86\libtiff-5.dll
+  E:\_Howest DAE\SEASON 3_4\SEASON 4\Programming4\DigDugExam\Exam_Assignment\3rdParty\SDL2_image\lib\x86\libwebp-7.dll
+  E:\_Howest DAE\SEASON 3_4\SEASON 4\Programming4\DigDugExam\Exam_Assignment\3rdParty\SDL2_image\lib\x86\SDL2_image.dll
+  E:\_Howest DAE\SEASON 3_4\SEASON 4\Programming4\DigDugExam\Exam_Assignment\3rdParty\SDL2_image\lib\x86\zlib1.dll
   6 File(s) copied
-  E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\3rdParty\SDL2_ttf\lib\x86\libfreetype-6.dll
-  E:\_Howest DAE\DigDug_ExamEngine\Exam_Assignment\3rdParty\SDL2_ttf\lib\x86\SDL2_ttf.dll
+  E:\_Howest DAE\SEASON 3_4\SEASON 4\Programming4\DigDugExam\Exam_Assignment\3rdParty\SDL2_ttf\lib\x86\libfreetype-6.dll
+  E:\_Howest DAE\SEASON 3_4\SEASON 4\Programming4\DigDugExam\Exam_Assignment\3rdParty\SDL2_ttf\lib\x86\SDL2_ttf.dll
   2 File(s) copied

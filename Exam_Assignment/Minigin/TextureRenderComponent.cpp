@@ -73,6 +73,8 @@ void TextureRenderComponent::SetSpritePosition(int row, int col, int rowOffset, 
 	m_CurrentColumn = col;
 	m_ColumnOffset = colOffset;
 	m_RowOffset = rowOffset;
+	m_StartColumn = col;
+	m_StartRow = row;
 }
 
 
