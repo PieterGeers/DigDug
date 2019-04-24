@@ -12,6 +12,8 @@
 #include "LevelComponent.h"
 #include "Level.h"
 #include "StartScreen.h"
+#include "CoopLevel.h"
+#include "VersusLevel.h"
 
 
 void dae::Minigin::Initialize()
@@ -33,7 +35,7 @@ void dae::Minigin::Initialize()
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
-
+	srand(int(time(nullptr)));
 	Renderer::GetInstance().Init(window);
 }
 
@@ -52,6 +54,8 @@ void dae::Minigin::LoadGame() const
 	//Set game scenes here
 	SceneManager::GetInstance().AddGameScene(std::make_shared<StartScreen>());
 	SceneManager::GetInstance().AddGameScene(std::make_shared<Level>());
+	SceneManager::GetInstance().AddGameScene(std::make_shared<CoopLevel>());
+	SceneManager::GetInstance().AddGameScene(std::make_shared<VersusLevel>());
 	SceneManager::GetInstance().SetActive("StartScene");
 }
 
@@ -90,10 +94,10 @@ void dae::Minigin::Run()
 			lastTime = currentTime;
 			lag += time.DeltaT() * 1000;
 
-			if (&p1Input != nullptr)
-				doContinue = p1Input.ProcessInput(0);
-			if (&p2Input != nullptr)
-				p2Input.ProcessInput(1);
+			if (p1Input != nullptr)
+				doContinue = p1Input->ProcessInput(0);
+			if (p2Input != nullptr)
+				p2Input->ProcessInput(1);
 
 			while (lag >= msPerFrame)
 			{

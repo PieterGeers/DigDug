@@ -22,11 +22,13 @@ void Level::Initialize()
 	const std::shared_ptr<Command> moveDown = std::make_shared<MoveDownCommand>();
 	const std::shared_ptr<Command> moveLeft = std::make_shared<MoveLeftCommand>();
 	const std::shared_ptr<Command> moveRight = std::make_shared<MoveRightCommand>();
+	const std::shared_ptr<Command> attack = std::make_shared<DigDugAttackCommand>();
 
-	p1Input.SetButton(ControllerButton::Up, moveUp);
-	p1Input.SetButton(ControllerButton::Down, moveDown);
-	p1Input.SetButton(ControllerButton::Left, moveLeft);
-	p1Input.SetButton(ControllerButton::Right, moveRight);
+	p1Input->SetButton(ControllerButton::Up, moveUp);
+	p1Input->SetButton(ControllerButton::Down, moveDown);
+	p1Input->SetButton(ControllerButton::Left, moveLeft);
+	p1Input->SetButton(ControllerButton::Right, moveRight);
+	p1Input->SetButton(ControllerButton::ButtonA, attack);
 
 	m_DigDug = std::make_shared<dae::GameObject>();
 	
@@ -39,9 +41,11 @@ void Level::Initialize()
 	std::shared_ptr<TextureRenderComponent> go_texture = std::make_shared<TextureRenderComponent>("digdug_spriteP1.png", 7, 7, 2);
 	go_texture->SetSpritePosition(0, 0, 6, 6);
 	std::shared_ptr<CharacterComponent> character = std::make_shared<CharacterComponent>(m_DigDug, Boundaries{32, 32*17,0,32*13});
+	std::shared_ptr<WeaponComponent> weapon = std::make_shared<WeaponComponent>(m_DigDug, "digdug_attack.png", 1, 4, 2, true);
 	character->SetGridSize(32);
 	m_DigDug->AddComponent(go_texture);
 	m_DigDug->AddComponent(character);
+	m_DigDug->AddComponent(weapon);
 	m_DigDug->SetPosition(0, 32, 0);
 	AddChild(m_DigDug);
 
@@ -54,14 +58,16 @@ void Level::Initialize()
 void Level::Update()
 {
 	auto& p1Input = ServiceLocator::GetInputP1();
-	if (p1Input.IsPressed(ControllerButton::Up))
-		p1Input.GetCommand(ControllerButton::Up)->Execute(m_DigDug);
-	else if (p1Input.IsPressed(ControllerButton::Down))
-		p1Input.GetCommand(ControllerButton::Down)->Execute(m_DigDug);
-	else if (p1Input.IsPressed(ControllerButton::Left))
-		p1Input.GetCommand(ControllerButton::Left)->Execute(m_DigDug);
-	else if (p1Input.IsPressed(ControllerButton::Right))
-		p1Input.GetCommand(ControllerButton::Right)->Execute(m_DigDug);
+	if (p1Input->IsPressed(ControllerButton::Up))
+		p1Input->GetCommand(ControllerButton::Up)->Execute(m_DigDug);
+	else if (p1Input->IsPressed(ControllerButton::Down))
+		p1Input->GetCommand(ControllerButton::Down)->Execute(m_DigDug);
+	else if (p1Input->IsPressed(ControllerButton::Left))
+		p1Input->GetCommand(ControllerButton::Left)->Execute(m_DigDug);
+	else if (p1Input->IsPressed(ControllerButton::Right))
+		p1Input->GetCommand(ControllerButton::Right)->Execute(m_DigDug);
+	else if (p1Input->IsPressed(ControllerButton::ButtonA) && !m_DigDug->GetComponent<CharacterComponent>()->GetIsPlayerDigging())
+		p1Input->GetCommand(ControllerButton::ButtonA)->Execute(m_DigDug);
 }
 
 void Level::FixedUpdate()

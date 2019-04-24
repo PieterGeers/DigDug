@@ -5,6 +5,7 @@
 class TextureRenderComponent final : public BaseComponent
 {
 public:
+	TextureRenderComponent(const std::shared_ptr<dae::Texture2D>& text);
 	TextureRenderComponent(std::string path);
 	TextureRenderComponent(std::string path, int tRows, int tColums, int scale = 1);
 	virtual ~TextureRenderComponent() = default;
@@ -17,6 +18,8 @@ public:
 	void SetSpritePosition(int row, int col, int rowOffset, int colOffset);
 	int GetWidth() const { return m_Texture->GetWidth(); }
 	int GetHeight() const { return m_Texture->GetHeight(); }
+	int GetSpriteWidth() const { return m_Texture->GetWidth() / m_Columns * m_Scale; }
+	int GetSpriteHeight() const { return m_Texture->GetHeight() / m_Rows * m_Scale; }
 
 private:
 	std::shared_ptr<dae::Texture2D> m_Texture;

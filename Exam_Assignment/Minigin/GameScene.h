@@ -13,6 +13,8 @@ public:
 	GameScene& operator=(GameScene&& other) = delete;
 
 	void AddChild(std::shared_ptr<dae::SceneObject> obj);
+	void RemoveChild(std::shared_ptr<dae::SceneObject> obj);
+
 	std::string GetName() const { return m_SceneName; }
 
 	virtual void Initialize() = 0;

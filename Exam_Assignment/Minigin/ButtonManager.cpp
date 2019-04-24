@@ -10,9 +10,9 @@ ButtonManager::ButtonManager()
 void ButtonManager::Update()
 {
 	auto& p1Input = ServiceLocator::GetInputP1();
-	if (!p1Input.IsPressed(ControllerButton::Up) && !p1Input.IsPressed(ControllerButton::Down))
+	if (!p1Input->IsPressed(ControllerButton::Up) && !p1Input->IsPressed(ControllerButton::Down))
 		m_CanSwitchButton = true;
-	if (p1Input.IsPressed(ControllerButton::Up) && m_CanSwitchButton)
+	if (p1Input->IsPressed(ControllerButton::Up) && m_CanSwitchButton)
 	{
 		auto component = m_Buttons[m_CurrentIdx]->GetComponent<ButtonComponent>();
 		if (component == nullptr)
@@ -27,7 +27,7 @@ void ButtonManager::Update()
 		component->HooverOver(SDL_Color{ 255,255,255,255 });
 		m_CanSwitchButton = false;
 	}
-	else if (p1Input.IsPressed(ControllerButton::Down) && m_CanSwitchButton)
+	else if (p1Input->IsPressed(ControllerButton::Down) && m_CanSwitchButton)
 	{
 		auto component = m_Buttons[m_CurrentIdx]->GetComponent<ButtonComponent>();
 		if (component == nullptr)
@@ -42,8 +42,8 @@ void ButtonManager::Update()
 		component->HooverOver(SDL_Color{ 255,255,255,255 });
 		m_CanSwitchButton = false;
 	}
-	else if (p1Input.IsPressed(ControllerButton::ButtonA))
-		p1Input.GetCommand(ControllerButton::ButtonA)->Execute(m_Buttons[m_CurrentIdx]);
+	else if (p1Input->IsPressed(ControllerButton::ButtonA))
+		p1Input->GetCommand(ControllerButton::ButtonA)->Execute(m_Buttons[m_CurrentIdx]);
 }
 
 void ButtonManager::SetStartButtonByIdx(unsigned idx)

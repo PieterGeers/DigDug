@@ -1,6 +1,6 @@
 #include "MiniginPCH.h"
 #include "GameScene.h"
-
+#include <algorithm> 
 
 
 GameScene::GameScene(std::string sceneName)
@@ -11,6 +11,11 @@ GameScene::GameScene(std::string sceneName)
 void GameScene::AddChild(std::shared_ptr<dae::SceneObject> obj)
 {
 	m_Objects.push_back(obj);
+}
+
+void GameScene::RemoveChild(std::shared_ptr<dae::SceneObject> obj)
+{
+	m_Objects.erase(std::remove(m_Objects.begin(), m_Objects.end(), obj), m_Objects.end());
 }
 
 void GameScene::RootUpdate()

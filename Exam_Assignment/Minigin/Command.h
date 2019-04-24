@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "CharacterComponent.h"
 #include "ButtonComponent.h"
+#include "WeaponComponent.h"
 
 class Command
 {
@@ -133,5 +134,36 @@ public:
 		if (component == nullptr)
 			return;
 		component->ExecuteButton();
+	}
+};
+
+class DigDugAttackCommand final : public Command
+{
+public:
+	void Execute(const std::shared_ptr<dae::GameObject>& character) override
+	{
+		const auto component = character->GetComponent<WeaponComponent>();
+		const auto charComp = character->GetComponent<CharacterComponent>();
+		if (component == nullptr)
+			return;
+		if (charComp == nullptr)
+			return;
+		switch (charComp->GetCurrentDirection()) 
+		{ 
+		case up: 			
+			component->SetActive(0, 0, 0, 0);
+			break;
+		case down:
+			component->SetActive(0, 1, 0, 0);
+			break;
+		case left: 
+			component->SetActive(0, 3, 0, 0);
+			break;
+		case right: 
+			component->SetActive(0, 2, 0, 0);
+			break;
+		case none: break;
+		default: ;
+		}
 	}
 };

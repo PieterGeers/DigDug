@@ -5,6 +5,12 @@
 #include "GameTime.h"
 
 
+TextureRenderComponent::TextureRenderComponent(const std::shared_ptr<dae::Texture2D>& text)
+	:m_IsSprite(false)
+{
+	m_Texture = text;
+}
+
 TextureRenderComponent::TextureRenderComponent(std::string path)
 	:m_IsSprite(false)
 {

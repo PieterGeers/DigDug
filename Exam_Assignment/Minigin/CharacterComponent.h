@@ -41,8 +41,11 @@ public:
 	int GetGridSize() const { return m_GridSize; }
 	bool GetIsPlayer() const { return m_IsPlayer; }
 	void SetIsPlayerDigging(bool isDigging) { m_IsDigging = isDigging; }
+	bool GetIsPlayerDigging() const { return m_IsDigging; }
 	bool GetIsMovingAutomatic() const { return m_IsMoveAutomatic; }
 	void SetIsMovingAutomatic(bool isMovingAuto) { m_IsMoveAutomatic = isMovingAuto; }
+	int GetPreviousLocation() const { return m_prevIdx; }
+	void SetPreviousLocation(int idx) { m_prevIdx = idx; }
 
 private:
 	std::shared_ptr<dae::GameObject>& m_pCharacter;
@@ -55,5 +58,7 @@ private:
 	int m_GridSize = 1;
 	bool m_IsPlayer;
 	bool m_IsMoveAutomatic = false;
+	int m_prevIdx = -1;
+
 };
 

@@ -26,7 +26,7 @@ void StartScreen::Initialize()
 
 	const std::shared_ptr<Command> ButtonSelect = std::make_shared<ButtonSelectCommand>();
 
-	p1Input.SetButton(ControllerButton::ButtonA, ButtonSelect);
+	p1Input->SetButton(ControllerButton::ButtonA, ButtonSelect);
 
 	std::shared_ptr<dae::GameObject> button = std::make_shared<dae::GameObject>();
 	std::shared_ptr<ButtonComponent> buttonComp = std::make_shared<ButtonComponent>("Single", font, SDL_Color{ 0,0,0,255 }, []() {dae::SceneManager::GetInstance().SetActive("Level"); });
@@ -36,14 +36,14 @@ void StartScreen::Initialize()
 	m_ButtonManager->AddButton(button);
 
 	button = std::make_shared<dae::GameObject>();
-	buttonComp = std::make_shared<ButtonComponent>("Co-op", font, SDL_Color{ 0,0,0,255 }, []() { });
+	buttonComp = std::make_shared<ButtonComponent>("Co-op", font, SDL_Color{ 0,0,0,255 }, []() {dae::SceneManager::GetInstance().SetActive("CoopLevel"); });
 	button->AddComponent(buttonComp);
 	button->SetPosition(250, 280, 0);
 	AddChild(button);
 	m_ButtonManager->AddButton(button);
 
 	button = std::make_shared<dae::GameObject>();
-	buttonComp = std::make_shared<ButtonComponent>("Versus", font, SDL_Color{ 0,0,0,255 }, []() { });
+	buttonComp = std::make_shared<ButtonComponent>("Versus", font, SDL_Color{ 0,0,0,255 }, []() { dae::SceneManager::GetInstance().SetActive("VersusLevel"); });
 	button->AddComponent(buttonComp);
 	button->SetPosition(250, 330, 0);
 	AddChild(button);

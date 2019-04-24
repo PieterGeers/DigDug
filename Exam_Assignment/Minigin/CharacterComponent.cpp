@@ -52,7 +52,7 @@ void CharacterComponent::MoveRight(float amount)
 				m_pCharacter->GetComponent<TextureRenderComponent>()->SetSpritePosition(0, 2, 0, 1);
 			}
 			m_pCharacter->Translate(amount, 0, 0);
-			m_CanMove = false;
+			m_CanMove = false; 
 		}
 	}
 }
