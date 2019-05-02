@@ -8,12 +8,9 @@
 #include "ResourceManager.h"
 #include <SDL.h>
 #include "GameTime.h"
+#include <ctime>
+#include "SoundManager.h"
 #include "ServiceLocator.h"
-#include "LevelComponent.h"
-#include "Level.h"
-#include "StartScreen.h"
-#include "CoopLevel.h"
-#include "VersusLevel.h"
 
 
 void dae::Minigin::Initialize()
@@ -37,6 +34,13 @@ void dae::Minigin::Initialize()
 	}
 	srand(int(time(nullptr)));
 	Renderer::GetInstance().Init(window);
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+	{
+		const std::string error = Mix_GetError();
+		throw std::runtime_error(error);
+	}
+
 }
 
 /**
@@ -44,24 +48,12 @@ void dae::Minigin::Initialize()
  */
 void dae::Minigin::LoadGame() const
 {
-	std::shared_ptr<Input> service = std::make_shared<PlayerInput>();
-	ServiceLocator::RegisterInputP1Service(service);
-	ServiceLocator::RegisterInputP2Service(nullptr);
-
-	//set fixed time in GameTime
-	GameTime::GetInstance().SetFixedElapsed(std::chrono::duration<float>(std::chrono::milliseconds(msPerFrame)).count());
-
-	//Set game scenes here
-	SceneManager::GetInstance().AddGameScene(std::make_shared<StartScreen>());
-	SceneManager::GetInstance().AddGameScene(std::make_shared<Level>());
-	SceneManager::GetInstance().AddGameScene(std::make_shared<CoopLevel>());
-	SceneManager::GetInstance().AddGameScene(std::make_shared<VersusLevel>());
-	SceneManager::GetInstance().SetActive("StartScene");
 }
 
 void dae::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
+	InputManager::GetInstance().CleanUp();
 	SDL_DestroyWindow(window);
 	window = nullptr;
 	SDL_Quit();
@@ -73,14 +65,14 @@ void dae::Minigin::Run()
 
 	// tell the resource manager where he can find the game data
 	ResourceManager::GetInstance().Init("../Data/");
+	SoundManager::GetInstance().Init("../Data/Sound/");
 
 	LoadGame();
 
 	{
 		auto& renderer = Renderer::GetInstance();
 		auto& sceneManager = SceneManager::GetInstance();
-		auto& p1Input = ServiceLocator::GetInputP1();
-		auto& p2Input = ServiceLocator::GetInputP2();
+		auto& pInput = InputManager::GetInstance();
 		auto& time = GameTime::GetInstance();
 
 
@@ -94,10 +86,7 @@ void dae::Minigin::Run()
 			lastTime = currentTime;
 			lag += time.DeltaT() * 1000;
 
-			if (p1Input != nullptr)
-				doContinue = p1Input->ProcessInput(0);
-			if (p2Input != nullptr)
-				p2Input->ProcessInput(1);
+			doContinue = pInput.ProcessInput();
 
 			while (lag >= msPerFrame)
 			{

@@ -2,10 +2,11 @@
 #include "RockComponent.h"
 
 
-RockComponent::RockComponent(std::shared_ptr<dae::GameObject>& rock, Cell& cellUnderneath,
+RockComponent::RockComponent(std::shared_ptr<dae::GameObject>& rock, DigDugCell& cellUnderneath,
 	const std::string& texturePath)
-	:m_pRock(rock)
-	,m_CellUnderneath(cellUnderneath)
+	: m_pRock(rock)
+	, m_CellUnderneath(cellUnderneath)
+	, m_EndFallPosition(0)
 {
 	m_Texture = std::make_shared<TextureRenderComponent>(texturePath);
 }
@@ -41,7 +42,7 @@ void RockComponent::SetTransform(float x, float y, float z)
 void RockComponent::FallForAmountCell(unsigned amount)
 {
 	m_IsFalling = true;
-	const int fallDepth = amount * (m_CellUnderneath.posY - int(m_pRock->GetTransform()->GetPosition().y));
+	const int fallDepth = amount * (m_CellUnderneath.position.y - int(m_pRock->GetTransform()->GetPosition().y));
 	m_EndFallPosition = int(m_pRock->GetTransform()->GetPosition().y) + fallDepth;
 }
 

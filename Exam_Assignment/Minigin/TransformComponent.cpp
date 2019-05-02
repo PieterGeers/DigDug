@@ -2,31 +2,31 @@
 #include "TransformComponent.h"
 
 
-TransformComponent::TransformComponent()
+dae::TransformComponent::TransformComponent()
 {
 }
 
-void TransformComponent::Update()
+void dae::TransformComponent::Update()
 {
 }
 
-void TransformComponent::FixedUpdate()
+void dae::TransformComponent::FixedUpdate()
 {
 }
 
-void TransformComponent::Render()
+void dae::TransformComponent::Render()
 {
 }
 
-void TransformComponent::SetTransform(float, float, float)
+void dae::TransformComponent::SetTransform(float, float, float)
 {}
 
-void TransformComponent::SetPosition(float x, float y, float z)
+void dae::TransformComponent::SetPosition(float x, float y, float z)
 {
 	m_Position = glm::vec3(x, y, z);
 }
 
-void TransformComponent::Translate(float x, float y, float z)
+void dae::TransformComponent::Translate(float x, float y, float z)
 {
 	m_Position.x += x;
 	m_Position.y += y;

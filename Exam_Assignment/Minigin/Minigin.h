@@ -10,8 +10,10 @@ namespace dae
 		SDL_Window* window{};
 	public:
 		void Initialize();
-		void LoadGame() const;
+		virtual void LoadGame() const;
 		void Cleanup();
 		void Run();
+	protected:
+		int GetMs()const { return msPerFrame; }
 	};
 }

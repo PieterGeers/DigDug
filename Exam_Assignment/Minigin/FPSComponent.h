@@ -7,7 +7,7 @@ class FPSComponent final : public BaseComponent
 {
 public:
 	FPSComponent(std::shared_ptr<dae::Font> font, SDL_Color color = SDL_Color{ 255,255,255,255 });
-	virtual ~FPSComponent() = default;
+	~FPSComponent() = default;
 
 	void Update() override;
 	void FixedUpdate() override;

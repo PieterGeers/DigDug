@@ -1,50 +1,36 @@
 #pragma once
 #include <XInput.h>
-#include "Command.h"
+#include "Singleton.h"
+#include "Structs.h"
+#include <map>
+#pragma comment(lib,"xinput.lib")
 
-enum class ControllerButton
-{
-	ButtonA = XINPUT_GAMEPAD_A,
-	ButtonX = XINPUT_GAMEPAD_X,
-	Up = XINPUT_GAMEPAD_DPAD_UP,
-	Down = XINPUT_GAMEPAD_DPAD_DOWN,
-	Left = XINPUT_GAMEPAD_DPAD_LEFT,
-	Right = XINPUT_GAMEPAD_DPAD_RIGHT
-};
+class Command;
 
-class Input
+class InputManager : public dae::Singleton<InputManager>
 {
 public:
-	virtual ~Input() = default;
-	virtual bool ProcessInput(int) = 0;
-	virtual bool IsPressed(ControllerButton) const = 0;
-	virtual void SetButton(const ControllerButton&, std::shared_ptr<Command>) = 0;
-	virtual std::shared_ptr<Command> GetCommand(const ControllerButton&) = 0;
-};
-
-class NullInput final : public Input
-{
-public:
-	bool ProcessInput(int) override { return false; };
-	bool IsPressed(ControllerButton) const override { return false; }
-	void SetButton(const ControllerButton&, std::shared_ptr<Command>) override = 0;
-	std::shared_ptr<Command> GetCommand(const ControllerButton&) override = 0;
-};
-
-class PlayerInput final : public Input
-{
-public:
-	bool ProcessInput(int id) override;
-	bool IsPressed(ControllerButton button) const override;
-	void SetButton(const ControllerButton& button, std::shared_ptr<Command> command) override;
-	std::shared_ptr<Command> GetCommand(const ControllerButton& button) override;
+	void Initialize();
+	bool ProcessInput();
+	void Update();
+	bool IsPressed( int actionID);
+	void SetCommand( int actionID, std::shared_ptr<Command> command);
+	void AddInputAction(const InputAction& action, const std::shared_ptr<Command>& command);
+	void RefreshControllerConnections();
+	void ResetInput();
+	void CleanUp() const;
+	void Quit() {m_Quit = false;}
 private:
-	_XINPUT_STATE currentState{};
-	std::shared_ptr<Command> 
-	m_A = std::make_shared<NullCommand>(), 
-	m_X = std::make_shared<NullCommand>(), 
-	m_Up = std::make_shared<NullCommand>(),
-	m_Down = std::make_shared<NullCommand>(),
-	m_Left = std::make_shared<NullCommand>(),
-	m_Right = std::make_shared<NullCommand>();
+	std::map<int, InputAction> m_Actions;
+	std::map<int, std::shared_ptr<Command>> m_Commands;
+	BYTE *m_pCurrKeyboardState = nullptr, *m_pOldKeyboardState = nullptr, *m_pKeyboardState0 = nullptr, *m_pKeyboardState1 = nullptr;
+	bool m_KeyboardState0Active = true, m_HasReset = false;
+	XINPUT_STATE m_OldGamepadState[XUSER_MAX_COUNT]{}, m_CurrGamepadState[XUSER_MAX_COUNT]{};
+	bool m_ConnectedGamepads[XUSER_MAX_COUNT]{};
+	bool m_Quit = true;
+
+	void UpdateGamePadStates();
+	bool UpdateKeyboardState();
+	bool IsKeyboardKeyDown(int key, bool previousFrame = false) const;
+	bool IsGamePadButtonDown(WORD button, GamepadIndex playerIndex, bool previousFrame = false);
 };

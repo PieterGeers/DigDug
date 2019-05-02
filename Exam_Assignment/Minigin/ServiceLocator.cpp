@@ -1,6 +1,11 @@
 #include "MiniginPCH.h"
 #include "ServiceLocator.h"
 
-std::shared_ptr<Input> ServiceLocator::p1InputService;
-std::shared_ptr<Input> ServiceLocator::p2InputService;
-std::shared_ptr<NullInput> ServiceLocator::defaultInput;
+std::shared_ptr<dae::GameObject> ServiceLocator::m_pPlayer1;
+std::shared_ptr<dae::GameObject> ServiceLocator::m_pPlayer2;
+//std::shared_ptr<dae::GameObject> ServiceLocator::m_pPlayer3;
+//std::shared_ptr<dae::GameObject> ServiceLocator::m_pPlayer4;
+std::shared_ptr<dae::GameObject> ServiceLocator::m_pDefaultGameObject;
+
+std::shared_ptr<ButtonManager> ServiceLocator::m_pButtonManager;
+std::shared_ptr<ButtonManager> ServiceLocator::m_pDefaultButtonManager;

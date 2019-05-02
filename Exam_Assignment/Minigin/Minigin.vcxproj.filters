@@ -28,8 +28,14 @@
     <Filter Include="Header Files\Scenegraph">
       <UniqueIdentifier>{6bda028e-2496-488d-9a8b-859f3368bc3e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Scenes">
-      <UniqueIdentifier>{746375bd-c95b-4d8d-a0cc-cdd6f1b88c5d}</UniqueIdentifier>
+    <Filter Include="Header Files\Sound">
+      <UniqueIdentifier>{018fc582-2c38-41fa-8112-29a978415fc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Helper">
+      <UniqueIdentifier>{a667de9c-3a03-47a4-8965-7edb3197fd88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI">
+      <UniqueIdentifier>{9098534a-0867-459e-8cc6-185efc790275}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,32 +93,20 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files\Scenegraph</Filter>
     </ClInclude>
-    <ClInclude Include="Minigin.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="MiniginPCH.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="LevelComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Level.h">
-      <Filter>Source Files\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="GameScene.h">
       <Filter>Header Files\Scenegraph</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
     <ClInclude Include="CharacterComponent.h">
       <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="StartScreen.h">
-      <Filter>Source Files\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="ButtonComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -126,24 +120,39 @@
     <ClInclude Include="RockComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="CoopLevel.h">
-      <Filter>Source Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="VersusLevel.h">
-      <Filter>Source Files\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="WeaponComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Minigin.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundEffect.h">
+      <Filter>Header Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundStream.h">
+      <Filter>Header Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Header Files\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Header Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="AStarPathFinding.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Heuristic.h">
+      <Filter>Header Files\AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Minigin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
@@ -194,20 +203,11 @@
     <ClCompile Include="LevelComponent.cpp">
       <Filter>Header Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Level.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="GameScene.cpp">
       <Filter>Header Files\Scenegraph</Filter>
     </ClCompile>
-    <ClCompile Include="CollisionComponent.cpp">
-      <Filter>Header Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="CharacterComponent.cpp">
       <Filter>Header Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="StartScreen.cpp">
-      <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="ButtonComponent.cpp">
       <Filter>Header Files\Components</Filter>
@@ -221,14 +221,29 @@
     <ClCompile Include="RockComponent.cpp">
       <Filter>Header Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="CoopLevel.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="VersusLevel.cpp">
-      <Filter>Source Files\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="WeaponComponent.cpp">
       <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Minigin.cpp">
+      <Filter>Header Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundEffect.cpp">
+      <Filter>Header Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundStream.cpp">
+      <Filter>Header Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Header Files\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="AStarPathFinding.cpp">
+      <Filter>Header Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>Header Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Header Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

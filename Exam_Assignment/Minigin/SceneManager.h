@@ -4,24 +4,10 @@
 
 namespace dae
 {
-	//class Scene;
-	//class SceneManager final : public Singleton<SceneManager>
-	//{
-	//public:
-	//	Scene & CreateScene(const std::string& name);
-
-	//	void Update();
-	//	void FixedUpdate();
-	//	void Render();
-
-	//private:
-	//	std::vector<std::shared_ptr<Scene>> mScenes;
-	//};
-
 	class SceneManager final : public Singleton<SceneManager>
 	{
 	public:
-		virtual ~SceneManager() = default;
+		~SceneManager() = default;
 
 		SceneManager(const SceneManager& other) = delete;
 		SceneManager(SceneManager&& other) = delete;

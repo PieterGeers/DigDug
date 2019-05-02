@@ -1,23 +1,14 @@
 #pragma once
 #include "BaseComponent.h"
-#include "TextureRenderComponent.h"
 #include "GameObject.h"
-#include "CharacterComponent.h"
+#include "Structs.h"
+#include "Node.h"
 
-struct Cell
-{
-	unsigned idx;
-	int posX, posY;
-	bool canWalkOn;
-	bool hasBeenVisited;
-	bool HasStone = false;
-};
-
-class LevelComponent final : public BaseComponent
+class LevelComponent : public BaseComponent
 {
 public:
-	LevelComponent(std::string path, unsigned int gridWidth, unsigned int gridHeight, std::string file);
-	virtual ~LevelComponent() = default;
+	LevelComponent(unsigned texWidth, unsigned texHeight, unsigned gridWidth, unsigned gridHeight);
+	~LevelComponent() = default;
 
 	void Update() override;
 	void FixedUpdate() override;
@@ -25,25 +16,19 @@ public:
 	void SetTransform(float x, float y, float z) override;
 
 	void AddCharacterInScene(std::shared_ptr<dae::GameObject>& character);
+	void AddAgentInScene(std::shared_ptr<dae::GameObject>& agent);
+
+	void CreateGraph(bool useDiagonal = false);
+
+protected:
+	unsigned m_nbOfRows = 0, m_nbOfColumns = 0;
+	unsigned m_GridWidth = 0, m_GridHeight = 0;
+	std::vector<std::shared_ptr<Cell>> m_LevelGrid;
+	std::vector<std::shared_ptr<dae::GameObject>> m_CharactersInLevel;
+	std::vector<std::shared_ptr<dae::GameObject>> m_Agents;
+	std::vector<std::shared_ptr<Node>> m_Graph;
 
 private:
-	void SpawnRock(std::shared_ptr<dae::GameObject>& rock);
-	void DetermineWhenFalling(std::shared_ptr<dae::GameObject>& rock);
-	int DetermineGridCell(const std::shared_ptr<dae::GameObject>& character, Direction direction);
-	unsigned DetermineEmptyGrids(const Cell& start);
-
-	std::shared_ptr<dae::Texture2D> m_TunnelTexture; 
-
-	std::shared_ptr<TextureRenderComponent> m_Texture;
-	float m_X = 0, m_Y = 0;
-	unsigned int m_GridWidth = 0, m_GridHeight = 0;
-	std::vector<Cell> m_LevelGrid;
-	std::vector<std::shared_ptr<dae::GameObject>> m_CharactersInLevel;
-	std::vector<std::shared_ptr<TextureRenderComponent>> m_pTunnels;
-	
-	std::shared_ptr<dae::GameObject> m_pRock1;
-	std::shared_ptr<dae::GameObject> m_pRock2;
-	std::shared_ptr<dae::GameObject> m_pRock3;
-
+	bool m_IsGraphMade = false;
 };
 

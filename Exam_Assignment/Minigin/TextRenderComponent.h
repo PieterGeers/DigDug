@@ -7,7 +7,7 @@ class TextRenderComponent final : public BaseComponent
 {
 public:
 	explicit TextRenderComponent(const std::string& text, std::shared_ptr<dae::Font> font, SDL_Color color = SDL_Color{ 255,255,255,255 }, bool update = false);
-	virtual ~TextRenderComponent() = default;
+	~TextRenderComponent() = default;
 
 	void Update() override;
 	void FixedUpdate() override;

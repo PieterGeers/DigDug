@@ -25,7 +25,7 @@ namespace dae
 		void SetPosition(float x, float y, float z) const;
 		void AddComponent(std::shared_ptr<BaseComponent> pComp);
 		const std::shared_ptr<TransformComponent>& GetTransform() const { return m_Transform; }
-		//void RemoveComponent(std::shared_ptr<BaseComponent> pComp); //add this when / if needed
+		void RemoveComponent(std::shared_ptr<BaseComponent> pComp); 
 
 		template <class T>
 		std::shared_ptr<T> GetComponent()
@@ -39,10 +39,19 @@ namespace dae
 			return nullptr;
 		}
 
+		template <class T>
+		bool HasComponent()
+		{
+			return GetComponent<T>() != nullptr;
+		}
+
+
+
 	private:
 		//component based
 		std::vector<std::shared_ptr<BaseComponent>> m_pComponents;
 		std::shared_ptr<TransformComponent> m_Transform = std::make_shared<TransformComponent>();
 		void SetComponentTransform() const;
+
 	};
 }

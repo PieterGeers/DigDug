@@ -23,7 +23,6 @@ void FPSComponent::Update()
 		m_TextRenderComp->SetText(std::to_string(m_FpsCount) + " FPS");
 		m_TextRenderComp->Update();
 	}
-
 }
 
 void FPSComponent::FixedUpdate() {}

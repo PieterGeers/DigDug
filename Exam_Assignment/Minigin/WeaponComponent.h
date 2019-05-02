@@ -7,7 +7,7 @@ class WeaponComponent final : public BaseComponent
 {
 public:
 	WeaponComponent(std::shared_ptr<dae::GameObject>& character, const std::string& textPath, int rows, int column, int scale, bool isPlayer = true);
-	virtual ~WeaponComponent() = default;
+	~WeaponComponent() = default;
 
 	void Update() override;
 	void FixedUpdate() override;

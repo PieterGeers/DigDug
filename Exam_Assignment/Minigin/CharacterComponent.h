@@ -1,35 +1,22 @@
 #pragma once
 #include "BaseComponent.h"
 #include "GameObject.h"
-#include <bitset>
+#include "Structs.h"
+#include <unordered_map>
 
-struct Boundaries
-{
-	int top, bottom, left, right;
-};
-
-enum Direction
-{
-	up,
-	down,
-	left,
-	right,
-	none
-};
-
-class CharacterComponent final : public BaseComponent	
+class CharacterComponent : public BaseComponent	
 {
 public:
-	CharacterComponent(std::shared_ptr<dae::GameObject>& character, Boundaries levelBounds, bool IsPlayer = true);
-	virtual ~CharacterComponent() = default;
+	CharacterComponent(std::shared_ptr<dae::GameObject>& character, Boundaries levelBounds);
+	~CharacterComponent() = default;
 
 	void Update() override;
 	void FixedUpdate() override;
 	void Render() override{}
 	void SetTransform(float, float, float) override {};
 
-	void MoveRight(float amount);
-	void MoveUp(float amount);
+	virtual void MoveRight(float amount);
+	virtual void MoveUp(float amount);
 
 	void ResetBounds(Boundaries levelBounds);
 	Direction GetPreviousDirection() const { return previous; }
@@ -39,26 +26,19 @@ public:
 	
 	void SetGridSize(int size) { m_GridSize = size; }
 	int GetGridSize() const { return m_GridSize; }
-	bool GetIsPlayer() const { return m_IsPlayer; }
-	void SetIsPlayerDigging(bool isDigging) { m_IsDigging = isDigging; }
-	bool GetIsPlayerDigging() const { return m_IsDigging; }
-	bool GetIsMovingAutomatic() const { return m_IsMoveAutomatic; }
-	void SetIsMovingAutomatic(bool isMovingAuto) { m_IsMoveAutomatic = isMovingAuto; }
 	int GetPreviousLocation() const { return m_prevIdx; }
 	void SetPreviousLocation(int idx) { m_prevIdx = idx; }
 
-private:
-	std::shared_ptr<dae::GameObject>& m_pCharacter;
-	bool m_CanMove = true;
-	bool m_IsDigging = false;
-	Boundaries m_Boundaries;
-	std::bitset<8> m_Sprite;
-	Direction previous = Direction::none, current = Direction::right;
-	void ResetBitSet();
-	int m_GridSize = 1;
-	bool m_IsPlayer;
-	bool m_IsMoveAutomatic = false;
-	int m_prevIdx = -1;
+	void AddAnimation(const std::shared_ptr<Animation>& animation);
+	void AddAnimation(const std::vector<std::shared_ptr<Animation>>& animationSet);
+	void SetActiveAnimation(const std::string& name);
 
+protected:
+	std::shared_ptr<dae::GameObject>& m_pCharacter;
+	Boundaries m_Boundaries;
+	Direction previous = Direction::none, current = Direction::right;
+	int m_GridSize = 1;
+	int m_prevIdx = -1;
+	std::unordered_map<std::string, std::shared_ptr<Animation>> m_Animation;
 };
 

@@ -21,6 +21,16 @@ void dae::GameObject::AddComponent(std::shared_ptr<BaseComponent> pComp)
 	m_pComponents.push_back(pComp);
 }
 
+void dae::GameObject::RemoveComponent(std::shared_ptr<BaseComponent> pComp)
+{
+	const auto comp = std::find(m_pComponents.begin(), m_pComponents.end(), pComp);
+	if (comp == m_pComponents.end())
+		return;
+	if (typeid(*pComp) == typeid(TransformComponent))
+		return;
+	m_pComponents.erase(comp);
+}
+
 void dae::GameObject::SetComponentTransform() const
 {
 	for (auto element : m_pComponents)

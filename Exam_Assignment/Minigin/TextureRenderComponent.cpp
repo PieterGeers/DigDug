@@ -7,8 +7,8 @@
 
 TextureRenderComponent::TextureRenderComponent(const std::shared_ptr<dae::Texture2D>& text)
 	:m_IsSprite(false)
+	, m_Texture(std::move(text))
 {
-	m_Texture = text;
 }
 
 TextureRenderComponent::TextureRenderComponent(std::string path)
@@ -17,12 +17,12 @@ TextureRenderComponent::TextureRenderComponent(std::string path)
 	m_Texture = dae::ResourceManager::GetInstance().LoadTexture(path);
 }
 
-TextureRenderComponent::TextureRenderComponent(std::string path, int tRows, int tColums, int scale)
+TextureRenderComponent::TextureRenderComponent(std::string path, int tRows, int tColumns, int scale)
 	: m_IsSprite(true)
 	, m_Scale(scale)
 {
 	m_Rows = tRows;
-	m_Columns = tColums;
+	m_Columns = tColumns;
 	m_Texture = dae::ResourceManager::GetInstance().LoadTexture(path);
 }
 
@@ -73,14 +73,29 @@ void TextureRenderComponent::SetTransform(float x, float y, float)
 	m_Y = y;
 }
 
-void TextureRenderComponent::SetSpritePosition(int row, int col, int rowOffset, int colOffset)
+void TextureRenderComponent::SetSpritePosition(Animation info)
 {
-	m_CurrentRow = row;
-	m_CurrentColumn = col;
-	m_ColumnOffset = colOffset;
+	if (m_ActiveAnimation == info.name)
+		return;
+	m_ActiveAnimation = info.name;
+	m_CurrentRow = info.info.startRow;
+	m_CurrentColumn = info.info.startColumn;
+	m_ColumnOffset = info.info.ColumnOffset;
+	m_RowOffset = info.info.RowOffset;
+	m_StartColumn = info.info.startColumn;
+	m_StartRow = info.info.startRow;
+}
+
+void TextureRenderComponent::SetSpritePosition(unsigned startRow, unsigned startColumn, unsigned rowOffset,
+	unsigned columnOffset)
+{
+	m_CurrentRow = startRow;
+	m_CurrentColumn = startColumn;
+	m_ColumnOffset = columnOffset;
 	m_RowOffset = rowOffset;
-	m_StartColumn = col;
-	m_StartRow = row;
+	m_StartColumn = startColumn;
+	m_StartRow = startRow;
+
 }
 
 
