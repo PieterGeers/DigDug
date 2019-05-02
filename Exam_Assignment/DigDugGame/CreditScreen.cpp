@@ -15,7 +15,7 @@ CreditScreen::CreditScreen()
 
 void CreditScreen::Initialize()
 {
-	std::shared_ptr<dae::GameObject> background = std::make_shared<dae::GameObject>();
+	std::shared_ptr<GameObject> background = std::make_shared<GameObject>();
 	std::shared_ptr<TextureRenderComponent> texture = std::make_shared<TextureRenderComponent>("start_screen.png");
 	background->AddComponent(texture);
 	AddChild(background);
@@ -28,7 +28,7 @@ void CreditScreen::Initialize()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("digdug.ttf", 32);
 	m_ButtonManager = std::make_shared<ButtonManager>();
 
-	std::shared_ptr<dae::GameObject> button = std::make_shared<dae::GameObject>();
+	std::shared_ptr<GameObject> button = std::make_shared<GameObject>();
 	std::shared_ptr<ButtonComponent> buttonComp = std::make_shared<ButtonComponent>("Back", font, SDL_Color{ 0,0,0,255 }, []() {dae::SceneManager::GetInstance().SetActive("StartScreen"); });
 	button->AddComponent(buttonComp);
 	button->SetPosition(250, 230, 0);

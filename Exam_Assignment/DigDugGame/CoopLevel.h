@@ -14,8 +14,8 @@ public:
 	void Render() const override;
 
 private:
-	std::shared_ptr<dae::GameObject> m_DigDugP1;
-	std::shared_ptr<dae::GameObject> m_DigDugP2;
+	std::shared_ptr<GameObject> m_DigDugP1;
+	std::shared_ptr<GameObject> m_DigDugP2;
 
 };
 

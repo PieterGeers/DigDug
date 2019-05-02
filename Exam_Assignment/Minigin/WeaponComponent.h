@@ -6,7 +6,7 @@
 class WeaponComponent final : public BaseComponent
 {
 public:
-	WeaponComponent(std::shared_ptr<dae::GameObject>& character, const std::string& textPath, int rows, int column, int scale, bool isPlayer = true);
+	WeaponComponent(/*std::shared_ptr<GameObject>& character,*/ const std::string& textPath, int rows, int column, int scale, bool isPlayer = true);
 	~WeaponComponent() = default;
 
 	void Update() override;
@@ -18,7 +18,7 @@ public:
 
 private:
 	std::shared_ptr<TextureRenderComponent> m_WeaponTexture;
-	std::shared_ptr<dae::GameObject>& m_Character;
+	//std::shared_ptr<GameObject>& m_Character;
 	Direction m_CurrentDirection = Direction::none;
 	bool m_IsPlayer;
 	bool m_IsActive;

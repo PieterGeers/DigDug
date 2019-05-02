@@ -150,6 +150,9 @@
     <ClInclude Include="Heuristic.h">
       <Filter>Header Files\AI</Filter>
     </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -244,6 +247,9 @@
     </ClCompile>
     <ClCompile Include="Node.cpp">
       <Filter>Header Files\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Header Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

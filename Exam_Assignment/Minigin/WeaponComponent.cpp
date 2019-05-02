@@ -3,10 +3,9 @@
 #include "GameTime.h"
 
 
-WeaponComponent::WeaponComponent(std::shared_ptr<dae::GameObject>& character, const std::string& textPath, int rows, int column, int scale, bool isPlayer)
+WeaponComponent::WeaponComponent(const std::string& textPath, int rows, int column, int scale, bool isPlayer)
 	:m_IsPlayer(isPlayer)
 	,m_IsActive(false)
-	,m_Character(character)
 	,m_ActiveTime(0.0f)
 {
 	m_WeaponTexture = std::make_shared<TextureRenderComponent>(textPath, rows, column, scale);
@@ -31,7 +30,7 @@ void WeaponComponent::FixedUpdate()
 	{
 		if (m_IsPlayer)
 		{
-			const auto component = m_Character->GetComponent<CharacterComponent>();
+			/*const auto component = m_Character->GetComponent<CharacterComponent>();
 			const auto transform = m_Character->GetTransform();
 			const auto width = m_Character->GetComponent<TextureRenderComponent>()->GetSpriteWidth();
 			const auto height = m_Character->GetComponent<TextureRenderComponent>()->GetSpriteHeight();
@@ -52,8 +51,8 @@ void WeaponComponent::FixedUpdate()
 				m_WeaponTexture->SetTransform(transform->GetPosition().x + width, transform->GetPosition().y, transform->GetPosition().z);
 				break;
 			case none: break;
-			default: ;
-			}
+			default: ;*/
+			//}
 		}
 	}
 }

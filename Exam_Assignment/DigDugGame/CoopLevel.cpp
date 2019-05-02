@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "CoopLevel.h"
 #include "ResourceManager.h"
-#include "ServiceLocator.h"
 #include "FPSComponent.h"
 #include "GameCommands.h"
 #include "DigDugLevelComp.h"
 #include "Structs.h"
 #include "WeaponComponent.h"
+#include "Animator.h"
 
 CoopLevel::CoopLevel()
 	: GameScene("CoopLevel")
@@ -49,47 +49,49 @@ void CoopLevel::Initialize()
 	InputManager::GetInstance().AddInputAction(InputAction(Direction::right, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerTwo),
 		std::make_shared<MoveRightCommand>());
 
-	m_DigDugP1 = std::make_shared<dae::GameObject>();
-	m_DigDugP2 = std::make_shared<dae::GameObject>();
+	m_DigDugP1 = std::make_shared<GameObject>();
+	m_DigDugP2 = std::make_shared<GameObject>();
 
-	auto level = std::make_shared<dae::GameObject>();
-	const std::shared_ptr<TextureRenderComponent> levelText = std::make_shared<TextureRenderComponent>("Level.png");
-	level->AddComponent(levelText);
-	std::shared_ptr<DigDugLevelComp> levelComp = std::make_shared<DigDugLevelComp>(level, 32, 32, "../Data/Levels/Level1.bin");
+	std::shared_ptr<GameObject> LevelObject = std::make_shared<GameObject>();
+	const std::shared_ptr<TextureRenderComponent> levelTexture = std::make_shared<TextureRenderComponent>("Level.png");
+	std::shared_ptr<DigDugLevelComp> levelComp = std::make_shared<DigDugLevelComp>(levelTexture->GetWidth(), levelTexture->GetHeight(), 32, 32, "../Data/Levels/Level1.bin");
 	levelComp->AddCharacterInScene(m_DigDugP1);
 	levelComp->AddCharacterInScene(m_DigDugP2);
-	level->AddComponent(levelComp);
-	AddChild(level);
+	LevelObject->AddComponent(levelTexture);
+	LevelObject->AddComponent(levelComp);
+	AddChild(LevelObject);
 
-	std::shared_ptr<TextureRenderComponent> playerText = std::make_shared<TextureRenderComponent>("digdug_spriteP1.png", 7, 7, 2);
-	playerText->SetSpritePosition(0, 0, 6, 6);
-	std::shared_ptr<DigDugCharacterComp> character = std::make_shared<DigDugCharacterComp>(m_DigDugP1, Boundaries{ 32, 32 * 17,0,32 * 13 });
-	character->AddAnimation(std::vector<std::shared_ptr<Animation>>{left, leftDig, right, rightDig, leftUp, rightUp, leftUpDig, rightUpDig, rightDown, leftDown, rightDownDig, leftDownDig});
-	std::shared_ptr<WeaponComponent> weaponComp = std::make_shared<WeaponComponent>(m_DigDugP1, "digdug_attack.png", 1, 4, 2, true);
+	std::shared_ptr<TextureRenderComponent> DigDugTexture = std::make_shared<TextureRenderComponent>("digdug_spriteP1.png", 7, 7, 2);
+	std::shared_ptr<DigDugCharacterComp> character = std::make_shared<DigDugCharacterComp>(Boundaries{ 32, 32 * 17,0,32 * 13 });
+	std::shared_ptr<Animator> animator = std::make_shared<Animator>();
+	animator->AddAnimation(std::vector<std::shared_ptr<Animation>>{left, leftDig, right, rightDig, leftUp, rightUp, leftUpDig, rightUpDig, rightDown, leftDown, rightDownDig, leftDownDig});
+	DigDugTexture->SetSpritePosition(0, 0, 6, 6);
 	character->SetGridSize(32);
-	m_DigDugP1->AddComponent(playerText);
+	m_DigDugP1->AddComponent(DigDugTexture);
 	m_DigDugP1->AddComponent(character);
-	m_DigDugP1->AddComponent(weaponComp);
+	m_DigDugP1->AddComponent(animator);
 	m_DigDugP1->SetPosition(0, 32, 0);
 	AddChild(m_DigDugP1);
 
-	playerText = std::make_shared<TextureRenderComponent>("digdug_spriteP2.png", 7, 7, 2);
-	playerText->SetSpritePosition(0, 0, 6, 6);
-	character = std::make_shared<DigDugCharacterComp>(m_DigDugP2, Boundaries{ 32, 32 * 17,0,32 * 13 });
-	character->AddAnimation(std::vector<std::shared_ptr<Animation>>{left, leftDig, right, rightDig, leftUp, rightUp, leftUpDig, rightUpDig, rightDown, leftDown, rightDownDig, leftDownDig});
-	weaponComp = std::make_shared<WeaponComponent>(m_DigDugP2, "digdug_attack.png", 1, 4, 2, true);
+	DigDugTexture = std::make_shared<TextureRenderComponent>("digdug_spriteP2.png", 7, 7, 2);
+	character = std::make_shared<DigDugCharacterComp>(Boundaries{ 32, 32 * 17,0,32 * 13 });
+	animator = std::make_shared<Animator>();
+	animator->AddAnimation(std::vector<std::shared_ptr<Animation>>{left, leftDig, right, rightDig, leftUp, rightUp, leftUpDig, rightUpDig, rightDown, leftDown, rightDownDig, leftDownDig});
+	DigDugTexture->SetSpritePosition(0, 0, 6, 6);
 	character->SetGridSize(32);
-	m_DigDugP2->AddComponent(playerText);
+	m_DigDugP2->AddComponent(DigDugTexture);
 	m_DigDugP2->AddComponent(character);
-	m_DigDugP2->AddComponent(weaponComp);
+	m_DigDugP2->AddComponent(animator);
 	m_DigDugP2->SetPosition(416, 32, 0);
 	AddChild(m_DigDugP2);
 
-	auto fpsCounter = std::make_shared<dae::GameObject>();
+	auto fpsCounter = std::make_shared<GameObject>();
 	std::shared_ptr<FPSComponent> fps_component = std::make_shared<FPSComponent>(fpsFont, SDL_Color{ 255,255,0,255 });
 	fpsCounter->AddComponent(fps_component);
 	AddChild(fpsCounter);
 
+	ServiceLocator::RegisterP1Service(m_DigDugP1);
+	ServiceLocator::RegisterP2Service(m_DigDugP2);
 }
 
 void CoopLevel::Update()

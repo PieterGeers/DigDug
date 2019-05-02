@@ -5,7 +5,7 @@
 class DigDugLevelComp final : public LevelComponent
 {
 public:
-	DigDugLevelComp(std::shared_ptr<dae::GameObject>& gameObject, unsigned gridWidth, unsigned gridHeight, const std::string& binFile);
+	DigDugLevelComp(unsigned levelWidth, unsigned levelHeight, unsigned gridWidth, unsigned gridHeight, const std::string& binFile);
 	~DigDugLevelComp() = default;
 
 	void Update() override;
@@ -14,18 +14,18 @@ public:
 	void SetTransform(float x, float y, float z) override;
 
 private:
-	void SpawnRock(std::shared_ptr<dae::GameObject>& rock);
-	void DetermineWhenFalling(std::shared_ptr<dae::GameObject>& rock);
-	int DetermineGridCell(const std::shared_ptr<dae::GameObject>& character, Direction direction);
+	void SpawnRock(std::shared_ptr<GameObject>& rock);
+	void DetermineWhenFalling(std::shared_ptr<GameObject>& rock);
+	int DetermineGridCell(const std::shared_ptr<GameObject>& character, Direction direction);
 	unsigned DetermineEmptyGrids(const Cell& start);
 
 	std::shared_ptr<dae::Texture2D> m_TunnelTexture;
 	std::vector<std::shared_ptr<TextureRenderComponent>> m_pTunnels;
 
-	std::shared_ptr<dae::GameObject> m_pRock1;
-	std::shared_ptr<dae::GameObject> m_pRock2;
-	std::shared_ptr<dae::GameObject> m_pRock3;
+	std::shared_ptr<GameObject> m_pRock1;
+	std::shared_ptr<GameObject> m_pRock2;
+	std::shared_ptr<GameObject> m_pRock3;
 
-	std::shared_ptr<dae::GameObject>& m_GameObject;
+	//std::shared_ptr<GameObject>& m_GameObject;
 };
 

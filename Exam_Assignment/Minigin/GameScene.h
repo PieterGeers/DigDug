@@ -12,8 +12,8 @@ public:
 	GameScene& operator=(const GameScene& other) = delete;
 	GameScene& operator=(GameScene&& other) = delete;
 
-	void AddChild(std::shared_ptr<dae::SceneObject> obj);
-	void RemoveChild(std::shared_ptr<dae::SceneObject> obj);
+	void AddChild(std::shared_ptr<SceneObject> obj);
+	void RemoveChild(std::shared_ptr<SceneObject> obj);
 
 	std::string GetName() const { return m_SceneName; }
 
@@ -27,7 +27,7 @@ public:
 	void RootRender() const;
 
 private:
-	std::vector<std::shared_ptr<dae::SceneObject>> m_Objects{};
+	std::vector<std::shared_ptr<SceneObject>> m_Objects{};
 	std::string m_SceneName;
 };
 

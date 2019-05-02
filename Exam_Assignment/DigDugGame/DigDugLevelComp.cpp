@@ -7,10 +7,10 @@
 #include "DigDugStructs.h"
 #include "DigDugCharacterComp.h"
 #include "GameTime.h"
+#include "TransformComponent.h"
 
-DigDugLevelComp::DigDugLevelComp(std::shared_ptr<dae::GameObject>& gameObject, unsigned gridWidth, unsigned gridHeight, const std::string& binFile)
-	:LevelComponent(gameObject->GetComponent<TextureRenderComponent>()->GetWidth(), gameObject->GetComponent<TextureRenderComponent>()->GetHeight(), gridWidth, gridHeight)
-	,m_GameObject(gameObject)
+DigDugLevelComp::DigDugLevelComp(unsigned levelWidth, unsigned levelHeight, unsigned gridWidth, unsigned gridHeight, const std::string& binFile)
+	:LevelComponent(levelWidth, levelHeight, gridWidth, gridHeight)
 {
 	m_TunnelTexture = dae::ResourceManager::GetInstance().LoadTexture("Tunnel.png");
 	BinaryReader levelFile{ binFile };
@@ -102,7 +102,7 @@ void DigDugLevelComp::FixedUpdate()
 
 }
 
-void DigDugLevelComp::SpawnRock(std::shared_ptr<dae::GameObject>& rock)
+void DigDugLevelComp::SpawnRock(std::shared_ptr<GameObject>& rock)
 {
 	const unsigned totalCells = m_nbOfColumns * m_nbOfRows;
 
@@ -112,13 +112,13 @@ void DigDugLevelComp::SpawnRock(std::shared_ptr<dae::GameObject>& rock)
 		rockIdx = rand() % totalCells;
 	}
 	std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->hasStone = true;
-	rock = std::make_shared<dae::GameObject>();
-	const std::shared_ptr<RockComponent> comp = std::make_shared<RockComponent>(rock, *std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx + m_nbOfColumns]), "rock.png");
+	rock = std::make_shared<GameObject>();
+	const std::shared_ptr<RockComponent> comp = std::make_shared<RockComponent>(*std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx + m_nbOfColumns]), "rock.png");
 	rock->AddComponent(comp);
 	rock->SetPosition(float(std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->position.x), float(std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->position.y), 0.0f);
 }
 
-void DigDugLevelComp::DetermineWhenFalling(std::shared_ptr<dae::GameObject>& rock)
+void DigDugLevelComp::DetermineWhenFalling(std::shared_ptr<GameObject>& rock)
 {
 	auto component = rock->GetComponent<RockComponent>();
 	if (component == nullptr)
@@ -145,7 +145,7 @@ void DigDugLevelComp::DetermineWhenFalling(std::shared_ptr<dae::GameObject>& roc
 	}
 }
 
-int DigDugLevelComp::DetermineGridCell(const std::shared_ptr<dae::GameObject>& character, Direction direction)
+int DigDugLevelComp::DetermineGridCell(const std::shared_ptr<GameObject>& character, Direction direction)
 {
 	auto x = character->GetTransform()->GetPosition().x;
 	auto y = character->GetTransform()->GetPosition().y;

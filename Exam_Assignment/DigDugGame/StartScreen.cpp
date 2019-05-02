@@ -18,7 +18,7 @@ StartScreen::StartScreen()
 
 void StartScreen::Initialize()
 {
-	std::shared_ptr<dae::GameObject> background = std::make_shared<dae::GameObject>();
+	std::shared_ptr<GameObject> background = std::make_shared<GameObject>();
 	std::shared_ptr<TextureRenderComponent> texture = std::make_shared<TextureRenderComponent>("start_screen.png");
 	background->AddComponent(texture);
 	AddChild(background);
@@ -31,7 +31,7 @@ void StartScreen::Initialize()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("digdug.ttf", 32);
 	m_ButtonManager = std::make_shared<ButtonManager>();
 
-	std::shared_ptr<dae::GameObject> button = std::make_shared<dae::GameObject>();
+	std::shared_ptr<GameObject> button = std::make_shared<GameObject>();
 	std::shared_ptr<ButtonComponent> buttonComp = std::make_shared<ButtonComponent>("Single", font, SDL_Color{ 0,0,0,255 }, 
 		[]() {dae::SceneManager::GetInstance().SetActive("SingleLevel"); });
 	button->AddComponent(buttonComp);
@@ -39,7 +39,7 @@ void StartScreen::Initialize()
 	AddChild(button);
 	m_ButtonManager->AddButton(button);
 
-	button = std::make_shared<dae::GameObject>();
+	button = std::make_shared<GameObject>();
 	buttonComp = std::make_shared<ButtonComponent>("Co-op", font, SDL_Color{ 0,0,0,255 }, 
 		[]() {dae::SceneManager::GetInstance().SetActive("CoopLevel"); });
 	button->AddComponent(buttonComp);
@@ -47,7 +47,7 @@ void StartScreen::Initialize()
 	AddChild(button);
 	m_ButtonManager->AddButton(button);
 
-	button = std::make_shared<dae::GameObject>();
+	button = std::make_shared<GameObject>();
 	buttonComp = std::make_shared<ButtonComponent>("Versus", font, SDL_Color{ 0,0,0,255 }, 
 		[]() {dae::SceneManager::GetInstance().SetActive("VersusLevel"); });
 	button->AddComponent(buttonComp);
@@ -55,7 +55,7 @@ void StartScreen::Initialize()
 	AddChild(button);
 	m_ButtonManager->AddButton(button);
 
-	button = std::make_shared<dae::GameObject>();
+	button = std::make_shared<GameObject>();
 	buttonComp = std::make_shared<ButtonComponent>("Options", font, SDL_Color{ 0,0,0,255 }, 
 		[]() {dae::SceneManager::GetInstance().SetActive("OptionsScreen"); });
 	button->AddComponent(buttonComp);
@@ -63,7 +63,7 @@ void StartScreen::Initialize()
 	AddChild(button);
 	m_ButtonManager->AddButton(button);
 
-	button = std::make_shared<dae::GameObject>();
+	button = std::make_shared<GameObject>();
 	buttonComp = std::make_shared<ButtonComponent>("Credits", font, SDL_Color{ 0,0,0,255 }, 
 		[]() {dae::SceneManager::GetInstance().SetActive("CreditScreen"); });
 	button->AddComponent(buttonComp);

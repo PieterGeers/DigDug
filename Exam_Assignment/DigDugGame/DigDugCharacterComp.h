@@ -4,7 +4,7 @@
 class DigDugCharacterComp final : public CharacterComponent
 {
 public:
-	DigDugCharacterComp(std::shared_ptr<dae::GameObject>& character, Boundaries levelBounds);
+	DigDugCharacterComp(Boundaries levelBounds);
 	~DigDugCharacterComp() = default;
 
 	void Update() override;

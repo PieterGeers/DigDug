@@ -14,7 +14,7 @@
 		void Render() override;
 		void SetTransform(float x, float y, float z) override;
 
-		void HooverOver(const SDL_Color& color);
+		void HooverOver(const SDL_Color& color) const;
 		void ExecuteButton() const { m_Function(); }
 		void ResetColor() const;
 

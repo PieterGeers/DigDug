@@ -32,12 +32,12 @@ void LevelComponent::Render()
 void LevelComponent::SetTransform(float, float, float)
 {}
 
-void LevelComponent::AddCharacterInScene(std::shared_ptr<dae::GameObject>& character)
+void LevelComponent::AddCharacterInScene(std::shared_ptr<GameObject>& character)
 {
 	m_CharactersInLevel.push_back(character);
 }
 
-void LevelComponent::AddAgentInScene(std::shared_ptr<dae::GameObject>& agent)
+void LevelComponent::AddAgentInScene(std::shared_ptr<GameObject>& agent)
 {
 	m_Agents.push_back(agent);
 }

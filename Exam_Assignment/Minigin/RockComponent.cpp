@@ -1,11 +1,10 @@
 #include "MiniginPCH.h"
 #include "RockComponent.h"
+#include "TransformComponent.h"
 
-
-RockComponent::RockComponent(std::shared_ptr<dae::GameObject>& rock, DigDugCell& cellUnderneath,
+RockComponent::RockComponent(DigDugCell& cellUnderneath,
 	const std::string& texturePath)
-	: m_pRock(rock)
-	, m_CellUnderneath(cellUnderneath)
+	: m_CellUnderneath(cellUnderneath)
 	, m_EndFallPosition(0)
 {
 	m_Texture = std::make_shared<TextureRenderComponent>(texturePath);
@@ -19,8 +18,8 @@ void RockComponent::FixedUpdate()
 {
 	if (m_IsActive && m_IsFalling)
 	{
-		m_pRock->Translate(0, 4, 0);
-		if (int(m_pRock->GetTransform()->GetPosition().y) >= m_EndFallPosition)
+		GetGameObject()->Translate(0, 4, 0);
+		if (int(GetTransform()->GetPosition().y) >= m_EndFallPosition)
 		{
 			m_IsFalling = false;
 			m_IsActive = false;
@@ -42,8 +41,8 @@ void RockComponent::SetTransform(float x, float y, float z)
 void RockComponent::FallForAmountCell(unsigned amount)
 {
 	m_IsFalling = true;
-	const int fallDepth = amount * (m_CellUnderneath.position.y - int(m_pRock->GetTransform()->GetPosition().y));
-	m_EndFallPosition = int(m_pRock->GetTransform()->GetPosition().y) + fallDepth;
+	const int fallDepth = amount * (m_CellUnderneath.position.y - int(GetTransform()->GetPosition().y));
+	m_EndFallPosition = int(GetTransform()->GetPosition().y) + fallDepth;
 }
 
 

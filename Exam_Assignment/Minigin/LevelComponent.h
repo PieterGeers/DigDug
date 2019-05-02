@@ -15,8 +15,8 @@ public:
 	void Render() override;
 	void SetTransform(float x, float y, float z) override;
 
-	void AddCharacterInScene(std::shared_ptr<dae::GameObject>& character);
-	void AddAgentInScene(std::shared_ptr<dae::GameObject>& agent);
+	void AddCharacterInScene(std::shared_ptr<GameObject>& character);
+	void AddAgentInScene(std::shared_ptr<GameObject>& agent);
 
 	void CreateGraph(bool useDiagonal = false);
 
@@ -24,8 +24,8 @@ protected:
 	unsigned m_nbOfRows = 0, m_nbOfColumns = 0;
 	unsigned m_GridWidth = 0, m_GridHeight = 0;
 	std::vector<std::shared_ptr<Cell>> m_LevelGrid;
-	std::vector<std::shared_ptr<dae::GameObject>> m_CharactersInLevel;
-	std::vector<std::shared_ptr<dae::GameObject>> m_Agents;
+	std::vector<std::shared_ptr<GameObject>> m_CharactersInLevel;
+	std::vector<std::shared_ptr<GameObject>> m_Agents;
 	std::vector<std::shared_ptr<Node>> m_Graph;
 
 private:

@@ -6,27 +6,24 @@
 
 #include "BaseComponent.h"
 
-namespace dae
+class TransformComponent final : public BaseComponent
 {
-	class TransformComponent final : public BaseComponent
-	{
-	public:
-		TransformComponent();
-		~TransformComponent() = default;
+public:
+	TransformComponent();
+	~TransformComponent() = default;
 
-		void Update() override;
-		void FixedUpdate() override;
-		void Render() override;
-		void SetTransform(float x, float y, float z) override;
+	void Update() override;
+	void FixedUpdate() override;
+	void Render() override;
+	void SetTransform(float x, float y, float z) override;
 
-		const glm::vec3& GetPosition() const { return m_Position; }
+	const glm::vec3& GetPosition() const { return m_Position; }
 
-		void SetPosition(float x, float y, float z);
-		void Translate(float x, float y, float z);
+	void SetPosition(float x, float y, float z);
+	void Translate(float x, float y, float z);
 
-	private:
-		glm::vec3 m_Position{ 0,0,0 };
+private:
+	glm::vec3 m_Position{ 0,0,0 };
 
-	};
-}
+};
 

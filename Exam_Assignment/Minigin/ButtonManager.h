@@ -8,7 +8,7 @@ public:
 	ButtonManager();
 	~ButtonManager() = default;
 
-	void AddButton(std::shared_ptr<dae::GameObject>& button) { m_Buttons.push_back(button); }
+	void AddButton(std::shared_ptr<GameObject>& button) { m_Buttons.push_back(button); }
 	void SetStartButtonByIdx(unsigned idx);
 	std::shared_ptr<ButtonComponent> GetActiveButtonComp();
 
@@ -16,7 +16,7 @@ public:
 	void ButtonUp();
 
 private:
-	std::vector<std::shared_ptr<dae::GameObject>> m_Buttons;
+	std::vector<std::shared_ptr<GameObject>> m_Buttons;
 	bool m_CanSwitchButton = false;
 	bool m_CanPressButton = false;
 	int m_CurrentIdx = 0;

@@ -25,7 +25,7 @@ void ButtonComponent::SetTransform(float x, float y, float z)
 	m_Button->SetTransform(x, y, z);
 }
 
-void ButtonComponent::HooverOver(const SDL_Color& color)
+void ButtonComponent::HooverOver(const SDL_Color& color) const
 {
 	m_Button->ChangeColor(color);
 }

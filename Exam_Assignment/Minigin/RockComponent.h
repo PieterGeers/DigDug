@@ -7,7 +7,7 @@
 class RockComponent final : public BaseComponent
 {
 public:
-	RockComponent(std::shared_ptr<dae::GameObject>& rock, DigDugCell& cellUnderneath, const std::string& texturePath);
+	RockComponent(/*std::shared_ptr<GameObject>& rock,*/ DigDugCell& cellUnderneath, const std::string& texturePath);
 	~RockComponent() = default;
 
 	void Update() override;
@@ -22,7 +22,7 @@ public:
 	bool IsFalling() const { return m_IsFalling; }
 
 private:
-	std::shared_ptr<dae::GameObject>& m_pRock;
+	//std::shared_ptr<GameObject>& m_pRock;
 	DigDugCell& m_CellUnderneath;
 	bool m_IsFalling = false, m_IsActive = true;
 	std::shared_ptr<TextureRenderComponent> m_Texture;

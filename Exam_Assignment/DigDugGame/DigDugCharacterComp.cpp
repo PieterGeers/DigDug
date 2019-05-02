@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "DigDugCharacterComp.h"
-#include "TextureRenderComponent.h"
+#include "Animator.h"
+#include "TransformComponent.h"
 
-
-DigDugCharacterComp::DigDugCharacterComp(std::shared_ptr<dae::GameObject>& character, Boundaries levelBounds)
-	:CharacterComponent(character, std::move(levelBounds))
+DigDugCharacterComp::DigDugCharacterComp(Boundaries levelBounds)
+	:CharacterComponent(std::move(levelBounds))
 {
 }
 
@@ -30,18 +30,18 @@ void DigDugCharacterComp::MoveRight(float amount)
 {
 	if (m_CanMove)
 	{
-		if (amount < 0 && m_pCharacter->GetTransform()->GetPosition().x > m_Boundaries.left ||
-			amount > 0 && m_pCharacter->GetTransform()->GetPosition().x < m_Boundaries.right)
+		if (amount < 0 && GetTransform()->GetPosition().x > m_Boundaries.left ||
+			amount > 0 && GetTransform()->GetPosition().x < m_Boundaries.right)
 		{
 			if (amount < 0 && !m_IsDigging /*left*/)
-				SetActiveAnimation("Left");
+				GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("Left");
 			else if (amount < 0 && m_IsDigging /*left dig*/)
-				SetActiveAnimation("LeftDig");
+				GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("LeftDig");
 			else if (amount > 0 && !m_IsDigging /*right*/)
-				SetActiveAnimation("Right");
+				GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("Right");
 			else if (amount > 0 && m_IsDigging /*right dig*/)
-				SetActiveAnimation("RightDig");
-			m_pCharacter->Translate(amount, 0, 0);
+				GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("RightDig");
+			GetGameObject()->Translate(amount, 0, 0);
 			m_CanMove = false;
 		}
 	}
@@ -51,19 +51,19 @@ void DigDugCharacterComp::MoveUp(float amount)
 {
 	if (m_CanMove)
 	{
-		if (amount < 0 && m_pCharacter->GetTransform()->GetPosition().y > m_Boundaries.top ||
-			amount > 0 && m_pCharacter->GetTransform()->GetPosition().y < m_Boundaries.bottom)
+		if (amount < 0 && GetTransform()->GetPosition().y > m_Boundaries.top ||
+			amount > 0 && GetTransform()->GetPosition().y < m_Boundaries.bottom)
 		{
 			if (amount < 0 && !m_IsDigging/*up*/)
-				GetPreviousDirection() == Direction::right ? SetActiveAnimation("RightUp") : SetActiveAnimation("LeftUp");
+				GetPreviousDirection() == Direction::right ? GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("RightUp") : GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("LeftUp");
 			else if (amount < 0 && m_IsDigging /*up dig*/)
-				GetPreviousDirection() == Direction::right ? SetActiveAnimation("RightUpDig") : SetActiveAnimation("LeftUpDig");
+				GetPreviousDirection() == Direction::right ? GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("RightUpDig") : GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("LeftUpDig");
 			else if (amount > 0 && !m_IsDigging /*down*/)
-				GetPreviousDirection() == Direction::right ? SetActiveAnimation("RightDown") : SetActiveAnimation("LeftDown");
+				GetPreviousDirection() == Direction::right ? GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("RightDown") : GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("LeftDown");
 			else if (amount > 0 && m_IsDigging /*down dig*/)
-				GetPreviousDirection() == Direction::right ? SetActiveAnimation("RightDownDig") : SetActiveAnimation("LeftDownDig");
+				GetPreviousDirection() == Direction::right ? GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("RightDownDig") : GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("LeftDownDig");
 
-			m_pCharacter->Translate(0, amount, 0);
+			GetGameObject()->Translate(0, amount, 0);
 			m_CanMove = false;
 		}
 	}
@@ -79,7 +79,7 @@ void DigDugCharacterComp::ExecuteMovement(Direction dir)
 	}
 	if (dir == Direction::left || dir == Direction::right)
 	{
-		if (int(m_pCharacter->GetTransform()->GetPosition().y) % m_GridSize != 0)
+		if (int(GetTransform()->GetPosition().y) % m_GridSize != 0)
 		{
 			if (previous == Direction::up)
 				MoveUp(-2);
@@ -94,7 +94,7 @@ void DigDugCharacterComp::ExecuteMovement(Direction dir)
 	}
 	else if (dir == Direction::up || dir == Direction::down)
 	{
-		if (int(m_pCharacter->GetTransform()->GetPosition().x) % m_GridSize != 0)
+		if (int(GetTransform()->GetPosition().x) % m_GridSize != 0)
 		{
 			if (previous == Direction::left)
 				MoveRight(-2);

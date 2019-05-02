@@ -1,13 +1,11 @@
 #pragma once
 #include "BaseComponent.h"
-#include "GameObject.h"
 #include "Structs.h"
-#include <unordered_map>
 
 class CharacterComponent : public BaseComponent	
 {
 public:
-	CharacterComponent(std::shared_ptr<dae::GameObject>& character, Boundaries levelBounds);
+	CharacterComponent(/*std::shared_ptr<GameObject>& character,*/ Boundaries levelBounds);
 	~CharacterComponent() = default;
 
 	void Update() override;
@@ -28,17 +26,15 @@ public:
 	int GetGridSize() const { return m_GridSize; }
 	int GetPreviousLocation() const { return m_prevIdx; }
 	void SetPreviousLocation(int idx) { m_prevIdx = idx; }
-
-	void AddAnimation(const std::shared_ptr<Animation>& animation);
-	void AddAnimation(const std::vector<std::shared_ptr<Animation>>& animationSet);
-	void SetActiveAnimation(const std::string& name);
+	//void SetAnimator(std::shared_ptr<Animator> animator) { m_Animator = animator; }
 
 protected:
-	std::shared_ptr<dae::GameObject>& m_pCharacter;
+	//std::shared_ptr<GameObject>& m_pCharacter;
+	//std::shared_ptr<Animator> m_Animator{};
 	Boundaries m_Boundaries;
 	Direction previous = Direction::none, current = Direction::right;
 	int m_GridSize = 1;
 	int m_prevIdx = -1;
-	std::unordered_map<std::string, std::shared_ptr<Animation>> m_Animation;
+	
 };
 
