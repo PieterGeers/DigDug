@@ -2,6 +2,7 @@
 #include "Animator.h"
 #include <algorithm>
 #include "TextureRenderComponent.h"
+#include "Debug.h"
 
 Animator::Animator()
 {
@@ -21,7 +22,10 @@ void Animator::SetActiveAnimation(const std::string& name)
 {
 	const auto it = m_Animation.find(std::move(name));
 	if (it == m_Animation.end())
+	{
+		Debug::LogWarning("Animation::SetActiveAnimation : Could not set animation because no animation was found with the name :" + name);
 		return;
+	}
 	GetGameObject()->GetComponent<TextureRenderComponent>()->SetSpritePosition(*(*it).second);
 
 }

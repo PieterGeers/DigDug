@@ -1,5 +1,6 @@
 #include "MiniginPCH.h"
 #include "SoundEffect.h"
+#include "Debug.h"
 
 
 SoundEffect::SoundEffect(const std::string& path)
@@ -24,19 +25,18 @@ bool SoundEffect::IsLoaded() const
 	return m_IsLoaded;
 }
 
-bool SoundEffect::Play(int loops) const
+void SoundEffect::Play(int loops) const
 {
 	if (!m_IsLoaded)
-		return false;
-	const int channel{ Mix_PlayChannel(-1,m_pMixChunk, loops) };
-	return channel == -1 ? false : true;
+		Debug::LogWarning("SoundEffect not loaded when trying to play");
+	Mix_PlayChannel(-1, m_pMixChunk, loops);
 }
 
-void SoundEffect::SetVolume(int value)
+void SoundEffect::SetVolume(int value) const
 {
 	if (m_IsLoaded)
 		Mix_VolumeChunk(m_pMixChunk, value);
-	
+
 }
 
 int SoundEffect::GetVolume() const

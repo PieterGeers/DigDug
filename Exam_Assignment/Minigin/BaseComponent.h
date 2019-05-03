@@ -20,8 +20,8 @@ public:
 
 	GameObject* GetGameObject() const { return m_pGameObject; }
 	std::shared_ptr<TransformComponent> GetTransform() const;
+
 protected:
 	GameObject* m_pGameObject;
-
 };
 

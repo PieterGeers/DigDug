@@ -169,10 +169,7 @@ void InputManager::SetCommand(int actionID, std::shared_ptr<Command> command)
 {
 	const auto it = m_Actions.find(actionID);
 	if (it == m_Actions.end())
-	{
-		return;
-		//throw error that their is no action to bind a command
-	}
+		Debug::LogError("InputManager::SetCommand : Could not bind command");
 	m_Commands[actionID] = command;
 }
 

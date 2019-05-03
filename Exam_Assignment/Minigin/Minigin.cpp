@@ -75,7 +75,6 @@ void dae::Minigin::Run()
 		auto& pInput = InputManager::GetInstance();
 		auto& time = GameTime::GetInstance();
 
-
 		bool doContinue = true;
 		auto lastTime = std::chrono::high_resolution_clock::now();
 		float lag = 0.0f;

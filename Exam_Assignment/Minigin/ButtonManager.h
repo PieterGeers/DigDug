@@ -8,7 +8,7 @@ public:
 	ButtonManager();
 	~ButtonManager() = default;
 
-	void AddButton(std::shared_ptr<GameObject>& button) { m_Buttons.push_back(button); }
+	void AddButton(std::shared_ptr<GameObject>& button);
 	void SetStartButtonByIdx(unsigned idx);
 	std::shared_ptr<ButtonComponent> GetActiveButtonComp();
 

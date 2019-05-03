@@ -6,7 +6,6 @@
 TextRenderComponent::TextRenderComponent(const std::string& text, std::shared_ptr<dae::Font> font, SDL_Color color, bool update)
 	: m_Text(text)
 	, m_Font(font)
-	, m_Texture(nullptr)
 	, m_NeedsUpdate(update)
 	, m_Color(color)
 {

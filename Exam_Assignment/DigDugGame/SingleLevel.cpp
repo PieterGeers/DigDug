@@ -31,23 +31,22 @@ void SingleLevel::Initialize()
 	const std::shared_ptr<Animation> leftDown = CreateAnimation("LeftDown", 3, 0, 0, 1);
 	const std::shared_ptr<Animation> rightDownDig = CreateAnimation("RightDownDig", 2, 2, 0, 1);
 	const std::shared_ptr<Animation> leftDownDig = CreateAnimation("LeftDownDig", 3, 2, 0, 1);
-	
+
 	m_DigDug = std::make_shared<GameObject>();
 
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::up, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(Direction::up, InputTriggerState::Down, 'W', XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerOne),
 		std::make_shared<MoveUpCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::down, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(Direction::down, InputTriggerState::Down, 'S', XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerOne),
 		std::make_shared<MoveDownCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::left, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(Direction::left, InputTriggerState::Down, 'A', XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerOne),
 		std::make_shared<MoveLeftCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::right, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(Direction::right, InputTriggerState::Down, 'D', XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerOne),
 		std::make_shared<MoveRightCommand>());
 	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Quit, InputTriggerState::Pressed, VK_ESCAPE, XINPUT_GAMEPAD_X), std::make_shared<QuitCommand>());
 
 	std::shared_ptr<GameObject> LevelObject = std::make_shared<GameObject>();
 	const std::shared_ptr<TextureRenderComponent> levelTexture = std::make_shared<TextureRenderComponent>("Level.png");
 	std::shared_ptr<DigDugLevelComp> levelComp = std::make_shared<DigDugLevelComp>(levelTexture->GetWidth(), levelTexture->GetHeight(), 32, 32, "../Data/Levels/Level1.bin");
-	levelComp->AddCharacterInScene(m_DigDug);
 	LevelObject->AddComponent(levelTexture);
 	LevelObject->AddComponent(levelComp);
 	AddChild(LevelObject);
@@ -62,6 +61,7 @@ void SingleLevel::Initialize()
 	m_DigDug->AddComponent(character);
 	m_DigDug->AddComponent(animator);
 	m_DigDug->SetPosition(0, 32, 0);
+	levelComp->AddCharacterInScene(m_DigDug);
 	AddChild(m_DigDug);
 
 	auto fpsCounter = std::make_shared<GameObject>();

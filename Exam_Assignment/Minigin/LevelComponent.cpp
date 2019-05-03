@@ -1,5 +1,7 @@
 #include "MiniginPCH.h"
 #include "LevelComponent.h"
+#include "CharacterComponent.h"
+#include "Debug.h"
 
 LevelComponent::LevelComponent(unsigned texWidth, unsigned texHeight, unsigned gridWidth, unsigned gridHeight)
 	: m_GridWidth(gridWidth)
@@ -34,6 +36,8 @@ void LevelComponent::SetTransform(float, float, float)
 
 void LevelComponent::AddCharacterInScene(std::shared_ptr<GameObject>& character)
 {
+	if (!character->HasComponentDerived<CharacterComponent>())
+		Debug::LogError("LevelComponent::AddCharacterInScene : character does not have a characterComponent");
 	m_CharactersInLevel.push_back(character);
 }
 

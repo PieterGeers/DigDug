@@ -1,5 +1,6 @@
 #include "MiniginPCH.h"
 #include "SoundManager.h"
+#include "Debug.h"
 
 
 void SoundManager::Init(std::string&& data)
@@ -33,23 +34,19 @@ void SoundManager::LoadSoundStream(const std::string& name, const std::string& p
 void SoundManager::PlaySoundEffect(const std::string& name, int loops)
 {
 	const auto find = m_EffectMap.find(std::move(name));
-	if (find != m_EffectMap.end())
-		if (!(*find).second->Play(loops))
-		{
-			//error;
-		}
-	//error
+	if (find == m_EffectMap.end())
+		Debug::LogWarning("SoundManager::PlaySoundEffect : sound to play not found with name : " + name);
+
+	(*find).second->Play(loops);
 }
 
 void SoundManager::PlaySoundStream(const std::string& name, bool repeat)
 {
 	const auto find = m_StreamMap.find(std::move(name));
-	if (find != m_StreamMap.end())
-		if (!(*find).second->Play(repeat))
-		{
-			//error;
-		}
-	//error
+	if (find == m_StreamMap.end())
+		Debug::LogWarning("SoundManager::PlaySoundStream : sound to play not found with name : " + name);
+
+	(*find).second->Play(repeat);
 }
 
 void SoundManager::StopSoundEffect()

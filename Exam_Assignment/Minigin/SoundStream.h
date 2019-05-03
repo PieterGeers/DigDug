@@ -6,7 +6,7 @@ public:
 	~SoundStream();
 
 	bool IsLoaded() const;
-	bool Play(bool repeat) const;
+	void Play(bool repeat) const;
 
 private:
 	Mix_Music *m_pMixMusic;

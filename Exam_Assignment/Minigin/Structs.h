@@ -118,3 +118,8 @@ enum BasicActions
 	B_Select = -4
 };
 
+enum LogLevel
+{
+	Warning,
+	Error
+};

@@ -8,8 +8,8 @@ public:
 	~SoundEffect();
 
 	bool IsLoaded() const;
-	bool Play(int loops) const;
-	void SetVolume(int value);
+	void Play(int loops) const;
+	void SetVolume(int value) const;
 	int GetVolume() const;
 
 private:

@@ -1,5 +1,6 @@
 #include "MiniginPCH.h"
 #include "SoundStream.h"
+#include "Debug.h"
 
 SoundStream::SoundStream(const std::string& path)
 	:m_pMixMusic{ Mix_LoadMUS(path.c_str()) }
@@ -23,10 +24,9 @@ bool SoundStream::IsLoaded() const
 	return m_IsLoaded;
 }
 
-bool SoundStream::Play(bool repeat) const
+void SoundStream::Play(bool repeat) const
 {
 	if (!m_IsLoaded)
-		return false;
-	const int result{ Mix_PlayMusic(m_pMixMusic, repeat ? -1 : 1) };
-	return result == 0 ? true : false;
+		Debug::LogWarning("SoundStream not loaded when trying to play");
+	Mix_PlayMusic(m_pMixMusic, repeat ? -1 : 1);
 }
