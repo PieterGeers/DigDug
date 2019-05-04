@@ -1,6 +1,7 @@
 #pragma once
 #include "Command.h"
 #include "DigDugCharacterComp.h"
+#include "DigDugWeaponComp.h"
 
 class MoveRightCommand final : public Command
 {
@@ -46,28 +47,13 @@ class DigDugAttackCommand final : public Command
 {
 	void Execute() override
 	{
-		/*const auto component = character->GetComponent<WeaponComponent>();
-		const auto charComp = character->GetComponent<CharacterComponent>();
-		if (component == nullptr)
-			return;
-		if (charComp == nullptr)
-			return;
-		switch (charComp->GetCurrentDirection())
+		auto& P1 = ServiceLocator::GetP1();
+		auto gameObject = P1->GetChild("Weapon");
+		auto charComp = P1->GetComponent<DigDugCharacterComp>();
+		if (!charComp->GetIsPlayerDigging())
 		{
-		case up:
-			component->SetActive(0, 0, 0, 0);
-			break;
-		case down:
-			component->SetActive(0, 1, 0, 0);
-			break;
-		case left:
-			component->SetActive(0, 3, 0, 0);
-			break;
-		case right:
-			component->SetActive(0, 2, 0, 0);
-			break;
-		case none: break;
-		default:;
-		}*/
+			gameObject->GetComponent<DigDugWeaponComp>()->AttackDigDug(charComp->GetCurrentDirection());
+			charComp->FreezeForTime(0.2f);
+		}
 	}
 };

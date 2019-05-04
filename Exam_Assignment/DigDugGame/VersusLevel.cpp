@@ -4,7 +4,6 @@
 #include "FPSComponent.h"
 #include "GameCommands.h"
 #include "DigDugLevelComp.h"
-#include "WeaponComponent.h"
 #include "Animator.h"
 
 

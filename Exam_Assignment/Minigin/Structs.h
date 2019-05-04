@@ -103,8 +103,8 @@ struct InputAction
 
 	int ActionID;
 	InputTriggerState TriggerState;
-	int KeyboardCode; //VK_... (Range 0x07 <> 0xFE)
-	WORD GamepadButtonCode; //XINPUT_GAMEPAD_...
+	int KeyboardCode;
+	WORD GamepadButtonCode; 
 	GamepadIndex PlayerIndex;
 	bool IsTriggered;
 
@@ -123,3 +123,14 @@ enum LogLevel
 	Warning,
 	Error
 };
+
+struct M_Rectangle
+{
+	M_Rectangle()
+		: TopLeft(0,0)
+		, BottomRight(0,0)
+	{}
+
+	MVector2_INT TopLeft, BottomRight;
+};
+

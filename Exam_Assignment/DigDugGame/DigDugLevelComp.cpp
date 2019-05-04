@@ -8,6 +8,7 @@
 #include "DigDugCharacterComp.h"
 #include "GameTime.h"
 #include "TransformComponent.h"
+#include "QuadCollisionComponent.h"
 
 DigDugLevelComp::DigDugLevelComp(unsigned levelWidth, unsigned levelHeight, unsigned gridWidth, unsigned gridHeight, const std::string& binFile)
 	:LevelComponent(levelWidth, levelHeight, gridWidth, gridHeight)
@@ -114,7 +115,9 @@ void DigDugLevelComp::SpawnRock(std::shared_ptr<GameObject>& rock)
 	std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->hasStone = true;
 	rock = std::make_shared<GameObject>();
 	const std::shared_ptr<RockComponent> comp = std::make_shared<RockComponent>(*std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx + m_nbOfColumns]), "rock.png");
+	const std::shared_ptr<QuadCollisionComponent> collision = std::make_shared<QuadCollisionComponent>(MVector2_INT(0, 0), 32, "Rock" + std::to_string(rockIdx));
 	rock->AddComponent(comp);
+	rock->AddComponent(collision);
 	rock->SetPosition(float(std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->position.x), float(std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->position.y), 0.0f);
 }
 

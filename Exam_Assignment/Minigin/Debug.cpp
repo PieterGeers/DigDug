@@ -89,3 +89,10 @@ void Debug::LogError(const std::string& error)
 		InputManager::GetInstance().Quit();
 
 }
+
+bool Debug::CompareStringLeft(const std::string& toCheck, const std::string& checkWith, unsigned forAmountOfChar)
+{
+	const auto substr1 = toCheck.substr(0, forAmountOfChar);
+	const auto substr2 = checkWith.substr(0, forAmountOfChar);
+	return substr1 == substr2;
+}

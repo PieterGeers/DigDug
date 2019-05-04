@@ -41,11 +41,9 @@ void Level::Initialize()
 	std::shared_ptr<TextureRenderComponent> go_texture = std::make_shared<TextureRenderComponent>("digdug_spriteP1.png", 7, 7, 2);
 	go_texture->SetSpritePosition(0, 0, 6, 6);
 	std::shared_ptr<CharacterComponent> character = std::make_shared<CharacterComponent>(m_DigDug, Boundaries{32, 32*17,0,32*13});
-	std::shared_ptr<WeaponComponent> weapon = std::make_shared<WeaponComponent>(m_DigDug, "digdug_attack.png", 1, 4, 2, true);
 	character->SetGridSize(32);
 	m_DigDug->AddComponent(go_texture);
 	m_DigDug->AddComponent(character);
-	m_DigDug->AddComponent(weapon);
 	m_DigDug->SetPosition(0, 32, 0);
 	AddChild(m_DigDug);
 

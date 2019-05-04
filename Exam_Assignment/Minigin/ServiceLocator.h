@@ -27,6 +27,7 @@ public:
 
 	static void RegisterButtonManager(std::shared_ptr<ButtonManager> service) { m_pButtonManager = (service == nullptr) ? m_pDefaultButtonManager : service; }
 
+
 	static std::shared_ptr<GameObject>& GetP1() { return m_pPlayer1; }
 	static std::shared_ptr<GameObject>& GetP2() { return m_pPlayer2; }
 	static std::shared_ptr<ButtonManager>& GetButtonManager() { return m_pButtonManager; }

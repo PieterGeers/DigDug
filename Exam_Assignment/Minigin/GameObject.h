@@ -29,6 +29,7 @@ public:
 
 	void AddChild(const std::string& tag, std::shared_ptr<GameObject> child);
 	void RemoveChild(const std::string& tag);
+	std::shared_ptr<GameObject> GetChild(const std::string& tag);
 
 	const std::shared_ptr<TransformComponent>& GetTransform() const { return m_Transform; }
 

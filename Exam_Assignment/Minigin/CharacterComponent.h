@@ -5,7 +5,7 @@
 class CharacterComponent : public BaseComponent	
 {
 public:
-	CharacterComponent(/*std::shared_ptr<GameObject>& character,*/ Boundaries levelBounds);
+	CharacterComponent(Boundaries levelBounds);
 	~CharacterComponent() = default;
 
 	void Update() override;
@@ -26,11 +26,8 @@ public:
 	int GetGridSize() const { return m_GridSize; }
 	int GetPreviousLocation() const { return m_prevIdx; }
 	void SetPreviousLocation(int idx) { m_prevIdx = idx; }
-	//void SetAnimator(std::shared_ptr<Animator> animator) { m_Animator = animator; }
 
 protected:
-	//std::shared_ptr<GameObject>& m_pCharacter;
-	//std::shared_ptr<Animator> m_Animator{};
 	Boundaries m_Boundaries;
 	Direction previous = Direction::none, current = Direction::right;
 	int m_GridSize = 1;

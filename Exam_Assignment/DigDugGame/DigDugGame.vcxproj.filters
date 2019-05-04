@@ -52,6 +52,12 @@
     <ClCompile Include="DigDugCharacterComp.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="DigDugWeaponComp.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="DigDugLivesComp.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DigDugGame.h">
@@ -88,6 +94,12 @@
       <Filter>Source Files\Helper</Filter>
     </ClInclude>
     <ClInclude Include="DigDugCharacterComp.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DigDugWeaponComp.h">
+      <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="DigDugLivesComp.h">
       <Filter>Source Files\Components</Filter>
     </ClInclude>
   </ItemGroup>

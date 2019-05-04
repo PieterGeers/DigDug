@@ -12,7 +12,6 @@
 #include "SoundManager.h"
 #include "ServiceLocator.h"
 
-
 void dae::Minigin::Initialize()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
@@ -40,7 +39,6 @@ void dae::Minigin::Initialize()
 		const std::string error = Mix_GetError();
 		throw std::runtime_error(error);
 	}
-
 }
 
 /**

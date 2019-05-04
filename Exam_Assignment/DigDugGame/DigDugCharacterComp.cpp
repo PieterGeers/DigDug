@@ -2,6 +2,7 @@
 #include "DigDugCharacterComp.h"
 #include "Animator.h"
 #include "TransformComponent.h"
+#include "GameTime.h"
 
 DigDugCharacterComp::DigDugCharacterComp(Boundaries levelBounds)
 	:CharacterComponent(std::move(levelBounds))
@@ -10,6 +11,12 @@ DigDugCharacterComp::DigDugCharacterComp(Boundaries levelBounds)
 
 void DigDugCharacterComp::Update()
 {
+	if (m_Freeze)
+	{
+		m_FreezeTime -= dae::GameTime::GetInstance().DeltaT();
+		if (m_FreezeTime <= 0.0f)
+			m_Freeze = false;
+	}
 }
 
 void DigDugCharacterComp::FixedUpdate()
@@ -28,7 +35,7 @@ void DigDugCharacterComp::SetTransform(float, float, float)
 
 void DigDugCharacterComp::MoveRight(float amount)
 {
-	if (m_CanMove)
+	if (m_CanMove && !m_Freeze)
 	{
 		if (amount < 0 && GetTransform()->GetPosition().x > m_Boundaries.left ||
 			amount > 0 && GetTransform()->GetPosition().x < m_Boundaries.right)
@@ -49,7 +56,7 @@ void DigDugCharacterComp::MoveRight(float amount)
 
 void DigDugCharacterComp::MoveUp(float amount)
 {
-	if (m_CanMove)
+	if (m_CanMove && !m_Freeze)
 	{
 		if (amount < 0 && GetTransform()->GetPosition().y > m_Boundaries.top ||
 			amount > 0 && GetTransform()->GetPosition().y < m_Boundaries.bottom)
@@ -107,4 +114,10 @@ void DigDugCharacterComp::ExecuteMovement(Direction dir)
 			m_IsMoveAutomatic = false;
 		}
 	}
+}
+
+void DigDugCharacterComp::FreezeForTime(float time)
+{
+	m_Freeze = true;
+	m_FreezeTime = time;
 }

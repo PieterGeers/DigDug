@@ -26,6 +26,5 @@ private:
 	std::shared_ptr<GameObject> m_pRock2;
 	std::shared_ptr<GameObject> m_pRock3;
 
-	//std::shared_ptr<GameObject>& m_GameObject;
 };
 

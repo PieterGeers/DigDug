@@ -9,7 +9,7 @@ SoundEffect::SoundEffect(const std::string& path)
 	if (m_pMixChunk == nullptr)
 	{
 		const std::string error = "Failed to load soundEffect " + path + ": " + Mix_GetError();
-		throw std::runtime_error(error);
+		Debug::LogWarning(error);
 	}
 	m_IsLoaded = true;
 }

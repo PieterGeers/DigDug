@@ -5,7 +5,6 @@
 #include "GameCommands.h"
 #include "DigDugLevelComp.h"
 #include "Structs.h"
-#include "WeaponComponent.h"
 #include "Animator.h"
 
 CoopLevel::CoopLevel()

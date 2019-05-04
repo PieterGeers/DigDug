@@ -37,6 +37,9 @@
     <Filter Include="Header Files\AI">
       <UniqueIdentifier>{9098534a-0867-459e-8cc6-185efc790275}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components\BaseComponents">
+      <UniqueIdentifier>{7ada4a88-06b2-482e-90d8-2be82918f8da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -56,9 +59,6 @@
     </ClInclude>
     <ClInclude Include="ServiceLocator.h">
       <Filter>Header Files\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="FPSComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -96,17 +96,11 @@
     <ClInclude Include="MiniginPCH.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="LevelComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="GameScene.h">
       <Filter>Header Files\Scenegraph</Filter>
     </ClInclude>
     <ClInclude Include="Command.h">
       <Filter>Header Files\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="ButtonComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -118,9 +112,6 @@
       <Filter>Header Files\Base</Filter>
     </ClInclude>
     <ClInclude Include="RockComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="WeaponComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Minigin.h">
@@ -156,6 +147,18 @@
     <ClInclude Include="Debug.h">
       <Filter>Header Files\Diagnostic</Filter>
     </ClInclude>
+    <ClInclude Include="BaseComponent.h">
+      <Filter>Header Files\Components\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterComponent.h">
+      <Filter>Header Files\Components\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelComponent.h">
+      <Filter>Header Files\Components\BaseComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadCollisionComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MiniginPCH.cpp">
@@ -172,9 +175,6 @@
     </ClCompile>
     <ClCompile Include="ServiceLocator.cpp">
       <Filter>Header Files\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseComponent.cpp">
-      <Filter>Header Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="FPSComponent.cpp">
       <Filter>Header Files\Components</Filter>
@@ -206,14 +206,8 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Header Files\Scenegraph</Filter>
     </ClCompile>
-    <ClCompile Include="LevelComponent.cpp">
-      <Filter>Header Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="GameScene.cpp">
       <Filter>Header Files\Scenegraph</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterComponent.cpp">
-      <Filter>Header Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="ButtonComponent.cpp">
       <Filter>Header Files\Components</Filter>
@@ -225,9 +219,6 @@
       <Filter>Header Files\Base</Filter>
     </ClCompile>
     <ClCompile Include="RockComponent.cpp">
-      <Filter>Header Files\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="WeaponComponent.cpp">
       <Filter>Header Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Minigin.cpp">
@@ -256,6 +247,18 @@
     </ClCompile>
     <ClCompile Include="Debug.cpp">
       <Filter>Header Files\Diagnostic</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseComponent.cpp">
+      <Filter>Header Files\Components\BaseComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterComponent.cpp">
+      <Filter>Header Files\Components\BaseComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelComponent.cpp">
+      <Filter>Header Files\Components\BaseComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadCollisionComponent.cpp">
+      <Filter>Header Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

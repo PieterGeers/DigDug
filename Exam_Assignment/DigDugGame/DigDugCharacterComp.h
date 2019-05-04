@@ -21,8 +21,11 @@ public:
 	void SetIsMovingAutomatic(bool isMovingAuto) { m_IsMoveAutomatic = isMovingAuto; }
 
 	void ExecuteMovement(Direction dir);
+	void FreezeForTime(float time);
 
 private:
+	float m_FreezeTime = 0.0f;
+	bool m_Freeze = false;
 	bool m_CanMove = true;
 	bool m_IsDigging = false;
 	bool m_IsMoveAutomatic = false;

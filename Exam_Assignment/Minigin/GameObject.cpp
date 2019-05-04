@@ -11,12 +11,21 @@ void GameObject::Translate(float x, float y, float z) const
 {
 	m_Transform->Translate(x, y, z);
 	SetComponentTransform();
+	for (const auto it : m_Children)
+	{
+		it.second->Translate(x, y, z);
+	}
 }
 
 void GameObject::SetPosition(float x, float y, float z) const
 {
 	m_Transform->SetPosition(x, y, z);
 	SetComponentTransform();
+	for (const auto it : m_Children)
+	{
+		it.second->SetPosition(x, y, z);
+	}
+
 }
 
 void GameObject::AddComponent(std::shared_ptr<BaseComponent> pComp)
@@ -51,6 +60,14 @@ void GameObject::RemoveChild(const std::string& tag)
 	m_Children.erase(find);
 }
 
+std::shared_ptr<GameObject> GameObject::GetChild(const std::string& tag)
+{
+	const auto find = m_Children.find(tag);
+	if (find == m_Children.end())
+		Debug::LogError("Cannot find child with tag : " + tag);
+	return find->second;
+}
+
 void GameObject::SetComponentTransform() const
 {
 	for (auto element : m_pComponents)
@@ -65,6 +82,11 @@ void GameObject::Update()
 	{
 		element->Update();
 	}
+	for (const auto it : m_Children)
+	{
+		it.second->Update();
+	}
+
 }
 
 void GameObject::FixedUpdate()
@@ -73,6 +95,11 @@ void GameObject::FixedUpdate()
 	{
 		element->FixedUpdate();
 	}
+	for (const auto it : m_Children)
+	{
+		it.second->FixedUpdate();
+	}
+
 }
 
 void GameObject::Render() const
@@ -81,4 +108,9 @@ void GameObject::Render() const
 	{
 		element->Render();
 	}
+	for (const auto it : m_Children)
+	{
+		it.second->Render();
+	}
+
 }
