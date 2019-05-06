@@ -8,6 +8,7 @@
 // I took a lot of inspiration for this class from OverlordEngine::InputManager //
 // Credits go to OverlordEngine::InputManager creator							//
 //==============================================================================//
+
 void InputManager::Initialize()
 {
 	m_pKeyboardState0 = new BYTE[256];
@@ -91,8 +92,6 @@ void InputManager::RefreshControllerConnections()
 
 bool InputManager::UpdateKeyboardState()
 {
-	//m_pOldKeyboardState = m_pCurrKeyboardState;
-	//GetKeyboardState(m_pCurrKeyboardState);
 	BOOL getKeyboardResult;
 	if (m_KeyboardState0Active)
 	{

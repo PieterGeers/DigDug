@@ -27,6 +27,7 @@ public:
 
 	bool GetIsColliding() const { return m_IsColliding; }
 	std::vector<std::string> GetColliderTags() const { return m_ColliderTags; }
+	bool CheckIfCollisionWith(const std::string& checkWith, unsigned nbOfCharsToCheck);
 
 protected:
 	M_Rectangle m_Rectangle;

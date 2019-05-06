@@ -2,7 +2,8 @@
 #include "DigDugLivesComp.h"
 #include "GameObject.h"
 #include "QuadCollisionComponent.h"
-#include "Debug.h"
+#include "DigDugCharacterComp.h"
+#include "Animator.h"
 
 DigDugLivesComp::DigDugLivesComp(const std::string& texture, unsigned lives, MVector2_INT pos, bool reversed)
 {
@@ -19,28 +20,29 @@ DigDugLivesComp::DigDugLivesComp(const std::string& texture, unsigned lives, MVe
 
 void DigDugLivesComp::Update()
 {
+	if (m_LostLive && !m_pGameObject->GetComponent<DigDugCharacterComp>()->GetIsFreeze())
+	{
+		m_pGameObject->GetComponent<Animator>()->SetActiveAnimation("Right");
+		m_pGameObject->GetComponent<QuadCollisionComponent>()->Reset();
+		m_pGameObject->SetPosition(0, 32, 0);
+		m_LostLive = false;
+	}
 }
 
 void DigDugLivesComp::FixedUpdate()
 {
-	const auto comp = m_pGameObject->GetComponent<QuadCollisionComponent>();
-	if (comp->GetIsColliding())
+	if (!m_LostLive)
 	{
-		if (reset)
-			return;
-		auto tags = comp->GetColliderTags();
-		for (auto tag : tags)
+		const auto comp = m_pGameObject->GetComponent<QuadCollisionComponent>();
+		if (comp->CheckIfCollisionWith("Rock", 4))
 		{
-			if (Debug::CompareStringLeft(tag, "Rock", 4))
-			{
-				reset = true;
+			m_pGameObject->GetComponent<DigDugCharacterComp>()->FreezeForTime(1.2f);
+			m_pGameObject->GetComponent<Animator>()->SetActiveAnimation("Dead");
+			m_LostLive = true;
+			if (m_Lives.size() > 0)
 				m_Lives.pop_back();
-				return;
-			}
 		}
 	}
-	else
-		reset = false;
 }
 
 void DigDugLivesComp::Render()

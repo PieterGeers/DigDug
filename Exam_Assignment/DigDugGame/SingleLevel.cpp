@@ -34,6 +34,7 @@ void SingleLevel::Initialize()
 	const std::shared_ptr<Animation> leftDown = CreateAnimation("LeftDown", 3, 0, 0, 1);
 	const std::shared_ptr<Animation> rightDownDig = CreateAnimation("RightDownDig", 2, 2, 0, 1);
 	const std::shared_ptr<Animation> leftDownDig = CreateAnimation("LeftDownDig", 3, 2, 0, 1);
+	const std::shared_ptr<Animation> death = CreateAnimation("Dead", 6, 0, 0, 6);
 
 	m_DigDug = std::make_shared<GameObject>();
 
@@ -61,7 +62,7 @@ void SingleLevel::Initialize()
 	std::shared_ptr<Animator> animator = std::make_shared<Animator>();
 	std::shared_ptr<QuadCollisionComponent> collision = std::make_shared<QuadCollisionComponent>(MVector2_INT(0, 0), 32, "Player1");
 	std::shared_ptr<DigDugLivesComp> lives = std::make_shared<DigDugLivesComp>("P1Live.png", 3, MVector2_INT(0, 576));
-	animator->AddAnimation(std::vector<std::shared_ptr<Animation>>{left, leftDig, right, rightDig, leftUp, rightUp, leftUpDig, rightUpDig, rightDown, leftDown, rightDownDig, leftDownDig});
+	animator->AddAnimation(std::vector<std::shared_ptr<Animation>>{left, leftDig, right, rightDig, leftUp, rightUp, leftUpDig, rightUpDig, rightDown, leftDown, rightDownDig, leftDownDig, death});
 	DigDugTexture->SetSpritePosition(0, 0, 6, 6);
 	character->SetGridSize(32);
 	m_DigDug->AddComponent(DigDugTexture);

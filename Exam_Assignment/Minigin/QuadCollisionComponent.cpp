@@ -76,3 +76,18 @@ bool QuadCollisionComponent::IsQuadColliding(M_Rectangle one, M_Rectangle other)
 		return false;
 	return true;
 }
+
+bool QuadCollisionComponent::CheckIfCollisionWith(const std::string& checkWith, unsigned nbOfCharsToCheck)
+{
+	if (m_IsColliding)
+	{
+		for (auto tag : m_ColliderTags)
+		{
+			if (Debug::CompareStringLeft(tag, checkWith, nbOfCharsToCheck))
+			{
+				return true;
+			}
+		}
+	}
+	return false;
+}

@@ -111,9 +111,6 @@
     <ClInclude Include="BinaryReader.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
-    <ClInclude Include="RockComponent.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Minigin.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
@@ -217,9 +214,6 @@
     </ClCompile>
     <ClCompile Include="BinaryReader.cpp">
       <Filter>Header Files\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="RockComponent.cpp">
-      <Filter>Header Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Minigin.cpp">
       <Filter>Header Files\Base</Filter>

@@ -16,6 +16,6 @@ public:
 
 private:
 	std::vector<std::shared_ptr<TextureRenderComponent>> m_Lives;
-	bool reset = false;
+	bool m_LostLive = false;
 };
 

@@ -265,6 +265,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" "$(Output
     <ClInclude Include="DigDugGame.h" />
     <ClInclude Include="DigDugLevelComp.h" />
     <ClInclude Include="DigDugLivesComp.h" />
+    <ClInclude Include="DigDugRockComp.h" />
     <ClInclude Include="DigDugStructs.h" />
     <ClInclude Include="DigDugWeaponComp.h" />
     <ClInclude Include="GameCommands.h" />
@@ -281,6 +282,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" "$(Output
     <ClCompile Include="DigDugGame.cpp" />
     <ClCompile Include="DigDugLevelComp.cpp" />
     <ClCompile Include="DigDugLivesComp.cpp" />
+    <ClCompile Include="DigDugRockComp.cpp" />
     <ClCompile Include="DigDugWeaponComp.cpp" />
     <ClCompile Include="Main.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>

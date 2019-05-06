@@ -22,6 +22,7 @@ public:
 
 	void ExecuteMovement(Direction dir);
 	void FreezeForTime(float time);
+	bool GetIsFreeze() const { return m_Freeze; }
 
 private:
 	float m_FreezeTime = 0.0f;
