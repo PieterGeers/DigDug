@@ -2,8 +2,8 @@
 #include "BaseComponent.h"
 #include "GameObject.h"
 #include "Structs.h"
-#include "Node.h"
 
+class Node;
 class LevelComponent : public BaseComponent
 {
 public:
@@ -15,18 +15,13 @@ public:
 	void Render() override;
 	void SetTransform(float x, float y, float z) override;
 
-	void AddCharacterInScene(std::shared_ptr<GameObject>& character);
-	void AddAgentInScene(std::shared_ptr<GameObject>& agent);
-
 	void CreateGraph(bool useDiagonal = false);
+	static std::vector<std::shared_ptr<Cell>>& GetGrid() { return m_LevelGrid; }
 
 protected:
 	unsigned m_nbOfRows = 0, m_nbOfColumns = 0;
 	unsigned m_GridWidth = 0, m_GridHeight = 0;
-	std::vector<std::shared_ptr<Cell>> m_LevelGrid;
-	std::vector<std::shared_ptr<GameObject>> m_CharactersInLevel;
-	std::vector<std::shared_ptr<GameObject>> m_Agents;
-	std::vector<std::shared_ptr<Node>> m_Graph;
+	static std::vector<std::shared_ptr<Cell>> m_LevelGrid;
 
 private:
 	bool m_IsGraphMade = false;

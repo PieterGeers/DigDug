@@ -10,6 +10,7 @@
 #include "QuadCollisionComponent.h"
 #include "DigDugWeaponComp.h"
 #include "DigDugLivesComp.h"
+#include "AgentComponent.h"
 
 
 SingleLevel::SingleLevel()
@@ -52,10 +53,11 @@ void SingleLevel::Initialize()
 
 	std::shared_ptr<GameObject> LevelObject = std::make_shared<GameObject>();
 	const std::shared_ptr<TextureRenderComponent> levelTexture = std::make_shared<TextureRenderComponent>("Level.png");
-	std::shared_ptr<DigDugLevelComp> levelComp = std::make_shared<DigDugLevelComp>(levelTexture->GetWidth(), levelTexture->GetHeight(), 32, 32, "../Data/Levels/Level1.bin");
+	std::shared_ptr<DigDugLevelComp> levelComp = std::make_shared<DigDugLevelComp>(levelTexture->GetWidth(), levelTexture->GetHeight(), 32, 32, 3, "../Data/Levels/Level1.bin");
 	LevelObject->AddComponent(levelTexture);
 	LevelObject->AddComponent(levelComp);
 	AddChild(LevelObject);
+	levelComp->CreateGraph();
 
 	std::shared_ptr<TextureRenderComponent> DigDugTexture = std::make_shared<TextureRenderComponent>("digdug_spriteP1.png", 7, 7, 2);
 	std::shared_ptr<DigDugCharacterComp> character = std::make_shared<DigDugCharacterComp>(Boundaries{ 32, 32 * 17,0,32 * 13 });
@@ -87,16 +89,39 @@ void SingleLevel::Initialize()
 
 	m_DigDug->AddChild("Weapon", Weapon);
 	m_DigDug->SetPosition(0, 32, 0);
-	levelComp->AddCharacterInScene(m_DigDug);
 	AddChild(m_DigDug);
-
 
 	auto fpsCounter = std::make_shared<GameObject>();
 	std::shared_ptr<FPSComponent> fps_component = std::make_shared<FPSComponent>(fpsFont, SDL_Color{ 255,255,0,255 });
 	fpsCounter->AddComponent(fps_component);
 	AddChild(fpsCounter);
 
-	ServiceLocator::RegisterP1Service(m_DigDug);
+	ServiceLocator::RegisterPlayer(static_cast<int>(PlayerOne), m_DigDug);
+
+	//POOKA
+	//*****
+	std::shared_ptr<GameObject> pooka = std::make_shared<GameObject>();
+	
+	const std::shared_ptr<Animation> walk = CreateAnimation("Walk", 0, 0, 0, 1);
+	const std::shared_ptr<Animation> invis = CreateAnimation("Invisible", 0, 2, 0, 1);
+	const std::shared_ptr<Animation> stage1 = CreateAnimation("Stage1", 0, 4, 0, 0);
+	const std::shared_ptr<Animation> stage2 = CreateAnimation("Stage2", 0, 5, 0, 0);
+	const std::shared_ptr<Animation> stage3 = CreateAnimation("Stage3", 0, 6, 0, 0);
+	const std::shared_ptr<Animation> dead = CreateAnimation("Dead", 0, 7, 0, 2);
+	std::shared_ptr<TextureRenderComponent> PookaTexture = std::make_shared<TextureRenderComponent>("digdug_spriteEnemies.png", 2, 10, 2);
+	std::shared_ptr<Animator> pookaAnimator = std::make_shared<Animator>();
+	std::shared_ptr<QuadCollisionComponent> pookaCollision = std::make_shared<QuadCollisionComponent>(MVector2_INT(0, 0), 32, "Enemy1");
+	pookaAnimator->AddAnimation({ walk, invis, stage1, stage2, stage3, dead });
+	pooka->AddComponent(PookaTexture);
+	pooka->AddComponent(pookaAnimator);
+	pooka->AddComponent(pookaCollision);
+	pooka->SetPosition(160, 32, 0);
+	pookaAnimator->SetActiveAnimation("Walk");
+	const std::shared_ptr<AgentComponent> agent = std::make_shared<AgentComponent>(3, 32, 14);
+	pooka->AddComponent(agent);
+	AddChild(pooka);
+	ServiceLocator::RegisterAgent(AgentComponent::GetCount(), pooka);
+	pooka->GetComponent<AgentComponent>()->Initialize();
 }
 
 void SingleLevel::Update()

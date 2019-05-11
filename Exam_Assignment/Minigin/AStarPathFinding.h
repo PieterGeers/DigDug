@@ -6,12 +6,13 @@ class Connection;
 class AStarPathFinding
 {
 public:
-	AStarPathFinding() {};
+	AStarPathFinding() = default;
 	~AStarPathFinding() = default;
 
-	std::vector<MVector2_INT> FindPath(std::shared_ptr<Node> pStartNode, std::shared_ptr<Node> pEndNode, Heuristic heuristicFunction);
-
+	static std::vector<MVector2_INT> FindPath(Node* pStartNode, Node* pEndNode, Heuristic heuristicFunction);
+	static std::vector<std::shared_ptr<Node>>& GetGraph() { return m_Graph; }
 private:
-	void CalculateCost(std::shared_ptr<Connection> pc, std::shared_ptr<Node> pStartNode, std::shared_ptr<Node> pEndNode, Heuristic heuristicFunction);
+	static void CalculateCost(Connection* pc, Node* pStartNode, Node* pEndNode, Heuristic heuristicFunction);
+	static std::vector<std::shared_ptr<Node>> m_Graph;
 };
 

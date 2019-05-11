@@ -5,7 +5,7 @@
 std::unordered_map<std::string, QuadCollisionComponent*> QuadCollisionComponent::m_CollisionObjects;
 
 QuadCollisionComponent::QuadCollisionComponent(MVector2_INT TopLeft, int size, const std::string& tag)
-	:width(size),height(size)
+	:width(size),height(size),m_Tag(tag)
 {
 	m_Rectangle.TopLeft = TopLeft;
 	m_Rectangle.BottomRight = MVector2_INT(TopLeft.x + size, TopLeft.y + size);
@@ -17,7 +17,7 @@ QuadCollisionComponent::QuadCollisionComponent(MVector2_INT TopLeft, int size, c
 }
 
 QuadCollisionComponent::QuadCollisionComponent(MVector2_INT TopLeft, int width, int height, const std::string& tag)
-	:width(width),height(height)
+	:width(width),height(height), m_Tag(tag)
 {
 	m_Rectangle.TopLeft = TopLeft;
 	m_Rectangle.BottomRight = MVector2_INT(TopLeft.x + width, TopLeft.y + height);

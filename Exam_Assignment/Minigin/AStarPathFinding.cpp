@@ -4,17 +4,19 @@
 #include "Node.h"
 #include "algorithm"
 
-std::vector<MVector2_INT> AStarPathFinding::FindPath(std::shared_ptr<Node> pStartNode, std::shared_ptr<Node> pEndNode,
+std::vector<std::shared_ptr<Node>> AStarPathFinding::m_Graph;
+
+std::vector<MVector2_INT> AStarPathFinding::FindPath(Node* pStartNode, Node* pEndNode,
 	Heuristic heuristicFunction)
 {
 	std::vector<MVector2_INT> vPath;
 
-	std::vector<std::shared_ptr<Connection>> openList;
-	std::vector<std::shared_ptr<Connection>> closedList;
+	std::vector<Connection*> openList;
+	std::vector<Connection*> closedList;
 
-	std::shared_ptr<Connection> pCurrentConnection{};
+	Connection* pCurrentConnection{};
 
-	for (const auto c : pStartNode->GetConnection())
+	for (auto c : pStartNode->GetConnection())
 	{
 		CalculateCost(c, pStartNode, pEndNode, heuristicFunction);
 		openList.push_back(c);
@@ -33,13 +35,13 @@ std::vector<MVector2_INT> AStarPathFinding::FindPath(std::shared_ptr<Node> pStar
 		openList.erase(std::remove(openList.begin(), openList.end(), pCurrentConnection), openList.end());
 		closedList.push_back(pCurrentConnection);
 
-		std::vector<std::shared_ptr<Connection>> vpConnections = {};
+		std::vector<Connection*> vpConnections = {};
 		for (auto c : pCurrentConnection->GetEndNode()->GetConnection())
 		{
 			vpConnections.push_back(c);
 		}
 
-		const auto containsEndNode = [pEndNode](const std::shared_ptr<Connection> a) {return a->GetEndNode() == pEndNode; };
+		const auto containsEndNode = [pEndNode](const Connection* a) {return a->GetEndNode() == pEndNode; };
 		auto result = std::find_if(vpConnections.begin(), vpConnections.end(), containsEndNode);
 
 		if (result != vpConnections.end())
@@ -51,7 +53,12 @@ std::vector<MVector2_INT> AStarPathFinding::FindPath(std::shared_ptr<Node> pStar
 
 		for (auto pC : vpConnections)
 		{
-			const auto containsPc = [pC](const std::shared_ptr<Connection> a) {return a == pC; };
+			const auto containsPc = [pC](const Connection* a)
+			{
+				return (a->GetStartNode()->GetPosition() == pC->GetStartNode()->GetPosition() &&
+					a->GetEndNode()->GetPosition() == pC->GetEndNode()->GetPosition()) || (a->GetStartNode()->GetPosition() == pC->GetEndNode()->GetPosition() &&
+						a->GetEndNode()->GetPosition() == pC->GetStartNode()->GetPosition());
+			};
 			auto found = std::find_if(closedList.begin(), closedList.end(), containsPc);
 			if (found != closedList.end())
 				continue;
@@ -65,8 +72,7 @@ std::vector<MVector2_INT> AStarPathFinding::FindPath(std::shared_ptr<Node> pStar
 			openList.push_back(pC);
 		}
 	}
-
-	while (pCurrentConnection->GetStartNode() != pStartNode)
+	while (pCurrentConnection->GetStartNode()->GetPosition() != pStartNode->GetPosition())
 	{
 		vPath.push_back(pCurrentConnection->GetEndNode()->GetPosition());
 		pCurrentConnection = pCurrentConnection->GetHeadConnection();
@@ -79,8 +85,8 @@ std::vector<MVector2_INT> AStarPathFinding::FindPath(std::shared_ptr<Node> pStar
 	return vPath;
 }
 
-void AStarPathFinding::CalculateCost(std::shared_ptr<Connection> pc, std::shared_ptr<Node> pStartNode,
-	std::shared_ptr<Node> pEndNode, Heuristic heuristicFunction)
+void AStarPathFinding::CalculateCost(Connection* pc, Node* pStartNode,
+	Node* pEndNode, Heuristic heuristicFunction)
 {
 	float currentGCost = 0;
 	if (pc->GetHeadConnection() != nullptr)
@@ -91,7 +97,7 @@ void AStarPathFinding::CalculateCost(std::shared_ptr<Connection> pc, std::shared
 		parentPos = pc->GetHeadConnection()->GetStartNode()->GetPosition();
 
 	MVector2_INT tempV = (pc->GetEndNode()->GetPosition() - parentPos).GetAbs();
-	const float gCost = heuristicFunction(static_cast<float>(tempV.x), static_cast<float>(tempV.y));
+	float gCost = heuristicFunction(static_cast<float>(tempV.x), static_cast<float>(tempV.y));
 	pc->SetGCost(currentGCost + gCost);
 
 	tempV = (pc->GetEndNode()->GetPosition() - pEndNode->GetPosition()).GetAbs();

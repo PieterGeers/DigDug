@@ -1,8 +1,9 @@
 #include "MiniginPCH.h"
 #include "Connection.h"
+#include "Node.h"
 
-Connection::Connection(const std::shared_ptr<Node>& startNode, const std::shared_ptr<Node>& targetNode)
+Connection::Connection(Node* startNode, Node* targetNode)
 	:m_pStartNode(startNode)
-	, m_pTargetNode(targetNode)
+	,m_pTargetNode(targetNode)
 {
 }

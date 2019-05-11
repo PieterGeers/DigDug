@@ -12,9 +12,21 @@ struct MVector2_INT
 	{
 		return MVector2_INT(x + v.x, y + v.y);
 	}
+	auto operator==(const MVector2_INT& v) const
+	{
+		return x == v.x && y == v.y;
+	}
+	auto operator!=(const MVector2_INT& v) const
+	{
+		return x != v.x || y != v.y;
+	}
 	auto GetAbs() const
 	{
 		return MVector2_INT(abs(x), abs(y));
+	}
+	int DistanceSQR(const MVector2_INT& v) const
+	{
+		return (x - v.x)*(x - v.x) + (y - v.y)*(y - v.y);
 	}
 };
 

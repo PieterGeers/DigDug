@@ -1,9 +1,16 @@
 #include "MiniginPCH.h"
 #include "Node.h"
+#include "Connection.h"
 
-void Node::AddConnection(const std::shared_ptr<Node>& t)
+Node::~Node()
 {
-	const std::shared_ptr<Connection> c = std::make_shared<Connection>(std::make_shared<Node>(*this), t);
+	for (auto c : m_Connection)
+		delete c;
+}
+
+void Node::AddConnection(Node* t)
+{
+	Connection* c = new Connection(this, t);
 	m_Connection.push_back(c);
 }
 

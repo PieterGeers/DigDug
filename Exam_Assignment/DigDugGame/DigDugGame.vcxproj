@@ -259,6 +259,9 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" "$(Output
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Actions.h" />
+    <ClInclude Include="AgentComponent.h" />
+    <ClInclude Include="Conditions.h" />
     <ClInclude Include="CoopLevel.h" />
     <ClInclude Include="CreditScreen.h" />
     <ClInclude Include="DigDugCharacterComp.h" />
@@ -276,6 +279,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" "$(Output
     <ClInclude Include="VersusLevel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AgentComponent.cpp" />
     <ClCompile Include="CoopLevel.cpp" />
     <ClCompile Include="CreditScreen.cpp" />
     <ClCompile Include="DigDugCharacterComp.cpp" />

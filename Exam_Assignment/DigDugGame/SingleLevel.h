@@ -1,7 +1,6 @@
 #pragma once
 #include "GameObject.h"
 #include "GameScene.h"
-#include "Node.h"
 
 class SingleLevel final : public GameScene
 {
@@ -16,6 +15,5 @@ public:
 
 private:
 	std::shared_ptr<GameObject> m_DigDug;
-	std::shared_ptr<Node> node;
 };
 

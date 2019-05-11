@@ -1,7 +1,10 @@
 #include "MiniginPCH.h"
 #include "LevelComponent.h"
 #include "CharacterComponent.h"
-#include "Debug.h"
+#include "Node.h"
+#include "AStarPathFinding.h"
+
+std::vector<std::shared_ptr<Cell>> LevelComponent::m_LevelGrid;
 
 LevelComponent::LevelComponent(unsigned texWidth, unsigned texHeight, unsigned gridWidth, unsigned gridHeight)
 	: m_GridWidth(gridWidth)
@@ -34,42 +37,32 @@ void LevelComponent::Render()
 void LevelComponent::SetTransform(float, float, float)
 {}
 
-void LevelComponent::AddCharacterInScene(std::shared_ptr<GameObject>& character)
-{
-	if (!character->HasComponentDerived<CharacterComponent>())
-		Debug::LogError("LevelComponent::AddCharacterInScene : character does not have a characterComponent");
-	m_CharactersInLevel.push_back(character);
-}
-
-void LevelComponent::AddAgentInScene(std::shared_ptr<GameObject>& agent)
-{
-	m_Agents.push_back(agent);
-}
-
 void LevelComponent::CreateGraph(bool useDiagonal)
 {
 	if (!m_IsGraphMade)
 	{
+		auto& graph = AStarPathFinding::GetGraph();
 		for (const auto cell : m_LevelGrid)
 		{
 			std::shared_ptr<Node> tmp = std::make_shared<Node>(cell->position);
+			//Node* tmp = new Node(cell->position);
 			tmp->SetWalkable(true);
-			m_Graph.push_back(tmp);
+			graph.push_back(tmp);
 		}
-		for (unsigned i = 0; i != m_Graph.size(); ++i)
+		for (unsigned i = 0; i != graph.size(); ++i)
 		{
 			//up
 			if (int(i) - static_cast<int>(m_nbOfColumns) >= 0)
-				m_Graph[i]->AddConnection(m_Graph[i - m_nbOfColumns]);
+				graph[i]->AddConnection(graph[i - m_nbOfColumns].get());
 			//down
-			if (i + m_nbOfColumns < m_Graph.size())
-				m_Graph[i]->AddConnection(m_Graph[i + m_nbOfColumns]);
+			if (i + m_nbOfColumns < graph.size())
+				graph[i]->AddConnection(graph[i + m_nbOfColumns].get());
 			//left
 			if ((i - 1) >= 0 && (i - 1) / m_nbOfColumns == i / m_nbOfColumns)
-				m_Graph[i]->AddConnection(m_Graph[i - 1]);
+				graph[i]->AddConnection(graph[i - 1].get());
 			//right
-			if ((i + 1) < m_Graph.size() && (i + 1) / m_nbOfColumns == i / m_nbOfColumns)
-				m_Graph[i]->AddConnection(m_Graph[i + 1]);
+			if ((i + 1) < graph.size() && (i + 1) / m_nbOfColumns == i / m_nbOfColumns)
+				graph[i]->AddConnection(graph[i + 1].get());
 			if (useDiagonal)
 			{
 				//leftup

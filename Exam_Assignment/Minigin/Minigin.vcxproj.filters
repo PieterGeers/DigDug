@@ -40,6 +40,12 @@
     <Filter Include="Header Files\Components\BaseComponents">
       <UniqueIdentifier>{7ada4a88-06b2-482e-90d8-2be82918f8da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AI\PathFinding">
+      <UniqueIdentifier>{62906792-c3b6-4d9d-9ffd-8c8abb9ea384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\StateMachine">
+      <UniqueIdentifier>{6cb123f4-89b6-483a-8b02-64b714735342}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -126,18 +132,6 @@
     <ClInclude Include="Structs.h">
       <Filter>Header Files\Helper</Filter>
     </ClInclude>
-    <ClInclude Include="AStarPathFinding.h">
-      <Filter>Header Files\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>Header Files\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="Connection.h">
-      <Filter>Header Files\AI</Filter>
-    </ClInclude>
-    <ClInclude Include="Heuristic.h">
-      <Filter>Header Files\AI</Filter>
-    </ClInclude>
     <ClInclude Include="Animator.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -155,6 +149,33 @@
     </ClInclude>
     <ClInclude Include="QuadCollisionComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AStarPathFinding.h">
+      <Filter>Header Files\AI\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>Header Files\AI\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Heuristic.h">
+      <Filter>Header Files\AI\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\AI\PathFinding</Filter>
+    </ClInclude>
+    <ClInclude Include="SMAction.h">
+      <Filter>Header Files\AI\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="SMCondition.h">
+      <Filter>Header Files\AI\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="SMState.h">
+      <Filter>Header Files\AI\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="SMTransition.h">
+      <Filter>Header Files\AI\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Header Files\AI\StateMachine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -227,15 +248,6 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>Header Files\Base</Filter>
     </ClCompile>
-    <ClCompile Include="AStarPathFinding.cpp">
-      <Filter>Header Files\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="Connection.cpp">
-      <Filter>Header Files\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>Header Files\AI</Filter>
-    </ClCompile>
     <ClCompile Include="Animator.cpp">
       <Filter>Header Files\Graphics</Filter>
     </ClCompile>
@@ -253,6 +265,24 @@
     </ClCompile>
     <ClCompile Include="QuadCollisionComponent.cpp">
       <Filter>Header Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AStarPathFinding.cpp">
+      <Filter>Header Files\AI\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>Header Files\AI\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Header Files\AI\PathFinding</Filter>
+    </ClCompile>
+    <ClCompile Include="SMState.cpp">
+      <Filter>Header Files\AI\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="SMTransition.cpp">
+      <Filter>Header Files\AI\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Header Files\AI\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

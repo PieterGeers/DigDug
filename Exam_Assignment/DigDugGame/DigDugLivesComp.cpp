@@ -34,7 +34,7 @@ void DigDugLivesComp::FixedUpdate()
 	if (!m_LostLive)
 	{
 		const auto comp = m_pGameObject->GetComponent<QuadCollisionComponent>();
-		if (comp->CheckIfCollisionWith("Rock", 4))
+		if (comp->CheckIfCollisionWith("Enemy", 5))
 		{
 			m_pGameObject->GetComponent<DigDugCharacterComp>()->FreezeForTime(1.2f);
 			m_pGameObject->GetComponent<Animator>()->SetActiveAnimation("Dead");

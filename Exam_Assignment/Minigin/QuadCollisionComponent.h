@@ -29,10 +29,13 @@ public:
 	std::vector<std::string> GetColliderTags() const { return m_ColliderTags; }
 	bool CheckIfCollisionWith(const std::string& checkWith, unsigned nbOfCharsToCheck);
 
+	std::string GetTag() const { return m_Tag; }
+	static std::unordered_map<std::string, QuadCollisionComponent*>& GetCollisionObjects() { return m_CollisionObjects; }
 protected:
 	M_Rectangle m_Rectangle;
 	bool m_IsActive = true;
 private:
+	std::string m_Tag;
 	int width, height;
 	static std::unordered_map<std::string, QuadCollisionComponent*> m_CollisionObjects;
 	bool m_IsColliding = false;

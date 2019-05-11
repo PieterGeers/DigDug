@@ -53,9 +53,7 @@ void CoopLevel::Initialize()
 
 	std::shared_ptr<GameObject> LevelObject = std::make_shared<GameObject>();
 	const std::shared_ptr<TextureRenderComponent> levelTexture = std::make_shared<TextureRenderComponent>("Level.png");
-	std::shared_ptr<DigDugLevelComp> levelComp = std::make_shared<DigDugLevelComp>(levelTexture->GetWidth(), levelTexture->GetHeight(), 32, 32, "../Data/Levels/Level1.bin");
-	levelComp->AddCharacterInScene(m_DigDugP1);
-	levelComp->AddCharacterInScene(m_DigDugP2);
+	std::shared_ptr<DigDugLevelComp> levelComp = std::make_shared<DigDugLevelComp>(levelTexture->GetWidth(), levelTexture->GetHeight(), 32, 32,3, "../Data/Levels/Level1.bin");
 	LevelObject->AddComponent(levelTexture);
 	LevelObject->AddComponent(levelComp);
 	AddChild(LevelObject);
@@ -89,8 +87,6 @@ void CoopLevel::Initialize()
 	fpsCounter->AddComponent(fps_component);
 	AddChild(fpsCounter);
 
-	ServiceLocator::RegisterP1Service(m_DigDugP1);
-	ServiceLocator::RegisterP2Service(m_DigDugP2);
 }
 
 void CoopLevel::Update()

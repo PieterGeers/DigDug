@@ -20,13 +20,22 @@ void Animator::AddAnimation(const std::vector<std::shared_ptr<Animation>>& anima
 
 void Animator::SetActiveAnimation(const std::string& name)
 {
+	if (GetGameObject() == nullptr)
+	{
+		Debug::LogError("Animator component was not added to a valid GameObject");
+		return;
+	}
 	const auto it = m_Animation.find(std::move(name));
 	if (it == m_Animation.end())
 	{
 		Debug::LogWarning("Animation::SetActiveAnimation : Could not set animation because no animation was found with the name :" + name);
 		return;
 	}
-	GetGameObject()->GetComponent<TextureRenderComponent>()->SetSpritePosition(*(*it).second);
+	const auto comp = GetGameObject()->GetComponent<TextureRenderComponent>();
+	if (comp != nullptr)
+		comp->SetSpritePosition(*it->second);
+	else
+		Debug::LogError("Cannot set animation " + name + " -> no TextureRenderComponent was found on the GameObject");
 }
 
 void Animator::SetActiveAnimation(const std::string& name, const std::shared_ptr<TextureRenderComponent>& comp)

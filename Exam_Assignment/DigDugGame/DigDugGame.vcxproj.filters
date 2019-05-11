@@ -17,6 +17,9 @@
     <Filter Include="Source Files\Helper">
       <UniqueIdentifier>{ef5bf9ed-657b-4b2e-a387-21464dde55e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\AI">
+      <UniqueIdentifier>{0cb1e04c-a75d-4523-ad1c-c934f0b319df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -60,6 +63,9 @@
     </ClCompile>
     <ClCompile Include="DigDugRockComp.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AgentComponent.cpp">
+      <Filter>Source Files\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,6 +113,15 @@
     </ClInclude>
     <ClInclude Include="DigDugRockComp.h">
       <Filter>Source Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AgentComponent.h">
+      <Filter>Source Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Conditions.h">
+      <Filter>Source Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Actions.h">
+      <Filter>Source Files\AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

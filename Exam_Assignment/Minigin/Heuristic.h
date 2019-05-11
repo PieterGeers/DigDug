@@ -4,6 +4,7 @@
 
 class HeuristicFunction
 {
+public:
 	//Manhattan distance
 	static float Manhattan(float x, float y)
 	{

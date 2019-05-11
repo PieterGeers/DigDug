@@ -9,8 +9,10 @@
 #include "TransformComponent.h"
 #include "QuadCollisionComponent.h"
 #include "DigDugRockComp.h"
+#include "ServiceLocator.h"
+#include "algorithm"
 
-DigDugLevelComp::DigDugLevelComp(unsigned levelWidth, unsigned levelHeight, unsigned gridWidth, unsigned gridHeight, const std::string& binFile)
+DigDugLevelComp::DigDugLevelComp(unsigned levelWidth, unsigned levelHeight, unsigned gridWidth, unsigned gridHeight, unsigned nbOfRocks, const std::string& binFile)
 	:LevelComponent(levelWidth, levelHeight, gridWidth, gridHeight)
 {
 	m_TunnelTexture = dae::ResourceManager::GetInstance().LoadTexture("Tunnel.png");
@@ -36,27 +38,35 @@ DigDugLevelComp::DigDugLevelComp(unsigned levelWidth, unsigned levelHeight, unsi
 		m_LevelGrid[i] = temp;
 	}
 	levelFile.CloseFile();
-
-	SpawnRock(m_pRock1);
-	SpawnRock(m_pRock2);
-	SpawnRock(m_pRock3);
-	
+	SpawnRock(nbOfRocks);
+	CreateGraph();
 }
 
 void DigDugLevelComp::Update()
 {
-	m_pRock1->Update();
-	m_pRock2->Update();
-	m_pRock3->Update();
+	for (auto rock = m_Rocks.begin(); rock != m_Rocks.end(); ++rock)
+	{
+		(*rock)->Update();
+		if (!(*rock)->GetComponent<DigDugRockComp>()->IsRockActive())
+		{
+			std::string tag = (*rock)->GetComponent<QuadCollisionComponent>()->GetTag();
+			auto it = QuadCollisionComponent::GetCollisionObjects().find(tag);
+			QuadCollisionComponent::GetCollisionObjects().erase(it);
+			m_Rocks.erase(std::remove(m_Rocks.begin(), m_Rocks.end(), (*rock)), m_Rocks.end());
+			if (m_Rocks.size() > 0)
+				rock = m_Rocks.begin();
+			else
+				return;
+		}
+	}
 }
 
 void DigDugLevelComp::Render()
 {
 	for (auto element : m_pTunnels)
 		element->Render();
-	m_pRock1->Render();
-	m_pRock2->Render();
-	m_pRock3->Render();
+	for (const auto rock : m_Rocks)
+		rock->Render();
 }
 
 void DigDugLevelComp::SetTransform(float, float, float)
@@ -65,12 +75,12 @@ void DigDugLevelComp::SetTransform(float, float, float)
 
 void DigDugLevelComp::FixedUpdate()
 {
-	for (auto element : m_CharactersInLevel)
+	for (auto element : ServiceLocator::GetPlayers())
 	{
-		auto component = element->GetComponent<DigDugCharacterComp>();
+		auto component = element.second->GetComponent<DigDugCharacterComp>();
 		if (component == nullptr)
 			continue;
-		const int Current = DetermineGridCell(element, component->GetCurrentDirection());
+		const int Current = DetermineGridCell(element.second, component->GetCurrentDirection());
 		if (component->GetPreviousLocation() == -1)
 			component->SetPreviousLocation(Current);
 		const int prevIdx = component->GetPreviousLocation();
@@ -93,32 +103,32 @@ void DigDugLevelComp::FixedUpdate()
 			component->SetIsPlayerDigging(false);
 	}
 
-	DetermineWhenFalling(m_pRock1);
-	DetermineWhenFalling(m_pRock2);
-	DetermineWhenFalling(m_pRock3);
+	for (auto rock : m_Rocks)
+		DetermineWhenFalling(rock);
 
-	m_pRock1->FixedUpdate();
-	m_pRock2->FixedUpdate();
-	m_pRock3->FixedUpdate();
-
+	for (auto rock : m_Rocks)
+		rock->FixedUpdate();
 }
 
-void DigDugLevelComp::SpawnRock(std::shared_ptr<GameObject>& rock)
+void DigDugLevelComp::SpawnRock(unsigned amount)
 {
 	const unsigned totalCells = m_nbOfColumns * m_nbOfRows;
-
-	unsigned rockIdx = rand() % totalCells;
-	while (rockIdx < m_nbOfColumns * 2 || rockIdx > totalCells - 2 * m_nbOfColumns || std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->hasVisited || std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx + m_nbOfColumns])->hasVisited || std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->hasStone)
+	for (unsigned i = 0; i < amount; ++i)
 	{
-		rockIdx = rand() % totalCells;
+		unsigned rockIdx = rand() % totalCells;
+		while (rockIdx < m_nbOfColumns * 2 || rockIdx > totalCells - 2 * m_nbOfColumns || std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->hasVisited || std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx + m_nbOfColumns])->hasVisited || std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->hasStone)
+		{
+			rockIdx = rand() % totalCells;
+		}
+		std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->hasStone = true;
+		std::shared_ptr<GameObject> rock = std::make_shared<GameObject>();
+		const std::shared_ptr<DigDugRockComp> comp = std::make_shared<DigDugRockComp>(*std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx + m_nbOfColumns]), "rock.png");
+		const std::shared_ptr<QuadCollisionComponent> collision = std::make_shared<QuadCollisionComponent>(MVector2_INT(0, 0), 32, "Rock" + std::to_string(rockIdx));
+		rock->AddComponent(comp);
+		rock->AddComponent(collision);
+		rock->SetPosition(float(std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->position.x), float(std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->position.y), 0.0f);
+		m_Rocks.push_back(rock);
 	}
-	std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->hasStone = true;
-	rock = std::make_shared<GameObject>();
-	const std::shared_ptr<DigDugRockComp> comp = std::make_shared<DigDugRockComp>(*std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx + m_nbOfColumns]), "rock.png");
-	const std::shared_ptr<QuadCollisionComponent> collision = std::make_shared<QuadCollisionComponent>(MVector2_INT(0, 0), 32, "Rock" + std::to_string(rockIdx));
-	rock->AddComponent(comp);
-	rock->AddComponent(collision);
-	rock->SetPosition(float(std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->position.x), float(std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[rockIdx])->position.y), 0.0f);
 }
 
 void DigDugLevelComp::DetermineWhenFalling(std::shared_ptr<GameObject>& rock)
@@ -131,16 +141,16 @@ void DigDugLevelComp::DetermineWhenFalling(std::shared_ptr<GameObject>& rock)
 	if (component->GetCell().hasVisited == true && !component->IsFalling())
 	{
 		//check if a player is under the rock
-		for (auto element : m_CharactersInLevel)
+		for (auto element : ServiceLocator::GetPlayers())
 		{
-			auto CharComponent = element->GetComponent<DigDugCharacterComp>();
+			auto CharComponent = element.second->GetComponent<DigDugCharacterComp>();
 			if (CharComponent == nullptr)
 				continue;
 			const int width = component->GetTexture()->GetWidth() - 1;
-			if (((int(element->GetTransform()->GetPosition().x) <= component->GetCell().position.x + width &&
-				int(element->GetTransform()->GetPosition().x) >= component->GetCell().position.x) ||
-				(int(element->GetTransform()->GetPosition().x) + width <= component->GetCell().position.x + width &&
-					int(element->GetTransform()->GetPosition().x) + width >= component->GetCell().position.x)) && element->GetTransform()->GetPosition().y >= component->GetCell().position.y)
+			if (((int(element.second->GetTransform()->GetPosition().x) <= component->GetCell().position.x + width &&
+				int(element.second->GetTransform()->GetPosition().x) >= component->GetCell().position.x) ||
+				(int(element.second->GetTransform()->GetPosition().x) + width <= component->GetCell().position.x + width &&
+					int(element.second->GetTransform()->GetPosition().x) + width >= component->GetCell().position.x)) && element.second->GetTransform()->GetPosition().y >= component->GetCell().position.y)
 				return;
 		}
 		//check how many empty spaces are under the rock
