@@ -57,7 +57,7 @@ void TextureRenderComponent::FixedUpdate()
 
 void TextureRenderComponent::Render()
 {
-	if (m_Texture != nullptr)
+	if (!m_StopRender && m_Texture != nullptr)
 	{
 		if (!m_IsSprite)
 			dae::Renderer::GetInstance().RenderTexture(*m_Texture, m_X, m_Y, static_cast<float>(m_Texture->GetWidth())* m_Scale, static_cast<float>(m_Texture->GetHeight())*m_Scale);

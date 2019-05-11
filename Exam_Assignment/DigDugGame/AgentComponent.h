@@ -20,6 +20,11 @@ public:
 	int CalculateGridIndex() const;
 	int CalculateClosestPlayerIndex() const;
 
+	void Collision();
+	void RockCollision();
+	void Inflate();
+	void Dead();
+
 	void FixedUpdate() override;
 	void Render() override{}
 	void SetTransform(float , float , float ) override{}
@@ -31,7 +36,11 @@ public:
 	bool m_WasInvisible = false;
 	bool m_HasReachedEndPosition = false;
 	bool m_IsBeingInflated = false;
+	bool m_WasBeingInflated = false;
 	bool m_HasAnimationChanged = false;
+	bool m_IsHitByFallingRock = false;
+
+	bool m_IsDead = false;
 
 	int m_InflateStatus = 0;
 
@@ -47,4 +56,10 @@ private:
 	bool m_Initialized = false;
 	static int m_Count;
 	unsigned m_PositionInPath = 0;
+	float m_DeflateTime = 0.5f;
+	float m_CurrentDeflateTime = 0.0f;
+	bool m_Collision = false;
+	bool m_HasInflationChanged = false;
+	float m_DeadTime = 1.0f;
+	bool m_IsActive = true;
 };

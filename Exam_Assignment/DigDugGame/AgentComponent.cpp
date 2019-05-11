@@ -10,6 +10,8 @@
 #include "DigDugStructs.h"
 #include "Actions.h"
 #include "Conditions.h"
+#include "QuadCollisionComponent.h"
+#include "DigDugRockComp.h"
 
 int AgentComponent::m_Count = 0;
 AgentComponent::AgentComponent(int maxInflate, int gridSize, int nbOfColumns)
@@ -20,14 +22,25 @@ AgentComponent::AgentComponent(int maxInflate, int gridSize, int nbOfColumns)
 
 AgentComponent::~AgentComponent()
 {
-	delete m_StateMachine;
+	if (m_StateMachine != nullptr)
+		delete m_StateMachine;
 }
 
 void AgentComponent::Update()
 {
 	if (!m_Initialized)
 		return;
-	m_StateMachine->Update();
+	if (m_IsActive)
+		m_StateMachine->Update();
+	else if (m_StateMachine != nullptr)
+	{
+		delete m_StateMachine;
+		m_StateMachine = nullptr;
+		auto& agents = ServiceLocator::GetAgents();
+		auto it = agents.find(m_Count - 1);
+		agents.erase(it);
+		GetGameObject()->GetComponent<TextureRenderComponent>()->StopRender();
+	}
 }
 
 void AgentComponent::Initialize()
@@ -35,6 +48,9 @@ void AgentComponent::Initialize()
 	SMState* runState = new SMState{};
 	SMState* changeToInvis = new SMState{};
 	SMState* changeToNormal = new SMState{};
+	SMState* inflate = new SMState{};
+	SMState* dead = new SMState{};
+	SMState* hitByRock = new SMState{};
 
 	changeToInvis->SetAction(new ChangeAnimation("Invisible"));
 	changeToInvis->SetTransition(new SMTransition({ new AnimationChanged() }, runState));
@@ -42,12 +58,24 @@ void AgentComponent::Initialize()
 	changeToNormal->SetAction(new ChangeAnimation("Walk"));
 	changeToNormal->SetTransition(new SMTransition({ new AnimationChanged() }, runState));
 
+	inflate->SetAction(new InflateAction());
+	inflate->SetTransition(new SMTransition({ new StopBeingInflated() }, changeToNormal));
+	inflate->SetTransition(new SMTransition({ new IsDead() }, dead));
+
+	dead->SetEntryAction(new ChangeAnimation("Explode"));
+	dead->SetAction(new DeadAction());
+
+	hitByRock->SetEntryAction(new ChangeAnimation("Flat"));
+	hitByRock->SetAction(new DeadAction());
+	
 	runState->SetAction(new WalkAction());
 	runState->SetEntryAction(new FindNextPathAction());
 	runState->SetTransition(new SMTransition({ new HasReachedNextPosition() }, runState));
 	runState->SetTransition(new SMTransition({ new StartGoingInvisible() }, changeToInvis));
 	runState->SetTransition(new SMTransition({ new StopGoingInvisible() }, changeToNormal));
-	m_StateMachine =  new StateMachine(std::vector<SMState*>{runState, changeToInvis, changeToNormal}, runState, m_Count);
+	runState->SetTransition(new SMTransition({ new StartBeingInflated() }, inflate));
+	runState->SetTransition(new SMTransition({new IsHitByRock()}, hitByRock));
+	m_StateMachine =  new StateMachine(std::vector<SMState*>{runState, changeToInvis, changeToNormal, inflate, dead, hitByRock}, runState, m_Count);
 	++m_Count;
 	m_Initialized = true;
 }
@@ -130,6 +158,98 @@ int AgentComponent::CalculateClosestPlayerIndex() const
 	return -1;
 }
 
+void AgentComponent::Collision()
+{
+	if (!m_IsInvisible)
+	{
+		auto collision = GetGameObject()->GetComponent<QuadCollisionComponent>();
+		auto tags = collision->GetColliderTags();
+		for (auto t : tags)
+		{
+			if (Debug::CompareStringLeft(t, "Attack", 6))
+			{
+				if (m_Collision == false)
+				{
+					m_Collision = true;
+					m_IsBeingInflated = true;
+					m_CurrentDeflateTime = m_DeflateTime;
+					++m_InflateStatus;
+					m_HasInflationChanged = true;
+					return;
+				}
+				return;
+			}
+		}
+		m_Collision = false;
+	}
+}
+
+void AgentComponent::RockCollision()
+{
+	if (!m_IsInvisible)
+	{
+		auto collision = GetGameObject()->GetComponent<QuadCollisionComponent>();
+		auto tags = collision->GetColliderTags();
+		for (auto t : tags)
+		{
+
+			if (Debug::CompareStringLeft(t, "Rock", 4))
+			{
+				auto objs = collision->GetCollisionObjects().find(t);
+				if (!m_IsHitByFallingRock && (*objs).second->GetGameObject()->GetComponent<DigDugRockComp>()->IsFalling())
+				{
+					m_IsHitByFallingRock = true;
+					m_IsDead = true;
+					return;
+				}
+			}
+			else
+				return;
+		}
+	}
+}
+
+void AgentComponent::Inflate()
+{
+	if (m_InflateStatus > 0)
+	{
+		m_CurrentDeflateTime -= dae::GameTime::GetInstance().DeltaT();
+		if (m_CurrentDeflateTime <= 0.0f)
+		{
+			--m_InflateStatus;
+			if (m_InflateStatus > 0)
+			{
+				m_CurrentDeflateTime = m_DeflateTime;
+				m_HasInflationChanged = true;
+			}
+			else
+				m_IsBeingInflated = false;
+		}
+	}
+	if (m_InflateStatus == m_MaxInflateBeforeBoom)
+		m_IsDead = true;
+	if (m_IsDead == false && m_HasInflationChanged)
+	{
+		GetGameObject()->GetComponent<Animator>()->SetActiveAnimation("Stage" + std::to_string(m_InflateStatus));
+		m_HasInflationChanged = false;
+	}
+}
+
+void AgentComponent::Dead()
+{
+	if (m_IsDead)
+	{
+		m_DeadTime -= dae::GameTime::GetInstance().DeltaT();
+		if (m_DeadTime <= 0.0f)
+		{
+			std::string tag = GetGameObject()->GetComponent<QuadCollisionComponent>()->GetTag();
+			auto it = QuadCollisionComponent::GetCollisionObjects().find(tag);
+			QuadCollisionComponent::GetCollisionObjects().erase(it);
+			m_IsActive = false;
+		}
+	}
+}
+
 void AgentComponent::FixedUpdate()
 {
 	int idx = CalculateGridIndex();
@@ -138,4 +258,6 @@ void AgentComponent::FixedUpdate()
 		m_IsInvisible = true;
 	else if (m_IsInvisible && std::static_pointer_cast<DigDugCell>(grid[idx])->hasVisited)
 		m_IsInvisible = false;
+	Collision();
+	RockCollision();
 }

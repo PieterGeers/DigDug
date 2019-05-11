@@ -4,6 +4,7 @@
 #include "AStarPathFinding.h"
 #include "TransformComponent.h"
 #include "Heuristic.h"
+
 class WalkAction final : public SMAction
 {
 public:
@@ -55,4 +56,35 @@ public:
 	}
 private:
 	std::string m_Name;
+};
+
+class InflateAction final : public SMAction
+{
+public:
+	void Invoke(int idx) override
+	{
+		auto& pAgentObject = ServiceLocator::GetAgent(idx);
+		if (pAgentObject == nullptr)
+			return;
+		auto pAgent = pAgentObject->GetComponent<AgentComponent>();
+		if (pAgent == nullptr)
+			return;
+		pAgent->Inflate();
+	}
+};
+
+class DeadAction final : public SMAction
+{
+public:
+	void Invoke(int idx) override
+	{
+		auto& pAgentObject = ServiceLocator::GetAgent(idx);
+		if (pAgentObject == nullptr)
+			return;
+		auto pAgent = pAgentObject->GetComponent<AgentComponent>();
+		if (pAgent == nullptr)
+			return;
+
+		pAgent->Dead();
+	}
 };

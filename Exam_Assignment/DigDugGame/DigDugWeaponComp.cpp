@@ -51,21 +51,25 @@ void DigDugWeaponComp::AttackDigDug(Direction dir)
 		case up:
 			comp->SetActiveAnimation("Up", m_WeaponTexture);
 			m_WeaponTexture->SetTransform(GetTransform()->GetPosition().x, GetTransform()->GetPosition().y - m_WeaponTexture->GetSpriteHeight(), GetTransform()->GetPosition().z);
+			coll->SetTransform(GetTransform()->GetPosition().x, GetTransform()->GetPosition().y - m_WeaponTexture->GetSpriteHeight(), GetTransform()->GetPosition().z);
 			coll->SetIsActive(true);
 			break;
 		case down:
 			comp->SetActiveAnimation("Down", m_WeaponTexture);
 			m_WeaponTexture->SetTransform(GetTransform()->GetPosition().x, GetTransform()->GetPosition().y + m_WeaponTexture->GetSpriteHeight(), GetTransform()->GetPosition().z);
+			coll->SetTransform(GetTransform()->GetPosition().x, GetTransform()->GetPosition().y + m_WeaponTexture->GetSpriteHeight(), GetTransform()->GetPosition().z);
 			coll->SetIsActive(true);
 			break;
 		case left:
 			comp->SetActiveAnimation("Left", m_WeaponTexture);
 			m_WeaponTexture->SetTransform(GetTransform()->GetPosition().x - m_WeaponTexture->GetSpriteWidth(), GetTransform()->GetPosition().y, GetTransform()->GetPosition().z);
+			coll->SetTransform(GetTransform()->GetPosition().x - m_WeaponTexture->GetSpriteWidth(), GetTransform()->GetPosition().y, GetTransform()->GetPosition().z);
 			coll->SetIsActive(true);
 			break;
 		case right:
 			comp->SetActiveAnimation("Right", m_WeaponTexture);
 			m_WeaponTexture->SetTransform(GetTransform()->GetPosition().x + m_WeaponTexture->GetSpriteWidth(), GetTransform()->GetPosition().y, GetTransform()->GetPosition().z);
+			coll->SetTransform(GetTransform()->GetPosition().x + m_WeaponTexture->GetSpriteWidth(), GetTransform()->GetPosition().y, GetTransform()->GetPosition().z);
 			coll->SetIsActive(true);
 			break;
 		case none: break;

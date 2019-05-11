@@ -85,3 +85,83 @@ public:
 		return false;
 	}
 };
+
+class StartBeingInflated final : public SMCondition
+{
+public:
+	bool IsTriggered(int idx) override
+	{
+		auto& pAgentObject = ServiceLocator::GetAgent(idx);
+		if (pAgentObject == nullptr)
+			return false;
+		auto pAgent = pAgentObject->GetComponent<AgentComponent>();
+		if (pAgent == nullptr)
+			return false;
+
+		if (pAgent->m_IsBeingInflated && pAgent->m_WasBeingInflated == false)
+		{
+			pAgent->m_WasBeingInflated = true;
+			return true;
+		}
+		return false;
+	}
+};
+
+class StopBeingInflated final : public SMCondition
+{
+public:
+	bool IsTriggered(int idx) override
+	{
+		auto& pAgentObject = ServiceLocator::GetAgent(idx);
+		if (pAgentObject == nullptr)
+			return false;
+		auto pAgent = pAgentObject->GetComponent<AgentComponent>();
+		if (pAgent == nullptr)
+			return false;
+
+		if (!pAgent->m_IsBeingInflated && pAgent->m_WasBeingInflated && !pAgent->m_IsDead)
+		{
+			pAgent->m_WasBeingInflated = false;
+			return true;
+		}
+		return false;
+	}
+};
+
+class IsDead final : public SMCondition
+{
+	bool IsTriggered(int idx) override
+	{
+		auto& pAgentObject = ServiceLocator::GetAgent(idx);
+		if (pAgentObject == nullptr)
+			return false;
+		auto pAgent = pAgentObject->GetComponent<AgentComponent>();
+		if (pAgent == nullptr)
+			return false;
+
+		if (pAgent->m_IsDead)
+		{
+			return true;
+		}
+		return false;
+	}
+};
+
+class IsHitByRock final : public SMCondition
+{
+	bool IsTriggered(int idx) override
+	{
+		auto& pAgentObject = ServiceLocator::GetAgent(idx);
+		if (pAgentObject == nullptr)
+			return false;
+		auto pAgent = pAgentObject->GetComponent<AgentComponent>();
+		if (pAgent == nullptr)
+			return false;
+
+		if (pAgent->m_IsHitByFallingRock)
+		{
+			return true;
+		}
+		return false;
+	}
+};
