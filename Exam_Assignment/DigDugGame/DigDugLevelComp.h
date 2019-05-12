@@ -13,6 +13,9 @@ public:
 	void Render() override;
 	void SetTransform(float x, float y, float z) override;
 
+	
+	std::vector<MVector2_INT> GetSpawnPosition(int nbOfSpawnPosition);
+
 private:
 	void SpawnRock(unsigned amount);
 	void DetermineWhenFalling(std::shared_ptr<GameObject>& rock);
@@ -23,5 +26,6 @@ private:
 	std::vector<std::shared_ptr<TextureRenderComponent>> m_pTunnels;
 
 	std::vector<std::shared_ptr<GameObject>> m_Rocks;
+	std::vector<MVector2_INT> m_EnemySpawnPositions;
 };
 

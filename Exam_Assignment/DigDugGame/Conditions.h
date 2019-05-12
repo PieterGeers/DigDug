@@ -165,3 +165,22 @@ class IsHitByRock final : public SMCondition
 		return false;
 	}
 };
+
+class StopBeingIdle final : public SMCondition
+{
+	bool IsTriggered(int idx) override
+	{
+		auto& pAgentObject = ServiceLocator::GetAgent(idx);
+		if (pAgentObject == nullptr)
+			return false;
+		auto pAgent = pAgentObject->GetComponent<AgentComponent>();
+		if (pAgent == nullptr)
+			return false;
+
+		if (!pAgent->m_IsIdle)
+		{
+			return true;
+		}
+		return false;
+	}
+};

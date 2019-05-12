@@ -19,15 +19,15 @@ public:
 	}
 	static void RegisterAgent(int Id, std::shared_ptr<GameObject>& service)
 	{
-		m_pAgents[Id] = service;
+		m_pAgents.insert({ Id, service });
 	}
 
 	static void RegisterButtonManager(std::shared_ptr<ButtonManager> service) { m_pButtonManager = (service == nullptr) ? m_pDefaultButtonManager : service; }
 
-	static std::shared_ptr<GameObject>& GetPlayer(int id) { return m_pPlayers.at(id); }
+	static std::shared_ptr<GameObject>& GetPlayer(int id) { return m_pPlayers.find(id)->second; }
 	static std::map<int, std::shared_ptr<GameObject>>& GetPlayers() { return m_pPlayers; }
 
-	static std::shared_ptr<GameObject>& GetAgent(int id) { return m_pAgents.at(id); }
+	static std::shared_ptr<GameObject>& GetAgent(int id) { return m_pAgents.find(id)->second; }
 	static std::map<int, std::shared_ptr<GameObject>>& GetAgents() { return m_pAgents; }
 
 	static std::shared_ptr<ButtonManager>& GetButtonManager() { return m_pButtonManager; }

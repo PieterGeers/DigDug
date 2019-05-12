@@ -19,6 +19,7 @@ public:
 	void SetAnimation(const std::string& anim);
 	int CalculateGridIndex() const;
 	int CalculateClosestPlayerIndex() const;
+	float CalculateClosestPlayerDistance() const;
 
 	void Collision();
 	void RockCollision();
@@ -39,7 +40,7 @@ public:
 	bool m_WasBeingInflated = false;
 	bool m_HasAnimationChanged = false;
 	bool m_IsHitByFallingRock = false;
-
+	bool m_IsIdle = true;
 	bool m_IsDead = false;
 
 	int m_InflateStatus = 0;
@@ -62,4 +63,6 @@ private:
 	bool m_HasInflationChanged = false;
 	float m_DeadTime = 1.0f;
 	bool m_IsActive = true;
+	int m_ThisInstance = 0;
+	float m_InitialIdleTime = 1.0f;
 };

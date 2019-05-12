@@ -30,10 +30,10 @@ bool SMTransition::IsTriggered(int idx) const
 {
 	for (auto condition : m_Conditions)
 	{
-		if (!condition->IsTriggered(idx))
-			return false;
+		if (condition->IsTriggered(idx))
+			return true;
 	}
-	return true;
+	return false;
 }
 
 void SMTransition::SetTargetState(SMState* targetState)

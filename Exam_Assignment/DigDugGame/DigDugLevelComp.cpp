@@ -34,6 +34,7 @@ DigDugLevelComp::DigDugLevelComp(unsigned levelWidth, unsigned levelHeight, unsi
 			tempTex->SetTransform(float(temp->position.x), float(temp->position.y), 1.0f);
 			m_pTunnels.push_back(tempTex);
 			temp->hasVisited = true;
+			m_EnemySpawnPositions.push_back({ temp->position });
 		}
 		m_LevelGrid[i] = temp;
 	}
@@ -71,6 +72,23 @@ void DigDugLevelComp::Render()
 
 void DigDugLevelComp::SetTransform(float, float, float)
 {
+}
+
+std::vector<MVector2_INT> DigDugLevelComp::GetSpawnPosition(int nbOfSpawnPosition)
+{
+	if (nbOfSpawnPosition > static_cast<int>(m_EnemySpawnPositions.size()))
+		Debug::LogError("NbOfEnemies exceeds nb of free spawn spaces");
+	std::vector<MVector2_INT> availablePositions;
+	for (int i = 0; i < nbOfSpawnPosition; ++i)
+	{
+		int idx = rand() % static_cast<int>(m_EnemySpawnPositions.size());
+		auto temp = m_EnemySpawnPositions[idx];
+		availablePositions.push_back(temp);
+		m_EnemySpawnPositions[idx] = m_EnemySpawnPositions[m_EnemySpawnPositions.size() - 1];
+		m_EnemySpawnPositions[m_EnemySpawnPositions.size() - 1] = temp;
+		m_EnemySpawnPositions.pop_back();
+	}
+	return availablePositions;
 }
 
 void DigDugLevelComp::FixedUpdate()

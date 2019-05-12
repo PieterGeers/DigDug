@@ -8,9 +8,8 @@
 #include "Animator.h"
 #include "ResourceManager.h"
 #include "QuadCollisionComponent.h"
-#include "DigDugWeaponComp.h"
-#include "DigDugLivesComp.h"
 #include "AgentComponent.h"
+#include "EntitySpawn.h"
 
 
 SingleLevel::SingleLevel()
@@ -20,24 +19,7 @@ SingleLevel::SingleLevel()
 
 void SingleLevel::Initialize()
 {
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto fpsFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
-
-	const std::shared_ptr<Animation> left = CreateAnimation("Left", 1, 0, 0, 1);
-	const std::shared_ptr<Animation> leftDig = CreateAnimation("LeftDig", 1, 2, 0, 1);
-	const std::shared_ptr<Animation> right = CreateAnimation("Right", 0, 0, 0, 1);
-	const std::shared_ptr<Animation> rightDig = CreateAnimation("RightDig", 0, 2, 0, 1);
-	const std::shared_ptr<Animation> rightUp = CreateAnimation("RightUp", 5, 0, 0, 1);
-	const std::shared_ptr<Animation> leftUp = CreateAnimation("LeftUp", 4, 0, 0, 1);
-	const std::shared_ptr<Animation> rightUpDig = CreateAnimation("RightUpDig", 5, 2, 0, 1);
-	const std::shared_ptr<Animation> leftUpDig = CreateAnimation("LeftUpDig", 4, 2, 0, 1);
-	const std::shared_ptr<Animation> rightDown = CreateAnimation("RightDown", 2, 0, 0, 1);
-	const std::shared_ptr<Animation> leftDown = CreateAnimation("LeftDown", 3, 0, 0, 1);
-	const std::shared_ptr<Animation> rightDownDig = CreateAnimation("RightDownDig", 2, 2, 0, 1);
-	const std::shared_ptr<Animation> leftDownDig = CreateAnimation("LeftDownDig", 3, 2, 0, 1);
-	const std::shared_ptr<Animation> death = CreateAnimation("Dead", 6, 0, 0, 6);
-
-	m_DigDug = std::make_shared<GameObject>();
 
 	InputManager::GetInstance().AddInputAction(InputAction(Direction::up, InputTriggerState::Down, 'W', XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerOne),
 		std::make_shared<MoveUpCommand>());
@@ -59,70 +41,23 @@ void SingleLevel::Initialize()
 	AddChild(LevelObject);
 	levelComp->CreateGraph();
 
-	std::shared_ptr<TextureRenderComponent> DigDugTexture = std::make_shared<TextureRenderComponent>("digdug_spriteP1.png", 7, 7, 2);
-	std::shared_ptr<DigDugCharacterComp> character = std::make_shared<DigDugCharacterComp>(Boundaries{ 32, 32 * 17,0,32 * 13 });
-	std::shared_ptr<Animator> animator = std::make_shared<Animator>();
-	std::shared_ptr<QuadCollisionComponent> collision = std::make_shared<QuadCollisionComponent>(MVector2_INT(0, 0), 32, "Player1");
-	std::shared_ptr<DigDugLivesComp> lives = std::make_shared<DigDugLivesComp>("P1Live.png", 3, MVector2_INT(0, 576));
-	animator->AddAnimation(std::vector<std::shared_ptr<Animation>>{left, leftDig, right, rightDig, leftUp, rightUp, leftUpDig, rightUpDig, rightDown, leftDown, rightDownDig, leftDownDig, death});
-	DigDugTexture->SetSpritePosition(0, 0, 6, 6);
-	character->SetGridSize(32);
-	m_DigDug->AddComponent(DigDugTexture);
-	m_DigDug->AddComponent(character);
-	m_DigDug->AddComponent(animator);
-	m_DigDug->AddComponent(collision);
-	m_DigDug->AddComponent(lives);
-
-	std::shared_ptr<GameObject> Weapon = std::make_shared<GameObject>();
-	std::shared_ptr<DigDugWeaponComp> weaponComp = std::make_shared<DigDugWeaponComp>("digdug_attack.png", 1, 4, 2);
-	std::shared_ptr<Animator> weaponAnimator = std::make_shared<Animator>();
-	std::shared_ptr<QuadCollisionComponent> weaponColl = std::make_shared<QuadCollisionComponent>(MVector2_INT(0, 0), 32, "AttackP1");
-	weaponColl->SetIsActive(false);
-	const std::shared_ptr<Animation> aLeft = CreateAnimation("Left", 0, 3, 0, 0);
-	const std::shared_ptr<Animation> aRight = CreateAnimation("Right", 0, 2, 0, 0);
-	const std::shared_ptr<Animation> aUp = CreateAnimation("Up", 0, 0, 0, 0);
-	const std::shared_ptr<Animation> aDown = CreateAnimation("Down", 0, 1, 0, 0);
-	weaponAnimator->AddAnimation(std::vector<std::shared_ptr<Animation>>{aLeft, aRight, aUp, aDown});
-	Weapon->AddComponent(weaponComp);
-	Weapon->AddComponent(weaponAnimator);
-	Weapon->AddComponent(weaponColl);
-
-	m_DigDug->AddChild("Weapon", Weapon);
-	m_DigDug->SetPosition(0, 32, 0);
-	AddChild(m_DigDug);
-
 	auto fpsCounter = std::make_shared<GameObject>();
 	std::shared_ptr<FPSComponent> fps_component = std::make_shared<FPSComponent>(fpsFont, SDL_Color{ 255,255,0,255 });
 	fpsCounter->AddComponent(fps_component);
 	AddChild(fpsCounter);
 
-	ServiceLocator::RegisterPlayer(static_cast<int>(PlayerOne), m_DigDug);
-
+	auto SpawnPositions = levelComp->GetSpawnPosition(4);
+	//PLAYER
+	//******
+	AddChild(EntitySpawn::SpawnPlayer({ 0,32 }, "digdug_spriteP0.png", static_cast<int>(PlayerOne) ));
 	//POOKA
 	//*****
-	std::shared_ptr<GameObject> pooka = std::make_shared<GameObject>();
-	
-	const std::shared_ptr<Animation> walk = CreateAnimation("Walk", 0, 0, 0, 1);
-	const std::shared_ptr<Animation> invis = CreateAnimation("Invisible", 0, 2, 0, 1);
-	const std::shared_ptr<Animation> stage1 = CreateAnimation("Stage1", 0, 4, 0, 0);
-	const std::shared_ptr<Animation> stage2 = CreateAnimation("Stage2", 0, 5, 0, 0);
-	const std::shared_ptr<Animation> stage3 = CreateAnimation("Stage3", 0, 6, 0, 0);
-	const std::shared_ptr<Animation> dead = CreateAnimation("Explode", 0, 7, 0, 0);
-	const std::shared_ptr<Animation> flat = CreateAnimation("Flat", 0, 8, 0, 0);
-	std::shared_ptr<TextureRenderComponent> PookaTexture = std::make_shared<TextureRenderComponent>("digdug_spriteEnemies.png", 2, 10, 2);
-	std::shared_ptr<Animator> pookaAnimator = std::make_shared<Animator>();
-	std::shared_ptr<QuadCollisionComponent> pookaCollision = std::make_shared<QuadCollisionComponent>(MVector2_INT(0, 0), 32, "Enemy1");
-	pookaAnimator->AddAnimation({ walk, invis, stage1, stage2, stage3, dead, flat });
-	pooka->AddComponent(PookaTexture);
-	pooka->AddComponent(pookaAnimator);
-	pooka->AddComponent(pookaCollision);
-	pooka->SetPosition(160, 32, 0);
-	pookaAnimator->SetActiveAnimation("Walk");
-	const std::shared_ptr<AgentComponent> agent = std::make_shared<AgentComponent>(4, 32, 14);
-	pooka->AddComponent(agent);
-	AddChild(pooka);
-	ServiceLocator::RegisterAgent(AgentComponent::GetCount(), pooka);
-	pooka->GetComponent<AgentComponent>()->Initialize();
+	AddChild(EntitySpawn::SpawnPooka(SpawnPositions[0], "Enemy1"));
+	AddChild(EntitySpawn::SpawnPooka(SpawnPositions[1], "Enemy2"));
+	//FYGAR
+	//*****
+	AddChild(EntitySpawn::SpawnFygar(SpawnPositions[2], "Enemy3"));
+	AddChild(EntitySpawn::SpawnFygar(SpawnPositions[3], "Enemy4"));
 }
 
 void SingleLevel::Update()

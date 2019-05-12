@@ -30,14 +30,21 @@ void AgentComponent::Update()
 {
 	if (!m_Initialized)
 		return;
+	if (m_IsIdle)
+	{
+		if (m_InitialIdleTime > 0.0f)
+			m_InitialIdleTime -= dae::GameTime::GetInstance().DeltaT();
+		else if (CalculateClosestPlayerDistance() < 100.0f)
+			m_IsIdle = false;
+	}
 	if (m_IsActive)
 		m_StateMachine->Update();
-	else if (m_StateMachine != nullptr)
+	else if (!m_IsActive && m_StateMachine != nullptr)
 	{
 		delete m_StateMachine;
 		m_StateMachine = nullptr;
 		auto& agents = ServiceLocator::GetAgents();
-		auto it = agents.find(m_Count - 1);
+		auto it = agents.find(m_ThisInstance);
 		agents.erase(it);
 		GetGameObject()->GetComponent<TextureRenderComponent>()->StopRender();
 	}
@@ -51,6 +58,9 @@ void AgentComponent::Initialize()
 	SMState* inflate = new SMState{};
 	SMState* dead = new SMState{};
 	SMState* hitByRock = new SMState{};
+	SMState* idle = new SMState{};
+
+	idle->SetTransition(new SMTransition({ new StopBeingIdle() }, runState));
 
 	changeToInvis->SetAction(new ChangeAnimation("Invisible"));
 	changeToInvis->SetTransition(new SMTransition({ new AnimationChanged() }, runState));
@@ -75,7 +85,8 @@ void AgentComponent::Initialize()
 	runState->SetTransition(new SMTransition({ new StopGoingInvisible() }, changeToNormal));
 	runState->SetTransition(new SMTransition({ new StartBeingInflated() }, inflate));
 	runState->SetTransition(new SMTransition({new IsHitByRock()}, hitByRock));
-	m_StateMachine =  new StateMachine(std::vector<SMState*>{runState, changeToInvis, changeToNormal, inflate, dead, hitByRock}, runState, m_Count);
+	m_StateMachine =  new StateMachine(std::vector<SMState*>{runState, changeToInvis, changeToNormal, inflate, dead, hitByRock, idle}, idle, m_Count);
+	m_ThisInstance = m_Count;
 	++m_Count;
 	m_Initialized = true;
 }
@@ -156,6 +167,21 @@ int AgentComponent::CalculateClosestPlayerIndex() const
 		return y * m_NumberOfColumns + x;
 	}
 	return -1;
+}
+
+float AgentComponent::CalculateClosestPlayerDistance() const
+{
+	auto& players = ServiceLocator::GetPlayers();
+	float closestDistance = -1.0f;
+	for (const auto p : players)
+	{
+		const int distance = MVector2_INT{ static_cast<int>(p.second->GetTransform()->GetPosition().x), static_cast<int>(p.second->GetTransform()->GetPosition().y) }.DistanceSQR({ static_cast<int>(GetTransform()->GetPosition().x), static_cast<int>(GetTransform()->GetPosition().y) });
+		if (closestDistance < 0.0f)
+			closestDistance = sqrt(float(distance));
+		else if (distance < int(closestDistance * closestDistance))
+			closestDistance = sqrt(float(distance));
+	}
+	return closestDistance;
 }
 
 void AgentComponent::Collision()

@@ -67,6 +67,9 @@
     <ClCompile Include="AgentComponent.cpp">
       <Filter>Source Files\AI</Filter>
     </ClCompile>
+    <ClCompile Include="EntitySpawn.cpp">
+      <Filter>Source Files\Helper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DigDugGame.h">
@@ -122,6 +125,9 @@
     </ClInclude>
     <ClInclude Include="Actions.h">
       <Filter>Source Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="EntitySpawn.h">
+      <Filter>Source Files\Helper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
