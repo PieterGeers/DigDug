@@ -13,3 +13,17 @@ struct DigDugCell final : public Cell
 	bool hasVisited = false;
 	bool hasStone = false;
 };
+
+enum DigDugActions
+{
+	P1Up,
+	P1Down,
+	P1Left,
+	P1Right,
+	P1Attack,
+	P2Up,
+	P2Down,
+	P2Left,
+	P2Right,
+	P2Attack
+};

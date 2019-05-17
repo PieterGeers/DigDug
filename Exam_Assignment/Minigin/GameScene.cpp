@@ -41,3 +41,8 @@ void GameScene::RootRender() const
 		element->Render();
 	}
 }
+
+void GameScene::ClearGameObjects()
+{
+	m_Objects.clear();
+}

@@ -53,6 +53,18 @@ void dae::SceneManager::Render() const
 	}
 }
 
+std::shared_ptr<GameScene> dae::SceneManager::GetGameScene(const std::string& name)
+{
+	for (auto scene : m_Scenes)
+	{
+		if (scene->GetName() == name)
+		{
+			return scene;
+		}
+	}
+	return nullptr;
+}
+
 dae::SceneManager::SceneManager()
 {
 }

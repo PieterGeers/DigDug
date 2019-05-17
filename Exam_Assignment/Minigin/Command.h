@@ -5,20 +5,20 @@
 class Command
 {
 public:
-	virtual void Execute() = 0;
+	virtual void Execute(int) = 0;
 	virtual ~Command() = default;
 };
 
 class NullCommand final : public Command
 {
 public:
-	void Execute() override {}
+	void Execute(int) override {}
 };
 
 class ButtonSelectCommand final : public Command
 {
 public:
-	void Execute() override
+	void Execute(int) override
 	{
 		ServiceLocator::GetButtonManager()->GetActiveButtonComp()->ExecuteButton();
 	}
@@ -27,7 +27,7 @@ public:
 class ButtonUpCommand final : public Command
 {
 public:
-	void Execute() override
+	void Execute(int) override
 	{
 		ServiceLocator::GetButtonManager()->ButtonUp();
 	}
@@ -36,7 +36,7 @@ public:
 class ButtonDownCommand final : public Command
 {
 public:
-	void Execute() override
+	void Execute(int) override
 	{
 		ServiceLocator::GetButtonManager()->ButtonDown();
 	}
@@ -45,7 +45,7 @@ public:
 class QuitCommand final : public Command
 {
 public:
-	void Execute() override
+	void Execute(int) override
 	{
 		InputManager::GetInstance().Quit();
 	}

@@ -4,6 +4,7 @@
 #include "AStarPathFinding.h"
 #include "TransformComponent.h"
 #include "Heuristic.h"
+#include "Score.h"
 
 class WalkAction final : public SMAction
 {
@@ -35,6 +36,8 @@ public:
 
 		const int sIdx = pAgent->CalculateGridIndex();
 		const int toIdx = pAgent->CalculateClosestPlayerIndex();
+		if (toIdx == -1)
+			return;
 		pAgent->m_NextPosition = MVector2_INT{ static_cast<int>(pAgent->GetTransform()->GetPosition().x), static_cast<int>(pAgent->GetTransform()->GetPosition().y) };
 		pAgent->m_CurrentPath = AStarPathFinding::FindPath(AStarPathFinding::GetGraph()[sIdx].get(), AStarPathFinding::GetGraph()[toIdx].get(), HeuristicFunction::Euclidean);
 	}
@@ -86,5 +89,22 @@ public:
 			return;
 
 		pAgent->Dead();
+	}
+};
+
+class DisableCollisionAction final : public SMAction
+{
+public:
+	void Invoke(int idx) override
+	{
+		auto& pAgentObject = ServiceLocator::GetAgent(idx);
+		if (pAgentObject == nullptr)
+			return;
+		auto pAgent = pAgentObject->GetComponent<AgentComponent>();
+		if (pAgent == nullptr)
+			return;
+		
+		pAgent->DisableCollision();
+		Score::GetInstance().AddScore(pAgent->CalculateScore());
 	}
 };

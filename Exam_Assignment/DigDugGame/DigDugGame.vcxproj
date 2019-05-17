@@ -264,6 +264,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" "$(Output
     <ClInclude Include="Conditions.h" />
     <ClInclude Include="CoopLevel.h" />
     <ClInclude Include="CreditScreen.h" />
+    <ClInclude Include="DeadScreen.h" />
     <ClInclude Include="DigDugCharacterComp.h" />
     <ClInclude Include="DigDugGame.h" />
     <ClInclude Include="DigDugLevelComp.h" />
@@ -272,9 +273,11 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" "$(Output
     <ClInclude Include="DigDugStructs.h" />
     <ClInclude Include="DigDugWeaponComp.h" />
     <ClInclude Include="EntitySpawn.h" />
+    <ClInclude Include="FygarCharacterComp.h" />
     <ClInclude Include="GameCommands.h" />
     <ClInclude Include="OptionsScreen.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Score.h" />
     <ClInclude Include="SingleLevel.h" />
     <ClInclude Include="StartScreen.h" />
     <ClInclude Include="VersusLevel.h" />
@@ -283,6 +286,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" "$(Output
     <ClCompile Include="AgentComponent.cpp" />
     <ClCompile Include="CoopLevel.cpp" />
     <ClCompile Include="CreditScreen.cpp" />
+    <ClCompile Include="DeadScreen.cpp" />
     <ClCompile Include="DigDugCharacterComp.cpp" />
     <ClCompile Include="DigDugGame.cpp" />
     <ClCompile Include="DigDugLevelComp.cpp" />
@@ -290,6 +294,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" "$(Output
     <ClCompile Include="DigDugRockComp.cpp" />
     <ClCompile Include="DigDugWeaponComp.cpp" />
     <ClCompile Include="EntitySpawn.cpp" />
+    <ClCompile Include="FygarCharacterComp.cpp" />
     <ClCompile Include="Main.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -300,6 +305,7 @@ xcopy "$(SolutionDir)3rdParty\SDL2_mixer-2.0.4\lib\x64\SDL2_mixer.dll" "$(Output
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Score.cpp" />
     <ClCompile Include="SingleLevel.cpp" />
     <ClCompile Include="StartScreen.cpp" />
     <ClCompile Include="VersusLevel.cpp" />

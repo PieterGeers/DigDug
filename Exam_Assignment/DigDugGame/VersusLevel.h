@@ -1,6 +1,5 @@
 #pragma once
 #include "GameScene.h"
-#include "GameObject.h"
 
 class VersusLevel final : public GameScene
 {
@@ -14,6 +13,9 @@ public:
 	void Render() const override;
 
 private:
-	std::shared_ptr<GameObject> m_DigDug;
+	int m_CurrentLevel = 1;
+	void ResetScene();
+	void ReloadScene();
+
 };
 

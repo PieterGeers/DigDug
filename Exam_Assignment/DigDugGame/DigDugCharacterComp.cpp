@@ -4,8 +4,9 @@
 #include "TransformComponent.h"
 #include "GameTime.h"
 
-DigDugCharacterComp::DigDugCharacterComp(Boundaries levelBounds)
+DigDugCharacterComp::DigDugCharacterComp(Boundaries levelBounds, int index)
 	:CharacterComponent(std::move(levelBounds))
+	,m_Index(index)
 {
 }
 

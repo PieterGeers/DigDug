@@ -12,6 +12,7 @@
 #include "Conditions.h"
 #include "QuadCollisionComponent.h"
 #include "DigDugRockComp.h"
+#include "FygarCharacterComp.h"
 
 int AgentComponent::m_Count = 0;
 AgentComponent::AgentComponent(int maxInflate, int gridSize, int nbOfColumns)
@@ -73,9 +74,11 @@ void AgentComponent::Initialize()
 	inflate->SetTransition(new SMTransition({ new IsDead() }, dead));
 
 	dead->SetEntryAction(new ChangeAnimation("Explode"));
+	dead->SetEntryAction(new DisableCollisionAction());
 	dead->SetAction(new DeadAction());
 
 	hitByRock->SetEntryAction(new ChangeAnimation("Flat"));
+	hitByRock->SetEntryAction(new DisableCollisionAction());
 	hitByRock->SetAction(new DeadAction());
 	
 	runState->SetAction(new WalkAction());
@@ -148,6 +151,8 @@ int AgentComponent::CalculateClosestPlayerIndex() const
 	int closestDistance = -1;
 	for (const auto p : players)
 	{
+		if (p.second->HasComponent<FygarCharacterComp>())
+			continue;
 		if (closestIdx == -1)
 			closestIdx = p.first;
 		MVector2_INT pPos{ static_cast<int>(p.second->GetTransform()->GetPosition().x), static_cast<int>(p.second->GetTransform()->GetPosition().y) };
@@ -175,6 +180,8 @@ float AgentComponent::CalculateClosestPlayerDistance() const
 	float closestDistance = -1.0f;
 	for (const auto p : players)
 	{
+		if (p.second->HasComponent<FygarCharacterComp>())
+			continue;
 		const int distance = MVector2_INT{ static_cast<int>(p.second->GetTransform()->GetPosition().x), static_cast<int>(p.second->GetTransform()->GetPosition().y) }.DistanceSQR({ static_cast<int>(GetTransform()->GetPosition().x), static_cast<int>(GetTransform()->GetPosition().y) });
 		if (closestDistance < 0.0f)
 			closestDistance = sqrt(float(distance));
@@ -274,6 +281,27 @@ void AgentComponent::Dead()
 			m_IsActive = false;
 		}
 	}
+}
+
+void AgentComponent::DisableCollision() const
+{
+	if (m_IsDead)
+		GetGameObject()->GetComponent<QuadCollisionComponent>()->SetIsActive(false);
+}
+
+int AgentComponent::CalculateScore() const
+{
+	if (m_IsHitByFallingRock)
+		return 1000;
+	else if (GetTransform()->GetPosition().y < 160)
+		return 200;
+	else if (GetTransform()->GetPosition().y < 288)
+		return 300;
+	else if (GetTransform()->GetPosition().y < 416)
+		return 400;
+	else if (GetTransform()->GetPosition().y < 544)
+		return 500;
+	return 0;
 }
 
 void AgentComponent::FixedUpdate()

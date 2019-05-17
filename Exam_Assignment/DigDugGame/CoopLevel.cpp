@@ -6,6 +6,13 @@
 #include "DigDugLevelComp.h"
 #include "Structs.h"
 #include "Animator.h"
+#include "EntitySpawn.h"
+#include "DigDugStructs.h"
+#include "QuadCollisionComponent.h"
+#include "DigDugLivesComp.h"
+#include "DeadScreen.h"
+#include "SceneManager.h"
+#include "Score.h"
 
 CoopLevel::CoopLevel()
 	: GameScene("CoopLevel")
@@ -17,83 +24,142 @@ void CoopLevel::Initialize()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto fpsFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
 
-	const std::shared_ptr<Animation> left = CreateAnimation("Left", 1, 0, 0, 1);
-	const std::shared_ptr<Animation> leftDig = CreateAnimation("LeftDig", 1, 2, 0, 1);
-	const std::shared_ptr<Animation> right = CreateAnimation("Right", 0, 0, 0, 1);
-	const std::shared_ptr<Animation> rightDig = CreateAnimation("RightDig", 0, 2, 0, 1);
-	const std::shared_ptr<Animation> rightUp = CreateAnimation("RightUp", 5, 0, 0, 1);
-	const std::shared_ptr<Animation> leftUp = CreateAnimation("LeftUp", 4, 0, 0, 1);
-	const std::shared_ptr<Animation> rightUpDig = CreateAnimation("RightUpDig", 5, 2, 0, 1);
-	const std::shared_ptr<Animation> leftUpDig = CreateAnimation("LeftUpDig", 4, 2, 0, 1);
-	const std::shared_ptr<Animation> rightDown = CreateAnimation("RightDown", 2, 0, 0, 1);
-	const std::shared_ptr<Animation> leftDown = CreateAnimation("LeftDown", 3, 0, 0, 1);
-	const std::shared_ptr<Animation> rightDownDig = CreateAnimation("RightDownDig", 2, 2, 0, 1);
-	const std::shared_ptr<Animation> leftDownDig = CreateAnimation("LeftDownDig", 3, 2, 0, 1);
-
+	InputManager::GetInstance().AddInputAction(InputAction(P1Up, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerOne),
+		std::make_shared<MoveUpCommand>());
+	InputManager::GetInstance().AddInputAction(InputAction(P1Down, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerOne),
+		std::make_shared<MoveDownCommand>());
+	InputManager::GetInstance().AddInputAction(InputAction(P1Left, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerOne),
+		std::make_shared<MoveLeftCommand>());
+	InputManager::GetInstance().AddInputAction(InputAction(P1Right, InputTriggerState::Down,-1, XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerOne),
+		std::make_shared<MoveRightCommand>());
 	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Quit, InputTriggerState::Pressed, VK_ESCAPE, XINPUT_GAMEPAD_X), std::make_shared<QuitCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::up, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P1Attack, InputTriggerState::Pressed, -1, XINPUT_GAMEPAD_A, GamepadIndex::PlayerOne),
+		std::make_shared<DigDugAttackCommand>());
+	InputManager::GetInstance().AddInputAction(InputAction(P2Up, InputTriggerState::Down, 'W', XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerTwo),
 		std::make_shared<MoveUpCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::down, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Down, InputTriggerState::Down, 'S', XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerTwo),
 		std::make_shared<MoveDownCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::left, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Left, InputTriggerState::Down, 'A', XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerTwo),
 		std::make_shared<MoveLeftCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::right, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Right, InputTriggerState::Down, 'D', XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerTwo),
 		std::make_shared<MoveRightCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::up, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerTwo),
-		std::make_shared<MoveUpCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::down, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerTwo),
-		std::make_shared<MoveDownCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::left, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerTwo),
-		std::make_shared<MoveLeftCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(Direction::right, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerTwo),
-		std::make_shared<MoveRightCommand>());
-
-	m_DigDugP1 = std::make_shared<GameObject>();
-	m_DigDugP2 = std::make_shared<GameObject>();
+	InputManager::GetInstance().AddInputAction(InputAction(P2Attack, InputTriggerState::Pressed, 'Q', XINPUT_GAMEPAD_A, GamepadIndex::PlayerTwo),
+		std::make_shared<DigDugAttackCommand>());
 
 	std::shared_ptr<GameObject> LevelObject = std::make_shared<GameObject>();
 	const std::shared_ptr<TextureRenderComponent> levelTexture = std::make_shared<TextureRenderComponent>("Level.png");
-	std::shared_ptr<DigDugLevelComp> levelComp = std::make_shared<DigDugLevelComp>(levelTexture->GetWidth(), levelTexture->GetHeight(), 32, 32,3, "../Data/Levels/Level1.bin");
+	std::shared_ptr<DigDugLevelComp> levelComp = std::make_shared<DigDugLevelComp>(levelTexture->GetWidth(), levelTexture->GetHeight(), 32, 32, 3, "../Data/Levels/Level1.bin");
 	LevelObject->AddComponent(levelTexture);
 	LevelObject->AddComponent(levelComp);
 	AddChild(LevelObject);
-
-	std::shared_ptr<TextureRenderComponent> DigDugTexture = std::make_shared<TextureRenderComponent>("digdug_spriteP1.png", 7, 7, 2);
-	std::shared_ptr<DigDugCharacterComp> character = std::make_shared<DigDugCharacterComp>(Boundaries{ 32, 32 * 17,0,32 * 13 });
-	std::shared_ptr<Animator> animator = std::make_shared<Animator>();
-	animator->AddAnimation(std::vector<std::shared_ptr<Animation>>{left, leftDig, right, rightDig, leftUp, rightUp, leftUpDig, rightUpDig, rightDown, leftDown, rightDownDig, leftDownDig});
-	DigDugTexture->SetSpritePosition(0, 0, 6, 6);
-	character->SetGridSize(32);
-	m_DigDugP1->AddComponent(DigDugTexture);
-	m_DigDugP1->AddComponent(character);
-	m_DigDugP1->AddComponent(animator);
-	m_DigDugP1->SetPosition(0, 32, 0);
-	AddChild(m_DigDugP1);
-
-	DigDugTexture = std::make_shared<TextureRenderComponent>("digdug_spriteP2.png", 7, 7, 2);
-	character = std::make_shared<DigDugCharacterComp>(Boundaries{ 32, 32 * 17,0,32 * 13 });
-	animator = std::make_shared<Animator>();
-	animator->AddAnimation(std::vector<std::shared_ptr<Animation>>{left, leftDig, right, rightDig, leftUp, rightUp, leftUpDig, rightUpDig, rightDown, leftDown, rightDownDig, leftDownDig});
-	DigDugTexture->SetSpritePosition(0, 0, 6, 6);
-	character->SetGridSize(32);
-	m_DigDugP2->AddComponent(DigDugTexture);
-	m_DigDugP2->AddComponent(character);
-	m_DigDugP2->AddComponent(animator);
-	m_DigDugP2->SetPosition(416, 32, 0);
-	AddChild(m_DigDugP2);
+	levelComp->CreateGraph();
 
 	auto fpsCounter = std::make_shared<GameObject>();
 	std::shared_ptr<FPSComponent> fps_component = std::make_shared<FPSComponent>(fpsFont, SDL_Color{ 255,255,0,255 });
 	fpsCounter->AddComponent(fps_component);
 	AddChild(fpsCounter);
 
+	auto SpawnPositions = levelComp->GetSpawnPosition(6);
+	//PLAYER
+	//******
+	AddChild(EntitySpawn::SpawnPlayer({ 0,32 }, "digdug_spriteP0.png", static_cast<int>(PlayerOne)));
+	AddChild(EntitySpawn::SpawnPlayer({ 416, 32 }, "digdug_spriteP1.png", static_cast<int>(PlayerTwo), true, {416,576}));
+	//POOKA
+	//*****
+	AddChild(EntitySpawn::SpawnPooka(SpawnPositions[0], "Enemy1"));
+	AddChild(EntitySpawn::SpawnPooka(SpawnPositions[1], "Enemy2"));
+	AddChild(EntitySpawn::SpawnPooka(SpawnPositions[2], "Enemy3"));
+	//FYGAR
+	//*****
+	AddChild(EntitySpawn::SpawnFygar(SpawnPositions[3], "Enemy4"));
+	AddChild(EntitySpawn::SpawnFygar(SpawnPositions[4], "Enemy5"));
+	AddChild(EntitySpawn::SpawnFygar(SpawnPositions[5], "Enemy6"));
+
+	Score::GetInstance().Initialize();
 }
 
 void CoopLevel::Update()
-{}
+{
+	bool GameOver = true;
+	for (auto player : ServiceLocator::GetPlayers())
+	{
+		if (player.second->GetComponent<DigDugLivesComp>()->GetNumberOfLives() > 0)
+		{
+			GameOver = false;
+		}
+	}
+	if (!GameOver && ServiceLocator::GetAgents().size() == 0)
+	{
+		//load next level
+		if (m_CurrentLevel == 2)
+			m_CurrentLevel = 1;
+		else
+			++m_CurrentLevel;
+		QuadCollisionComponent::GetCollisionObjects().clear();
+		ServiceLocator::GetAgents().clear();
+		ServiceLocator::GetPlayers().clear();
+		ResetScene();
+	}
+	else if (GameOver)
+	{
+		//load end screen
+		//QuadCollisionComponent::GetCollisionObjects().clear();
+		//ServiceLocator::GetAgents().clear();
+		//ServiceLocator::GetPlayers().clear();
+		//AgentComponent::ResetCount();
+		std::static_pointer_cast<DeadScreen>(dae::SceneManager::GetInstance().GetGameScene("DeadScreen"))->SetScore(Score::GetInstance().GetScore());
+		dae::SceneManager::GetInstance().SetActive("DeadScreen");
+	}
+
+}
 
 void CoopLevel::FixedUpdate()
-{}
+{
+	QuadCollisionComponent::HandleQuadCollision();
+}
 
 void CoopLevel::Render() const
-{}
+{
+	Score::GetInstance().Render();
+}
+
+void CoopLevel::ResetScene()
+{
+	ClearGameObjects();
+	ReloadScene();
+}
+
+void CoopLevel::ReloadScene()
+{
+	auto fpsFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
+
+	std::shared_ptr<GameObject> LevelObject = std::make_shared<GameObject>();
+	const std::shared_ptr<TextureRenderComponent> levelTexture = std::make_shared<TextureRenderComponent>("Level.png");
+	std::shared_ptr<DigDugLevelComp> levelComp = std::make_shared<DigDugLevelComp>(levelTexture->GetWidth(), levelTexture->GetHeight(), 32, 32, 3, "../Data/Levels/Level1.bin");
+	LevelObject->AddComponent(levelTexture);
+	LevelObject->AddComponent(levelComp);
+	AddChild(LevelObject);
+	levelComp->CreateGraph();
+
+	auto fpsCounter = std::make_shared<GameObject>();
+	std::shared_ptr<FPSComponent> fps_component = std::make_shared<FPSComponent>(fpsFont, SDL_Color{ 255,255,0,255 });
+	fpsCounter->AddComponent(fps_component);
+	AddChild(fpsCounter);
+
+	auto SpawnPositions = levelComp->GetSpawnPosition(6);
+	//PLAYER
+	//******
+	AddChild(EntitySpawn::SpawnPlayer({ 0,32 }, "digdug_spriteP0.png", static_cast<int>(PlayerOne)));
+	AddChild(EntitySpawn::SpawnPlayer({ 416, 32 }, "digdug_spriteP1.png", static_cast<int>(PlayerTwo), true, { 416,576 }));
+	//POOKA
+	//*****
+	AddChild(EntitySpawn::SpawnPooka(SpawnPositions[0], "Enemy1"));
+	AddChild(EntitySpawn::SpawnPooka(SpawnPositions[1], "Enemy2"));
+	AddChild(EntitySpawn::SpawnPooka(SpawnPositions[2], "Enemy3"));
+	//FYGAR
+	//*****
+	AddChild(EntitySpawn::SpawnFygar(SpawnPositions[3], "Enemy4"));
+	AddChild(EntitySpawn::SpawnFygar(SpawnPositions[4], "Enemy5"));
+	AddChild(EntitySpawn::SpawnFygar(SpawnPositions[5], "Enemy6"));
+
+}

@@ -22,5 +22,10 @@ private:
 	bool m_IsActive = false;
 	float m_ActiveTime = 0.2f;
 	std::shared_ptr<TextureRenderComponent> m_WeaponTexture;
+	bool m_IsDigDug = true;
+	bool m_Stage1 = false;
+	bool m_Stage2 = false;
+	bool m_Stage3 = false;
+	Direction m_Direction = none;
 };
 

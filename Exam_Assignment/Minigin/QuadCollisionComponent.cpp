@@ -5,7 +5,7 @@
 std::unordered_map<std::string, QuadCollisionComponent*> QuadCollisionComponent::m_CollisionObjects;
 
 QuadCollisionComponent::QuadCollisionComponent(MVector2_INT TopLeft, int size, const std::string& tag)
-	:width(size),height(size),m_Tag(tag)
+	:m_Width(size), m_Height(size),m_Tag(tag)
 {
 	m_Rectangle.TopLeft = TopLeft;
 	m_Rectangle.BottomRight = MVector2_INT(TopLeft.x + size, TopLeft.y + size);
@@ -17,7 +17,7 @@ QuadCollisionComponent::QuadCollisionComponent(MVector2_INT TopLeft, int size, c
 }
 
 QuadCollisionComponent::QuadCollisionComponent(MVector2_INT TopLeft, int width, int height, const std::string& tag)
-	:width(width),height(height), m_Tag(tag)
+	:m_Width(width), m_Height(height), m_Tag(tag)
 {
 	m_Rectangle.TopLeft = TopLeft;
 	m_Rectangle.BottomRight = MVector2_INT(TopLeft.x + width, TopLeft.y + height);
@@ -43,7 +43,7 @@ void QuadCollisionComponent::Render()
 void QuadCollisionComponent::SetTransform(float x, float y, float)
 {
 	m_Rectangle.TopLeft = MVector2_INT(static_cast<int>(x),static_cast<int>(y));
-	m_Rectangle.BottomRight = MVector2_INT(static_cast<int>(x) + width, static_cast<int>(y) + height);
+	m_Rectangle.BottomRight = MVector2_INT(static_cast<int>(x) + m_Width, static_cast<int>(y) + m_Height);
 }
 
 void QuadCollisionComponent::HandleQuadCollision()
@@ -75,6 +75,14 @@ bool QuadCollisionComponent::IsQuadColliding(M_Rectangle one, M_Rectangle other)
 		other.TopLeft.y >= one.BottomRight.y)
 		return false;
 	return true;
+}
+
+void QuadCollisionComponent::ChangeCollisionSize(MVector2_INT topLeft, int size, int height)
+{
+	m_Rectangle.TopLeft = topLeft;
+	m_Rectangle.BottomRight = MVector2_INT(topLeft.x + size, topLeft.y + height);
+	m_Width = size;
+	m_Height = height;
 }
 
 bool QuadCollisionComponent::CheckIfCollisionWith(const std::string& checkWith, unsigned nbOfCharsToCheck)

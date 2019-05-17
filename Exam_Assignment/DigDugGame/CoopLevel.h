@@ -1,6 +1,5 @@
 #pragma once
 #include "GameScene.h"
-#include "GameObject.h"
 
 class CoopLevel final : public GameScene
 {
@@ -14,8 +13,9 @@ public:
 	void Render() const override;
 
 private:
-	std::shared_ptr<GameObject> m_DigDugP1;
-	std::shared_ptr<GameObject> m_DigDugP2;
+	int m_CurrentLevel = 1;
+	void ResetScene();
+	void ReloadScene();
 
 };
 

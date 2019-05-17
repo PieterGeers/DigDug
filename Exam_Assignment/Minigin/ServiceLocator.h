@@ -15,7 +15,7 @@ public:
 	{
 		if (!service->HasComponentDerived<CharacterComponent>())
 			Debug::LogError("RegisterService::Player1 : service does not have CharacterComponent");
-		m_pPlayers[Id] = service;
+		m_pPlayers.insert({Id, service});
 	}
 	static void RegisterAgent(int Id, std::shared_ptr<GameObject>& service)
 	{
@@ -24,7 +24,7 @@ public:
 
 	static void RegisterButtonManager(std::shared_ptr<ButtonManager> service) { m_pButtonManager = (service == nullptr) ? m_pDefaultButtonManager : service; }
 
-	static std::shared_ptr<GameObject>& GetPlayer(int id) { return m_pPlayers.find(id)->second; }
+	static std::shared_ptr<GameObject>& GetPlayer(int id){return m_pPlayers.find(id)->second;}
 	static std::map<int, std::shared_ptr<GameObject>>& GetPlayers() { return m_pPlayers; }
 
 	static std::shared_ptr<GameObject>& GetAgent(int id) { return m_pAgents.find(id)->second; }

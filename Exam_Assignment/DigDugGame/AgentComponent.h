@@ -25,12 +25,15 @@ public:
 	void RockCollision();
 	void Inflate();
 	void Dead();
+	void DisableCollision() const;
+	int CalculateScore() const;
 
 	void FixedUpdate() override;
 	void Render() override{}
 	void SetTransform(float , float , float ) override{}
 
 	static int GetCount() { return m_Count; }
+	static void ResetCount() { m_Count = 0; }
 
 	//Variables
 	bool m_IsInvisible = false;

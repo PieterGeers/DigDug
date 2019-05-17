@@ -11,6 +11,7 @@
 #include "GameTime.h"
 #include "InputManager.h"
 #include <chrono>
+#include "DeadScreen.h"
 
 DigDugGame::DigDugGame(){}
 DigDugGame::~DigDugGame(){}
@@ -29,5 +30,6 @@ void DigDugGame::LoadGame() const
 	dae::SceneManager::GetInstance().AddGameScene(std::make_shared<VersusLevel>());
 	dae::SceneManager::GetInstance().AddGameScene(std::make_shared<OptionsScreen>());
 	dae::SceneManager::GetInstance().AddGameScene(std::make_shared<CreditScreen>());
+	dae::SceneManager::GetInstance().AddGameScene(std::make_shared<DeadScreen>());
 	dae::SceneManager::GetInstance().SetActive("StartScreen");
 }

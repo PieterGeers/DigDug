@@ -20,6 +20,9 @@
     <Filter Include="Source Files\AI">
       <UniqueIdentifier>{0cb1e04c-a75d-4523-ad1c-c934f0b319df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Singleton">
+      <UniqueIdentifier>{b6d9c93c-aa16-4524-82f1-ec89dd47eac9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -69,6 +72,15 @@
     </ClCompile>
     <ClCompile Include="EntitySpawn.cpp">
       <Filter>Source Files\Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="Score.cpp">
+      <Filter>Source Files\Singleton</Filter>
+    </ClCompile>
+    <ClCompile Include="DeadScreen.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="FygarCharacterComp.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,6 +140,15 @@
     </ClInclude>
     <ClInclude Include="EntitySpawn.h">
       <Filter>Source Files\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="Score.h">
+      <Filter>Source Files\Singleton</Filter>
+    </ClInclude>
+    <ClInclude Include="DeadScreen.h">
+      <Filter>Source Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="FygarCharacterComp.h">
+      <Filter>Source Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -25,6 +25,8 @@ public:
 
 	void SetIsActive(bool isActive) { m_IsActive = isActive; }
 
+	void ChangeCollisionSize(MVector2_INT topLeft, int size, int height);
+
 	bool GetIsColliding() const { return m_IsColliding; }
 	std::vector<std::string> GetColliderTags() const { return m_ColliderTags; }
 	bool CheckIfCollisionWith(const std::string& checkWith, unsigned nbOfCharsToCheck);
@@ -36,7 +38,7 @@ protected:
 	bool m_IsActive = true;
 private:
 	std::string m_Tag;
-	int width, height;
+	int m_Width, m_Height;
 	static std::unordered_map<std::string, QuadCollisionComponent*> m_CollisionObjects;
 	bool m_IsColliding = false;
 	std::vector<std::string> m_ColliderTags;

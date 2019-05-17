@@ -11,6 +11,7 @@
 #include "DigDugRockComp.h"
 #include "ServiceLocator.h"
 #include "algorithm"
+#include "FygarCharacterComp.h"
 
 DigDugLevelComp::DigDugLevelComp(unsigned levelWidth, unsigned levelHeight, unsigned gridWidth, unsigned gridHeight, unsigned nbOfRocks, const std::string& binFile)
 	:LevelComponent(levelWidth, levelHeight, gridWidth, gridHeight)
@@ -95,16 +96,22 @@ void DigDugLevelComp::FixedUpdate()
 {
 	for (auto element : ServiceLocator::GetPlayers())
 	{
+		bool isPlayer = true;
 		auto component = element.second->GetComponent<DigDugCharacterComp>();
+		auto component2 = element.second->GetComponent<FygarCharacterComp>();
 		if (component == nullptr)
-			continue;
-		const int Current = DetermineGridCell(element.second, component->GetCurrentDirection());
-		if (component->GetPreviousLocation() == -1)
+			isPlayer = false;
+		if (component == nullptr && component2 == nullptr)
+				continue;
+		const int Current = DetermineGridCell(element.second, (isPlayer) ? component->GetCurrentDirection() : component2->GetCurrentDirection());
+		if (isPlayer && component->GetPreviousLocation() == -1)
 			component->SetPreviousLocation(Current);
-		const int prevIdx = component->GetPreviousLocation();
+		else if (!isPlayer && component2->GetPreviousLocation() == -1)
+			component2->SetPreviousLocation(Current);
+		const int prevIdx = (isPlayer) ? component->GetPreviousLocation() : component2->GetPreviousLocation();
 		if (Current == -1)
 			return;
-		if (prevIdx != Current)
+		if (prevIdx != Current && isPlayer)
 		{
 			if (!std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[prevIdx])->hasVisited && !component->GetIsMovingAutomatic())
 			{
@@ -116,9 +123,19 @@ void DigDugLevelComp::FixedUpdate()
 			component->SetPreviousLocation(Current);
 		}
 		if (!std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[Current])->hasVisited)
-			component->SetIsPlayerDigging(true);
+		{
+			if (isPlayer)
+				component->SetIsPlayerDigging(true);
+			else
+				component2->SetIsPlayerInvisible(true);
+		}
 		else
-			component->SetIsPlayerDigging(false);
+		{
+			if (isPlayer)
+				component->SetIsPlayerDigging(false);
+			else
+				component2->SetIsPlayerInvisible(false);
+		}
 	}
 
 	for (auto rock : m_Rocks)

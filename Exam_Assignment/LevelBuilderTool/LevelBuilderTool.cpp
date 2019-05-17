@@ -3,44 +3,60 @@
 
 #include "pch.h"
 #include <iostream>
+#include <string>
 #include "LevelBuilder.h"
 
 int main()
 {
-	LevelBuilder newLevel{ 14, 19 };
-	newLevel.SetTunnel(1 + 14 * 4);
-	newLevel.SetTunnel(1 + 14 * 5);
-	newLevel.SetTunnel(1 + 14 * 6);
-	newLevel.SetTunnel(1 + 14 * 7);
-	newLevel.SetTunnel(1 + 14 * 8);
-	
-	newLevel.SetTunnel(7 + 14 * 2);
-	newLevel.SetTunnel(7 + 14 * 3);
-	newLevel.SetTunnel(7 + 14 * 4);
-	newLevel.SetTunnel(7 + 14 * 5);
-	newLevel.SetTunnel(7 + 14 * 6);
-	newLevel.SetTunnel(7 + 14 * 7);
-	newLevel.SetTunnel(7 + 14 * 8);
-	newLevel.SetTunnel(7 + 14 * 9);
-	newLevel.SetTunnel(6 + 14 * 9);
-	newLevel.SetTunnel(8 + 14 * 9);
+	int width = 0;
+	int height = 0;
+	int posX = 0, posY = 0;
 
-	newLevel.SetTunnel(2 + 14 * 12);
-	newLevel.SetTunnel(3 + 14 * 12);
-	newLevel.SetTunnel(4 + 14 * 12);
-	newLevel.SetTunnel(5 + 14 * 12);
-	newLevel.SetTunnel(6 + 14 * 12);
+	std::string name{ "" };
+	std::string function{ "" };
 
-	newLevel.SetTunnel(9 + 14 * 4);
-	newLevel.SetTunnel(10 + 14 * 4);
-	newLevel.SetTunnel(11 + 14 * 4);
-	newLevel.SetTunnel(12 + 14 * 4);
+	std::cout << "\t\t--===LevelBuilder===--" << std::endl;
+	std::cout << "Functions: " << std::endl;
+	std::cout << "Use 'Add posX posY' to add a new tunnel" << std::endl;
+	std::cout << "Use 'Remove posX posY' to remove a tunnel" << std::endl;
+	std::cout << "Use 'Print 0 0' to show the level" << std::endl;
+	std::cout << "Use 'Close 0 0' to create the binary file" << std::endl;
+	std::cout << "\t\t--==================--" << std::endl;
 
-	newLevel.SetTunnel(9 + 14 * 11);
-	newLevel.SetTunnel(9 + 14 * 12);
-	newLevel.SetTunnel(9 + 14 * 13);
-	newLevel.SetTunnel(9 + 14 * 14);
-	newLevel.SetTunnel(9 + 14 * 15);
-	newLevel.SetTunnel(9 + 14 * 16);
-	newLevel.Write("Level1");
+	std::cout << "Give me the amount of columns (width) in the level: ";
+	std::cin >> width;
+	std::cout << "Give me the amount of row (height) in the level: ";
+	std::cin >> height;
+	std::cout << "Give me the name of the new file: ";
+	std::cin >> name;
+	if (width <= 0 || height <= 0)
+	{
+		std::cout << "width or height is less than or equal to 0 and is not allowed" << std::endl;
+		return 0;
+	}
+
+	LevelBuilder newLevel{ static_cast<unsigned>(width), static_cast<unsigned>(height) };
+
+	while (function == "Close")
+	{
+		std::cout << ">> ";
+		std::cin >> function >> posX >> posY;
+		if (function == "Add")
+		{
+			if (posX < width && posY < height)
+				newLevel.SetTunnel(posY*width + posX, true);
+		}
+		if (function == "Remove")
+		{
+			if (posX < width && posY < height)
+				newLevel.SetTunnel(posY*width + posX, false);
+		}
+		if (function == "Print")
+		{
+			newLevel.Show();
+		}
+	}
+
+	newLevel.Write(name);
+	return 0;
 }

@@ -6,7 +6,7 @@
 class DigDugLivesComp final : public BaseComponent
 {
 public:
-	DigDugLivesComp(const std::string& texture, unsigned lives, MVector2_INT pos, bool reversed = false);
+	DigDugLivesComp(const std::string& texture, unsigned lives, MVector2_INT resetPos, MVector2_INT pos, bool reversed = false, bool canCollideWithEnemy = true);
 	~DigDugLivesComp() = default;
 
 	void Update() override;
@@ -14,8 +14,12 @@ public:
 	void Render() override;
 	void SetTransform(float x, float y, float z) override;
 
+	unsigned GetNumberOfLives() const { return m_Lives.size(); }
+
 private:
 	std::vector<std::shared_ptr<TextureRenderComponent>> m_Lives;
 	bool m_LostLive = false;
+	MVector2_INT m_ResetPos{0,0};
+	bool m_CanCollideWithEnemy = true;
 };
 

@@ -26,6 +26,9 @@ public:
 	void RootFixedUpdate();
 	void RootRender() const;
 
+protected:
+	void ClearGameObjects();
+
 private:
 	std::vector<std::shared_ptr<SceneObject>> m_Objects{};
 	std::string m_SceneName;

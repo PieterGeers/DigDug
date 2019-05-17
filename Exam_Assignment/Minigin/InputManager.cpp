@@ -152,7 +152,7 @@ bool InputManager::ProcessInput()
 	for (auto it = m_Commands.begin(); it != m_Commands.end();)
 	{
 		if (IsPressed(it->first))
-			it->second->Execute();
+			it->second->Execute(m_Actions.find(it->first)->second.PlayerIndex);
 		if (!m_HasReset) { ++it; }
 		else { m_HasReset = false; break; }
 	}

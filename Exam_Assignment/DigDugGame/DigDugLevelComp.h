@@ -13,7 +13,6 @@ public:
 	void Render() override;
 	void SetTransform(float x, float y, float z) override;
 
-	
 	std::vector<MVector2_INT> GetSpawnPosition(int nbOfSpawnPosition);
 
 private:

@@ -21,6 +21,8 @@ namespace dae
 		void FixedUpdate();
 		void Render() const;
 
+		std::shared_ptr<GameScene> GetGameScene(const std::string& name);
+
 	private:
 		SceneManager();
 		friend class Singleton<SceneManager>;
