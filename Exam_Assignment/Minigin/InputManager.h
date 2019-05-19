@@ -19,7 +19,9 @@ public:
 	void RefreshControllerConnections();
 	void ResetInput();
 	void CleanUp() const;
+	MVector2_INT GetThumbStickPosition(bool leftThumbStick = true, GamepadIndex playerIndex = PlayerOne) const;
 	void Quit() {m_Quit = false;}
+
 private:
 	std::map<int, InputAction> m_Actions;
 	std::map<int, std::shared_ptr<Command>> m_Commands;
@@ -33,4 +35,6 @@ private:
 	bool UpdateKeyboardState();
 	bool IsKeyboardKeyDown(int key, bool previousFrame = false) const;
 	bool IsGamePadButtonDown(WORD button, GamepadIndex playerIndex, bool previousFrame = false);
+
+	float m_RefreshTime = 0.0f;
 };

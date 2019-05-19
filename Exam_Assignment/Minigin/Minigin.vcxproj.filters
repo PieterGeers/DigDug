@@ -117,17 +117,11 @@
     <ClInclude Include="BinaryReader.h">
       <Filter>Header Files\Base</Filter>
     </ClInclude>
-    <ClInclude Include="Minigin.h">
-      <Filter>Header Files\Base</Filter>
-    </ClInclude>
     <ClInclude Include="SoundEffect.h">
       <Filter>Header Files\Sound</Filter>
     </ClInclude>
     <ClInclude Include="SoundStream.h">
       <Filter>Header Files\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Header Files\Base</Filter>
     </ClInclude>
     <ClInclude Include="Structs.h">
       <Filter>Header Files\Helper</Filter>
@@ -176,6 +170,12 @@
     </ClInclude>
     <ClInclude Include="StateMachine.h">
       <Filter>Header Files\AI\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Header Files\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="Minigin.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -236,17 +236,11 @@
     <ClCompile Include="BinaryReader.cpp">
       <Filter>Header Files\Base</Filter>
     </ClCompile>
-    <ClCompile Include="Minigin.cpp">
-      <Filter>Header Files\Base</Filter>
-    </ClCompile>
     <ClCompile Include="SoundEffect.cpp">
       <Filter>Header Files\Sound</Filter>
     </ClCompile>
     <ClCompile Include="SoundStream.cpp">
       <Filter>Header Files\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Header Files\Base</Filter>
     </ClCompile>
     <ClCompile Include="Animator.cpp">
       <Filter>Header Files\Graphics</Filter>
@@ -283,6 +277,12 @@
     </ClCompile>
     <ClCompile Include="StateMachine.cpp">
       <Filter>Header Files\AI\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Header Files\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="Minigin.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

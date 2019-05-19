@@ -17,19 +17,25 @@ public:
 
 	void PlaySoundEffect(const std::string& name, int loops);
 	void PlaySoundStream(const std::string& name, bool repeat);
+	bool IsSoundStreamPlaying(const std::string& name) const {return name == m_CurrentActiveSoundStream;}
 
-	static void StopSoundEffect();
-	static void StopSoundStream();
+	void StopSoundEffect() const;
+	void StopSoundStream();
 
-	static void HaltSoundEffect();
-	static void HaltSoundStream();
+	void HaltSoundEffect() const;
+	void HaltSoundStream() const;
 
-	static void ResumeSoundEffect();
-	static void ResumeSoundStream();
+	void ResumeSoundEffect() const;
+	void ResumeSoundStream() const;
+
+	void AddSoundStreamVolume(int value);
+	void AddSoundEffectVolume(int value);
 
 private:
 	std::unordered_map<std::string, std::shared_ptr<SoundEffect>> m_EffectMap;
 	std::unordered_map<std::string, std::shared_ptr<SoundStream>> m_StreamMap;
-
+	std::string m_CurrentActiveSoundStream{""};
+	int m_SoundStreamVolume = 30;
+	int m_SoundEffectVolume = 50;
 };
 

@@ -13,6 +13,7 @@
 #include "DeadScreen.h"
 #include "SceneManager.h"
 #include "Score.h"
+#include "SoundManager.h"
 
 CoopLevel::CoopLevel()
 	: GameScene("CoopLevel")
@@ -21,6 +22,9 @@ CoopLevel::CoopLevel()
 
 void CoopLevel::Initialize()
 {
+	if (!SoundManager::GetInstance().IsSoundStreamPlaying("GameSong"))
+		SoundManager::GetInstance().PlaySoundStream("GameSong", true);
+
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto fpsFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
 
@@ -95,6 +99,7 @@ void CoopLevel::Update()
 			m_CurrentLevel = 1;
 		else
 			++m_CurrentLevel;
+		SoundManager::GetInstance().PlaySoundEffect("Victory", 0);
 		QuadCollisionComponent::GetCollisionObjects().clear();
 		ServiceLocator::GetAgents().clear();
 		ServiceLocator::GetPlayers().clear();
@@ -103,14 +108,9 @@ void CoopLevel::Update()
 	else if (GameOver)
 	{
 		//load end screen
-		//QuadCollisionComponent::GetCollisionObjects().clear();
-		//ServiceLocator::GetAgents().clear();
-		//ServiceLocator::GetPlayers().clear();
-		//AgentComponent::ResetCount();
 		std::static_pointer_cast<DeadScreen>(dae::SceneManager::GetInstance().GetGameScene("DeadScreen"))->SetScore(Score::GetInstance().GetScore());
 		dae::SceneManager::GetInstance().SetActive("DeadScreen");
 	}
-
 }
 
 void CoopLevel::FixedUpdate()

@@ -7,6 +7,7 @@
 #include "ServiceLocator.h"
 #include "FygarCharacterComp.h"
 #include "Score.h"
+#include "SoundManager.h"
 
 DigDugLivesComp::DigDugLivesComp(const std::string& texture, unsigned lives,MVector2_INT resetPos , MVector2_INT pos, bool reversed, bool canCollideWithEnemy)
 {
@@ -54,6 +55,7 @@ void DigDugLivesComp::FixedUpdate()
 		const auto comp = m_pGameObject->GetComponent<QuadCollisionComponent>();
 		if (comp->CheckIfCollisionWith("Enemy", 5))
 		{
+			SoundManager::GetInstance().PlaySoundEffect("Loss", 0);
 			m_pGameObject->GetComponent<DigDugCharacterComp>()->FreezeForTime(1.2f);
 			m_pGameObject->GetComponent<Animator>()->SetActiveAnimation("Dead");
 			m_LostLive = true;
@@ -115,4 +117,44 @@ void DigDugLivesComp::Render()
 
 void DigDugLivesComp::SetTransform(float, float, float)
 {
+}
+
+void DigDugLivesComp::HealthLost()
+{
+	if (!m_LostLive && m_CanCollideWithEnemy)
+	{
+		SoundManager::GetInstance().PlaySoundEffect("Loss", 0);
+		m_pGameObject->GetComponent<DigDugCharacterComp>()->FreezeForTime(1.2f);
+		m_pGameObject->GetComponent<Animator>()->SetActiveAnimation("Dead");
+		m_LostLive = true;
+		if (m_Lives.size() > 0)
+			m_Lives.pop_back();
+		if (m_Lives.size() == 0)
+		{
+			std::string tag = m_pGameObject->GetComponent<QuadCollisionComponent>()->GetTag();
+			auto it = QuadCollisionComponent::GetCollisionObjects().find(tag);
+			QuadCollisionComponent::GetCollisionObjects().erase(it);
+			m_pGameObject->GetComponent<DigDugCharacterComp>()->SetDead();
+			m_pGameObject->GetComponent<TextureRenderComponent>()->StopRender();
+			int idx = m_pGameObject->GetComponent<DigDugCharacterComp>()->GetIndex();
+			ServiceLocator::GetPlayers().erase(ServiceLocator::GetPlayers().find(idx));
+		}
+	}
+	else if (!m_LostLive && !m_CanCollideWithEnemy)
+	{
+		m_pGameObject->GetComponent<FygarCharacterComp>()->FreezeForTime(.8f);
+		m_pGameObject->GetComponent<Animator>()->SetActiveAnimation("Explode");
+		m_LostLive = true;
+		Score::GetInstance().AddScore(2500);
+		if (ServiceLocator::GetAgents().size() == 0 && m_Lives.size() > 0)
+			m_Lives.pop_back();
+		if (m_Lives.size() == 0)
+		{
+			std::string tag = m_pGameObject->GetComponent<QuadCollisionComponent>()->GetTag();
+			auto it = QuadCollisionComponent::GetCollisionObjects().find(tag);
+			QuadCollisionComponent::GetCollisionObjects().erase(it);
+			m_pGameObject->GetComponent<FygarCharacterComp>()->SetDead();
+			//m_pGameObject->GetComponent<TextureRenderComponent>()->StopRender();
+		}
+	}
 }

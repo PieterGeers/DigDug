@@ -3,6 +3,7 @@
 #include "DigDugCharacterComp.h"
 #include "DigDugWeaponComp.h"
 #include "FygarCharacterComp.h"
+#include "SoundManager.h"
 
 class MoveRightCommand final : public Command
 {
@@ -137,8 +138,9 @@ class DigDugAttackCommand final : public Command
 			return;
 		auto gameObject = P->GetChild("Weapon");
 		auto charComp = P->GetComponent<DigDugCharacterComp>();
-		if (!charComp->GetIsPlayerDigging())
+		if (!charComp->GetIsPlayerDigging() && !charComp->GetIsFreeze())
 		{
+			SoundManager::GetInstance().PlaySoundEffect("DDAttack", 0);
 			gameObject->GetComponent<DigDugWeaponComp>()->AttackDigDug(charComp->GetCurrentDirection());
 			charComp->FreezeForTime(0.2f);
 		}
@@ -157,8 +159,9 @@ class FygarAttackCommand final : public Command
 
 		auto gameObject = P->GetChild("EnemyWeapon");
 		auto charComp = P->GetComponent<FygarCharacterComp>();
-		if (!charComp->GetIsPlayerInvisible())
+		if (!charComp->GetIsPlayerInvisible() && !charComp->GetIsFreeze())
 		{
+			SoundManager::GetInstance().PlaySoundEffect("EAttack", 0);
 			gameObject->GetComponent<DigDugWeaponComp>()->AttackFygar(charComp->GetCurrentDirection());
 			charComp->FreezeForTime(0.6f);
 		}

@@ -7,7 +7,7 @@ class TextureRenderComponent final : public BaseComponent
 {
 public:
 	TextureRenderComponent(const std::shared_ptr<dae::Texture2D>& text);
-	TextureRenderComponent(std::string path);
+	TextureRenderComponent(std::string path, int scale = 1);
 	TextureRenderComponent(std::string path, int tRows, int tColumns, int scale = 1);
 	~TextureRenderComponent() = default;
 
@@ -15,6 +15,7 @@ public:
 	void FixedUpdate() override;
 	void Render() override;
 	void SetTransform(float x, float y, float z) override;
+	void SetAngle(double angle) { m_Angle = angle; }
 
 	void SetSpritePosition(Animation info);
 	void SetSpritePosition(unsigned startRow,unsigned startColumn, unsigned rowOffset, unsigned columnOffset);
@@ -30,5 +31,6 @@ private:
 	int m_Columns = 1, m_Rows = 1, m_CurrentRow = 0, m_CurrentColumn = 0, m_RowOffset = 0, m_ColumnOffset = 0, m_StartRow = 0, m_StartColumn = 0, m_Scale = 1;
 	bool m_IsSprite;
 	bool m_StopRender = false;
+	double m_Angle = 0;
 };
 

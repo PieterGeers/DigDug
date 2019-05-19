@@ -12,6 +12,7 @@
 #include "ServiceLocator.h"
 #include "algorithm"
 #include "FygarCharacterComp.h"
+#include "DigDugLivesComp.h"
 
 DigDugLevelComp::DigDugLevelComp(unsigned levelWidth, unsigned levelHeight, unsigned gridWidth, unsigned gridHeight, unsigned nbOfRocks, const std::string& binFile)
 	:LevelComponent(levelWidth, levelHeight, gridWidth, gridHeight)
@@ -137,7 +138,21 @@ void DigDugLevelComp::FixedUpdate()
 				component2->SetIsPlayerInvisible(false);
 		}
 	}
-
+	for (auto element : ServiceLocator::GetPlayers())
+	{
+		auto coll = element.second->GetComponent<QuadCollisionComponent>();
+		for (auto rock : m_Rocks)
+		{
+			if (rock->GetComponent<DigDugRockComp>()->IsFalling())
+			{
+				std::string tag = rock->GetComponent<QuadCollisionComponent>()->GetTag();
+				if (coll->CheckIfCollisionWith(tag, static_cast<unsigned>(tag.size())))
+				{
+					element.second->GetComponent<DigDugLivesComp>()->HealthLost();
+				}
+			}
+		}
+	}
 	for (auto rock : m_Rocks)
 		DetermineWhenFalling(rock);
 

@@ -7,6 +7,7 @@ class DigDugWeaponComp final : public BaseComponent
 {
 public:
 	DigDugWeaponComp(const std::string& texture, int rows, int cols, int size);
+	DigDugWeaponComp(const std::string& texture, int size);
 	~DigDugWeaponComp() = default;
 
 	void Update() override;

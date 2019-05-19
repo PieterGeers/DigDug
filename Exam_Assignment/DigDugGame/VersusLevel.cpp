@@ -15,6 +15,7 @@
 #include "DeadScreen.h"
 #include "AgentComponent.h"
 #include "Score.h"
+#include "SoundManager.h"
 
 VersusLevel::VersusLevel()
 	: GameScene("VersusLevel")
@@ -23,7 +24,9 @@ VersusLevel::VersusLevel()
 
 void VersusLevel::Initialize()
 {
-	m_CurrentLevel = 1;
+	if (!SoundManager::GetInstance().IsSoundStreamPlaying("GameSong"))
+		SoundManager::GetInstance().PlaySoundStream("GameSong", true);
+
 	auto fpsFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
 
 	InputManager::GetInstance().AddInputAction(InputAction(P1Up, InputTriggerState::Down, 'W', XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerOne),
@@ -35,17 +38,17 @@ void VersusLevel::Initialize()
 	InputManager::GetInstance().AddInputAction(InputAction(P1Right, InputTriggerState::Down, 'D', XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerOne),
 		std::make_shared<MoveRightCommand>());
 	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Quit, InputTriggerState::Pressed, VK_ESCAPE, XINPUT_GAMEPAD_X), std::make_shared<QuitCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P1Attack, InputTriggerState::Pressed, 'Q', XINPUT_GAMEPAD_A, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P1Attack, InputTriggerState::Pressed, VK_SPACE, XINPUT_GAMEPAD_A, GamepadIndex::PlayerOne),
 		std::make_shared<DigDugAttackCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P2Up, InputTriggerState::Down, 'W', XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerTwo),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Up, InputTriggerState::Down, VK_UP, XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerTwo),
 		std::make_shared<FygarMoveUpCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P2Down, InputTriggerState::Down, 'S', XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerTwo),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Down, InputTriggerState::Down, VK_DOWN, XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerTwo),
 		std::make_shared<FygarMoveDownCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P2Left, InputTriggerState::Down, 'A', XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerTwo),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Left, InputTriggerState::Down, VK_LEFT, XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerTwo),
 		std::make_shared<FygarMoveLeftCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P2Right, InputTriggerState::Down, 'D', XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerTwo),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Right, InputTriggerState::Down, VK_RIGHT, XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerTwo),
 		std::make_shared<FygarMoveRightCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P2Attack, InputTriggerState::Pressed, 'Q', XINPUT_GAMEPAD_A, GamepadIndex::PlayerTwo),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Attack, InputTriggerState::Pressed, VK_RETURN, XINPUT_GAMEPAD_A, GamepadIndex::PlayerTwo),
 		std::make_shared<FygarAttackCommand>());
 
 
@@ -99,6 +102,7 @@ void VersusLevel::Update()
 			m_CurrentLevel = 1;
 		else
 			++m_CurrentLevel;
+		SoundManager::GetInstance().PlaySoundEffect("Victory", 0);
 		QuadCollisionComponent::GetCollisionObjects().clear();
 		ServiceLocator::GetAgents().clear();
 		ServiceLocator::GetPlayers().clear();
@@ -107,10 +111,6 @@ void VersusLevel::Update()
 	else if (GameOver)
 	{
 		//load end screen
-		//QuadCollisionComponent::GetCollisionObjects().clear();
-		//ServiceLocator::GetAgents().clear();
-		//ServiceLocator::GetPlayers().clear();
-		//AgentComponent::ResetCount();
 		std::static_pointer_cast<DeadScreen>(dae::SceneManager::GetInstance().GetGameScene("DeadScreen"))->SetScore(Score::GetInstance().GetScore());
 		dae::SceneManager::GetInstance().SetActive("DeadScreen");
 	}

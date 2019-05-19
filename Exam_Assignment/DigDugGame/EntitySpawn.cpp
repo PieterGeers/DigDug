@@ -43,17 +43,10 @@ std::shared_ptr<GameObject> EntitySpawn::SpawnPlayer(MVector2_INT pos, const std
 	m_DigDug->AddComponent(lives);
 
 	std::shared_ptr<GameObject> Weapon = std::make_shared<GameObject>();
-	std::shared_ptr<DigDugWeaponComp> weaponComp = std::make_shared<DigDugWeaponComp>("digdug_attack.png", 1, 4, 2);
-	std::shared_ptr<Animator> weaponAnimator = std::make_shared<Animator>();
+	std::shared_ptr<DigDugWeaponComp> weaponComp = std::make_shared<DigDugWeaponComp>("digdug_attack.png", 2);
 	std::shared_ptr<QuadCollisionComponent> weaponColl = std::make_shared<QuadCollisionComponent>(MVector2_INT(0, 0), 32, "AttackP" + std::to_string(index));
 	weaponColl->SetIsActive(false);
-	const std::shared_ptr<Animation> aLeft = CreateAnimation("Left", 0, 3, 0, 0);
-	const std::shared_ptr<Animation> aRight = CreateAnimation("Right", 0, 2, 0, 0);
-	const std::shared_ptr<Animation> aUp = CreateAnimation("Up", 0, 0, 0, 0);
-	const std::shared_ptr<Animation> aDown = CreateAnimation("Down", 0, 1, 0, 0);
-	weaponAnimator->AddAnimation(std::vector<std::shared_ptr<Animation>>{aLeft, aRight, aUp, aDown});
 	Weapon->AddComponent(weaponComp);
-	Weapon->AddComponent(weaponAnimator);
 	Weapon->AddComponent(weaponColl);
 
 	m_DigDug->AddChild("Weapon", Weapon);

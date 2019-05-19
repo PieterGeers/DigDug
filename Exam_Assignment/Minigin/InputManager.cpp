@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <iterator>
 #include "Command.h"
+#include "GameTime.h"
 
 //==============================================================================//
 // I took a lot of inspiration for this class from OverlordEngine::InputManager //
@@ -22,6 +23,13 @@ void InputManager::Initialize()
 
 void InputManager::Update()
 {
+	m_RefreshTime += dae::GameTime::GetInstance().DeltaT();
+	if (m_RefreshTime > 1.0f)
+	{
+		RefreshControllerConnections();
+		m_RefreshTime = 0.0f;
+	}
+
 	UpdateKeyboardState();
 	UpdateGamePadStates();
 
@@ -197,4 +205,31 @@ void InputManager::CleanUp() const
 		delete[] m_pKeyboardState0;
 		delete[] m_pKeyboardState1;
 	}
+}
+
+MVector2_INT InputManager::GetThumbStickPosition(bool leftThumbStick, GamepadIndex playerIndex) const
+{
+	MVector2_INT pos{0,0};
+	if (leftThumbStick)
+	{
+		pos = { m_CurrGamepadState[playerIndex].Gamepad.sThumbLX, m_CurrGamepadState[playerIndex].Gamepad.sThumbLY };
+
+		if (pos.x > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && pos.x < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)pos.x = 0;
+		if (pos.y > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE && pos.y < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)pos.y = 0;
+	}
+	else
+	{
+		pos = { m_CurrGamepadState[playerIndex].Gamepad.sThumbRX, m_CurrGamepadState[playerIndex].Gamepad.sThumbRY };
+
+		if (pos.x > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE && pos.x < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)pos.x = 0;
+		if (pos.y > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE && pos.y < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)pos.y = 0;
+	}
+
+	if (pos.x < 0)pos.x /= 32768;
+	else pos.x /= 32767;
+
+	if (pos.y < 0)pos.y /= 32768;
+	else pos.y /= 32767;
+
+	return pos;
 }

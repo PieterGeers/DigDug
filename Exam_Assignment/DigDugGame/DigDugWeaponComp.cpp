@@ -9,6 +9,11 @@ DigDugWeaponComp::DigDugWeaponComp(const std::string& texture, int rows, int col
 	:m_WeaponTexture(std::make_shared<TextureRenderComponent>(texture, rows, cols, size))
 {}
 
+DigDugWeaponComp::DigDugWeaponComp(const std::string& texture, int size)
+	: m_WeaponTexture(std::make_shared<TextureRenderComponent>(texture, size))
+{
+}
+
 void DigDugWeaponComp::Update()
 {
 	if (m_IsActive)
@@ -72,25 +77,29 @@ void DigDugWeaponComp::AttackDigDug(Direction dir)
 		switch (dir)
 		{
 		case up:
-			comp->SetActiveAnimation("Up", m_WeaponTexture);
+			//comp->SetActiveAnimation("Up", m_WeaponTexture);
+			m_WeaponTexture->SetAngle(270);
 			m_WeaponTexture->SetTransform(GetTransform()->GetPosition().x, GetTransform()->GetPosition().y - m_WeaponTexture->GetSpriteHeight(), GetTransform()->GetPosition().z);
 			coll->SetTransform(GetTransform()->GetPosition().x, GetTransform()->GetPosition().y - m_WeaponTexture->GetSpriteHeight(), GetTransform()->GetPosition().z);
 			coll->SetIsActive(true);
 			break;
 		case down:
-			comp->SetActiveAnimation("Down", m_WeaponTexture);
+			//comp->SetActiveAnimation("Down", m_WeaponTexture);
+			m_WeaponTexture->SetAngle(90);
 			m_WeaponTexture->SetTransform(GetTransform()->GetPosition().x, GetTransform()->GetPosition().y + m_WeaponTexture->GetSpriteHeight(), GetTransform()->GetPosition().z);
 			coll->SetTransform(GetTransform()->GetPosition().x, GetTransform()->GetPosition().y + 32, GetTransform()->GetPosition().z);
 			coll->SetIsActive(true);
 			break;
 		case left:
-			comp->SetActiveAnimation("Left", m_WeaponTexture);
+			//comp->SetActiveAnimation("Left", m_WeaponTexture);
+			m_WeaponTexture->SetAngle(180);
 			m_WeaponTexture->SetTransform(GetTransform()->GetPosition().x - m_WeaponTexture->GetSpriteWidth(), GetTransform()->GetPosition().y, GetTransform()->GetPosition().z);
 			coll->SetTransform(GetTransform()->GetPosition().x - m_WeaponTexture->GetSpriteWidth(), GetTransform()->GetPosition().y, GetTransform()->GetPosition().z);
 			coll->SetIsActive(true);
 			break;
 		case right:
-			comp->SetActiveAnimation("Right", m_WeaponTexture);
+			//comp->SetActiveAnimation("Right", m_WeaponTexture);
+			m_WeaponTexture->SetAngle(0);
 			m_WeaponTexture->SetTransform(GetTransform()->GetPosition().x + m_WeaponTexture->GetSpriteWidth(), GetTransform()->GetPosition().y, GetTransform()->GetPosition().z);
 			coll->SetTransform(GetTransform()->GetPosition().x + 32, GetTransform()->GetPosition().y, GetTransform()->GetPosition().z);
 			coll->SetIsActive(true);

@@ -10,7 +10,6 @@ public:
 	bool IsLoaded() const;
 	void Play(int loops) const;
 	void SetVolume(int value) const;
-	int GetVolume() const;
 
 private:
 	Mix_Chunk* m_pMixChunk;

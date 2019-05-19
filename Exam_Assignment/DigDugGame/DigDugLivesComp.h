@@ -14,7 +14,8 @@ public:
 	void Render() override;
 	void SetTransform(float x, float y, float z) override;
 
-	unsigned GetNumberOfLives() const { return m_Lives.size(); }
+	unsigned GetNumberOfLives() const { return unsigned(m_Lives.size()); }
+	void HealthLost();
 
 private:
 	std::vector<std::shared_ptr<TextureRenderComponent>> m_Lives;

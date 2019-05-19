@@ -45,7 +45,6 @@ void LevelComponent::CreateGraph(bool useDiagonal)
 		for (const auto cell : m_LevelGrid)
 		{
 			std::shared_ptr<Node> tmp = std::make_shared<Node>(cell->position);
-			//Node* tmp = new Node(cell->position);
 			tmp->SetWalkable(true);
 			graph.push_back(tmp);
 		}
@@ -66,9 +65,21 @@ void LevelComponent::CreateGraph(bool useDiagonal)
 			if (useDiagonal)
 			{
 				//leftup
+				if (int(i) - static_cast<int>(m_nbOfColumns) - 1 >= 0 &&
+					(i - m_nbOfColumns - 1) / m_nbOfColumns == i / m_nbOfColumns - 1)
+					graph[i]->AddConnection(graph[i - m_nbOfColumns - 1].get());
 				//rightup
+				if (int(i) - static_cast<int>(m_nbOfColumns) + 1 >= 0 &&
+					(i - m_nbOfColumns + 1) / m_nbOfColumns == i / m_nbOfColumns - 1)
+					graph[i]->AddConnection(graph[i - m_nbOfColumns + 1].get());
 				//leftdown
+				if (int(i) + static_cast<int>(m_nbOfColumns) - 1 >= 0 &&
+					(i + m_nbOfColumns - 1) / m_nbOfColumns == i / m_nbOfColumns + 1)
+					graph[i]->AddConnection(graph[i + m_nbOfColumns - 1].get());
 				//rightdown
+				if (int(i) + static_cast<int>(m_nbOfColumns) + 1 >= 0 &&
+					(i + m_nbOfColumns + 1) / m_nbOfColumns == i / m_nbOfColumns + 1)
+					graph[i]->AddConnection(graph[i + m_nbOfColumns + 1].get());
 			}
 		}
 		m_IsGraphMade = true;

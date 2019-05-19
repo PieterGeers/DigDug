@@ -36,12 +36,4 @@ void SoundEffect::SetVolume(int value) const
 {
 	if (m_IsLoaded)
 		Mix_VolumeChunk(m_pMixChunk, value);
-
-}
-
-int SoundEffect::GetVolume() const
-{
-	if (m_IsLoaded)
-		return Mix_VolumeChunk(m_pMixChunk, -1);
-	return -1;
 }

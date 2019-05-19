@@ -15,6 +15,7 @@
 #include "DeadScreen.h"
 #include "AgentComponent.h"
 #include "Score.h"
+#include "SoundManager.h"
 
 SingleLevel::SingleLevel()
 	: GameScene("SingleLevel")
@@ -23,7 +24,9 @@ SingleLevel::SingleLevel()
 
 void SingleLevel::Initialize()
 {
-	m_CurrentLevel = 1;
+	if (!SoundManager::GetInstance().IsSoundStreamPlaying("GameSong"))
+		SoundManager::GetInstance().PlaySoundStream("GameSong", true);
+
 	auto fpsFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
 
 	InputManager::GetInstance().AddInputAction(InputAction(P1Up, InputTriggerState::Down, 'W', XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerOne),
@@ -83,7 +86,8 @@ void SingleLevel::Update()
 		if (m_CurrentLevel == 2)
 			m_CurrentLevel = 1;
 		else
-			++m_CurrentLevel;	
+			++m_CurrentLevel;
+		SoundManager::GetInstance().PlaySoundEffect("Victory", 0);
 		QuadCollisionComponent::GetCollisionObjects().clear();
 		ServiceLocator::GetAgents().clear();
 		ServiceLocator::GetPlayers().clear();
@@ -92,10 +96,6 @@ void SingleLevel::Update()
 	else if (GameOver)
 	{
 		//load end screen
-		//QuadCollisionComponent::GetCollisionObjects().clear();
-		//ServiceLocator::GetAgents().clear();
-		//ServiceLocator::GetPlayers().clear();
-		//AgentComponent::ResetCount();
 		std::static_pointer_cast<DeadScreen>(dae::SceneManager::GetInstance().GetGameScene("DeadScreen"))->SetScore(Score::GetInstance().GetScore());
 		dae::SceneManager::GetInstance().SetActive("DeadScreen");
 	}

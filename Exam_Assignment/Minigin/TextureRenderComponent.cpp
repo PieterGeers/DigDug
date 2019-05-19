@@ -11,8 +11,9 @@ TextureRenderComponent::TextureRenderComponent(const std::shared_ptr<dae::Textur
 {
 }
 
-TextureRenderComponent::TextureRenderComponent(std::string path)
+TextureRenderComponent::TextureRenderComponent(std::string path, int scale)
 	:m_IsSprite(false)
+	,m_Scale(scale)
 {
 	m_Texture = dae::ResourceManager::GetInstance().LoadTexture(path);
 }
@@ -60,10 +61,13 @@ void TextureRenderComponent::Render()
 	if (!m_StopRender && m_Texture != nullptr)
 	{
 		if (!m_IsSprite)
-			dae::Renderer::GetInstance().RenderTexture(*m_Texture, m_X, m_Y, static_cast<float>(m_Texture->GetWidth())* m_Scale, static_cast<float>(m_Texture->GetHeight())*m_Scale);
-		else
+			dae::Renderer::GetInstance().RenderTexture(*m_Texture, SDL_Rect{ int(m_X), int(m_Y), m_Texture->GetWidth()* m_Scale, m_Texture->GetHeight()*m_Scale },
+				m_Angle, SDL_Point{(m_Texture->GetWidth() / 2) * m_Scale, (m_Texture->GetHeight() / 2)*m_Scale});
+		else if (m_IsSprite)
 			dae::Renderer::GetInstance().RenderTexture(*m_Texture, SDL_Rect{ int(m_X), int(m_Y), m_Texture->GetWidth() / m_Columns * m_Scale, m_Texture->GetHeight() / m_Rows * m_Scale },
-				SDL_Rect{ m_CurrentColumn*(m_Texture->GetWidth() / m_Columns), m_CurrentRow*(m_Texture->GetHeight() / m_Rows), m_Texture->GetWidth() / m_Columns , m_Texture->GetHeight() / m_Rows });
+				SDL_Rect{ m_CurrentColumn*(m_Texture->GetWidth() / m_Columns), m_CurrentRow*(m_Texture->GetHeight() / m_Rows), m_Texture->GetWidth() / m_Columns , m_Texture->GetHeight() / m_Rows },
+				0, SDL_Point{0,0});
+
 	}
 }
 

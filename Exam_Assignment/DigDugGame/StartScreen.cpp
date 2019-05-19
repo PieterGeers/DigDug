@@ -18,13 +18,16 @@ StartScreen::StartScreen()
 
 void StartScreen::Initialize()
 {
+	if (!SoundManager::GetInstance().IsSoundStreamPlaying("UISound"))
+		SoundManager::GetInstance().PlaySoundStream("UISound", true);
+
 	std::shared_ptr<GameObject> background = std::make_shared<GameObject>();
 	std::shared_ptr<TextureRenderComponent> texture = std::make_shared<TextureRenderComponent>("start_screen.png");
 	background->AddComponent(texture);
 	AddChild(background);
 
-	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Up, InputTriggerState::Pressed, VK_UP, XINPUT_GAMEPAD_DPAD_UP), std::make_shared<ButtonUpCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Down, InputTriggerState::Pressed, VK_DOWN, XINPUT_GAMEPAD_DPAD_DOWN), std::make_shared<ButtonDownCommand>());
+	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Up, InputTriggerState::Pressed, 'W', XINPUT_GAMEPAD_DPAD_UP), std::make_shared<ButtonUpCommand>());
+	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Down, InputTriggerState::Pressed, 'S', XINPUT_GAMEPAD_DPAD_DOWN), std::make_shared<ButtonDownCommand>());
 	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Select, InputTriggerState::Pressed, VK_SPACE, XINPUT_GAMEPAD_A), std::make_shared<ButtonSelectCommand>());
 	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Quit, InputTriggerState::Pressed, VK_ESCAPE, XINPUT_GAMEPAD_X), std::make_shared<QuitCommand>());
 
