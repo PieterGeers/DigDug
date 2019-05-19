@@ -68,8 +68,6 @@ void DigDugLivesComp::FixedUpdate()
 				QuadCollisionComponent::GetCollisionObjects().erase(it);
 				m_pGameObject->GetComponent<DigDugCharacterComp>()->SetDead();
 				m_pGameObject->GetComponent<TextureRenderComponent>()->StopRender();
-				int idx = m_pGameObject->GetComponent<DigDugCharacterComp>()->GetIndex();
-				ServiceLocator::GetPlayers().erase(ServiceLocator::GetPlayers().find(idx));
 			}
 		}
 	}
@@ -95,7 +93,6 @@ void DigDugLivesComp::FixedUpdate()
 						auto it = QuadCollisionComponent::GetCollisionObjects().find(tag);
 						QuadCollisionComponent::GetCollisionObjects().erase(it);
 						m_pGameObject->GetComponent<FygarCharacterComp>()->SetDead();
-						//m_pGameObject->GetComponent<TextureRenderComponent>()->StopRender();
 					}
 				}
 			}

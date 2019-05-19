@@ -111,6 +111,16 @@ void VersusLevel::Update()
 	else if (GameOver)
 	{
 		//load end screen
+		QuadCollisionComponent::GetCollisionObjects().clear();
+		for (auto element : ServiceLocator::GetAgents())
+		{
+			auto comp = element.second->GetComponent<AgentComponent>();
+			element.second->RemoveComponent(comp);
+		}
+		ServiceLocator::GetAgents().clear();
+		ServiceLocator::GetPlayers().clear();
+		AgentComponent::ResetCount();
+		ClearGameObjects();
 		std::static_pointer_cast<DeadScreen>(dae::SceneManager::GetInstance().GetGameScene("DeadScreen"))->SetScore(Score::GetInstance().GetScore());
 		dae::SceneManager::GetInstance().SetActive("DeadScreen");
 	}

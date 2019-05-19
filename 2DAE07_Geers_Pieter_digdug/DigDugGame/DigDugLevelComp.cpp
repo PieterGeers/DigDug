@@ -54,6 +54,8 @@ void DigDugLevelComp::Update()
 		{
 			std::string tag = (*rock)->GetComponent<QuadCollisionComponent>()->GetTag();
 			auto it = QuadCollisionComponent::GetCollisionObjects().find(tag);
+			if (it == QuadCollisionComponent::GetCollisionObjects().end())
+				return;
 			QuadCollisionComponent::GetCollisionObjects().erase(it);
 			m_Rocks.erase(std::remove(m_Rocks.begin(), m_Rocks.end(), (*rock)), m_Rocks.end());
 			if (m_Rocks.size() > 0)
@@ -114,7 +116,7 @@ void DigDugLevelComp::FixedUpdate()
 			return;
 		if (prevIdx != Current && isPlayer)
 		{
-			if (!std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[prevIdx])->hasVisited && !component->GetIsMovingAutomatic())
+			if (!std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[prevIdx])->hasVisited /*&& !component->GetIsMovingAutomatic()*/)
 			{
 				std::shared_ptr<TextureRenderComponent> temp = std::make_shared<TextureRenderComponent>(m_TunnelTexture);
 				temp->SetTransform(float(std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[prevIdx])->position.x), float(std::reinterpret_pointer_cast<DigDugCell>(m_LevelGrid[prevIdx])->position.y), 1.0f);

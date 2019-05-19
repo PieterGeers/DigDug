@@ -12,6 +12,8 @@ LevelComponent::LevelComponent(unsigned texWidth, unsigned texHeight, unsigned g
 	, m_nbOfRows(texHeight / gridHeight)
 	, m_nbOfColumns(texWidth / gridWidth)
 {
+	if (m_LevelGrid.size() != 0)
+		m_LevelGrid.clear();
 	for (unsigned int i= 0; i < m_nbOfRows; ++i)
 	{
 		for (unsigned int j = 0; j < m_nbOfColumns; ++j)
@@ -42,6 +44,8 @@ void LevelComponent::CreateGraph(bool useDiagonal)
 	if (!m_IsGraphMade)
 	{
 		auto& graph = AStarPathFinding::GetGraph();
+		if (graph.size() != 0)
+			graph.clear();
 		for (const auto cell : m_LevelGrid)
 		{
 			std::shared_ptr<Node> tmp = std::make_shared<Node>(cell->position);

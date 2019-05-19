@@ -38,7 +38,7 @@ void SingleLevel::Initialize()
 	InputManager::GetInstance().AddInputAction(InputAction(P1Right, InputTriggerState::Down, 'D', XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerOne),
 		std::make_shared<MoveRightCommand>());
 	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Quit, InputTriggerState::Pressed, VK_ESCAPE, XINPUT_GAMEPAD_X), std::make_shared<QuitCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P1Attack, InputTriggerState::Pressed, 'Q', XINPUT_GAMEPAD_A, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P1Attack, InputTriggerState::Pressed, VK_SPACE, XINPUT_GAMEPAD_A, GamepadIndex::PlayerOne),
 		std::make_shared<DigDugAttackCommand>());
 
 	std::shared_ptr<GameObject> LevelObject = std::make_shared<GameObject>();
@@ -96,6 +96,16 @@ void SingleLevel::Update()
 	else if (GameOver)
 	{
 		//load end screen
+		QuadCollisionComponent::GetCollisionObjects().clear();
+		for (auto element : ServiceLocator::GetAgents())
+		{
+			auto comp = element.second->GetComponent<AgentComponent>();
+			element.second->RemoveComponent(comp);
+		}
+		ServiceLocator::GetAgents().clear();
+		ServiceLocator::GetPlayers().clear();
+		AgentComponent::ResetCount();
+		ClearGameObjects();
 		std::static_pointer_cast<DeadScreen>(dae::SceneManager::GetInstance().GetGameScene("DeadScreen"))->SetScore(Score::GetInstance().GetScore());
 		dae::SceneManager::GetInstance().SetActive("DeadScreen");
 	}

@@ -3,6 +3,11 @@
 #include "SMState.h"
 #include "SMTransition.h"
 
+//=================================================================//
+// Inspiration for this class from EliteEngine::FiniteStateMachine //
+//=================================================================//
+
+
 StateMachine::StateMachine(std::vector<SMState*> states, SMState* initState, int idx)
 	:m_States(states)
 	,m_CurrentState(initState)

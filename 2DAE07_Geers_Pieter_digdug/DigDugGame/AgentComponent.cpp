@@ -13,6 +13,7 @@
 #include "QuadCollisionComponent.h"
 #include "DigDugRockComp.h"
 #include "FygarCharacterComp.h"
+#include "DigDugCharacterComp.h"
 
 int AgentComponent::m_Count = 0;
 AgentComponent::AgentComponent(int maxInflate, int gridSize, int nbOfColumns)
@@ -62,6 +63,7 @@ void AgentComponent::Initialize()
 	SMState* idle = new SMState{};
 
 	idle->SetTransition(new SMTransition({ new StopBeingIdle() }, runState));
+	idle->SetTransition(new SMTransition({ new IsHitByRock() }, hitByRock));
 
 	changeToInvis->SetAction(new ChangeAnimation("Invisible"));
 	changeToInvis->SetTransition(new SMTransition({ new AnimationChanged() }, runState));
@@ -152,6 +154,8 @@ int AgentComponent::CalculateClosestPlayerIndex() const
 	for (const auto p : players)
 	{
 		if (p.second->HasComponent<FygarCharacterComp>())
+			continue;
+		if (p.second->GetComponent<DigDugCharacterComp>()->GetIsDead())
 			continue;
 		if (closestIdx == -1)
 			closestIdx = p.first;

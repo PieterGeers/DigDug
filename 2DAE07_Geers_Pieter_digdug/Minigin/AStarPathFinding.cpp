@@ -4,6 +4,11 @@
 #include "Node.h"
 #include "algorithm"
 
+//================================================================//
+// Inspiration for this class from EliteEngine::EAStarPathFinding //
+//================================================================//
+
+
 std::vector<std::shared_ptr<Node>> AStarPathFinding::m_Graph;
 
 std::vector<MVector2_INT> AStarPathFinding::FindPath(Node* pStartNode, Node* pEndNode,

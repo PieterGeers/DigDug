@@ -14,6 +14,7 @@
 #include "SceneManager.h"
 #include "Score.h"
 #include "SoundManager.h"
+#include "AgentComponent.h"
 
 CoopLevel::CoopLevel()
 	: GameScene("CoopLevel")
@@ -28,26 +29,26 @@ void CoopLevel::Initialize()
 	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	auto fpsFont = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf", 18);
 
-	InputManager::GetInstance().AddInputAction(InputAction(P1Up, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P1Up, InputTriggerState::Down, 'W', XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerOne),
 		std::make_shared<MoveUpCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P1Down, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P1Down, InputTriggerState::Down, 'S', XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerOne),
 		std::make_shared<MoveDownCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P1Left, InputTriggerState::Down, -1, XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P1Left, InputTriggerState::Down, 'A', XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerOne),
 		std::make_shared<MoveLeftCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P1Right, InputTriggerState::Down,-1, XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P1Right, InputTriggerState::Down,'D', XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerOne),
 		std::make_shared<MoveRightCommand>());
 	InputManager::GetInstance().AddInputAction(InputAction(BasicActions::B_Quit, InputTriggerState::Pressed, VK_ESCAPE, XINPUT_GAMEPAD_X), std::make_shared<QuitCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P1Attack, InputTriggerState::Pressed, -1, XINPUT_GAMEPAD_A, GamepadIndex::PlayerOne),
+	InputManager::GetInstance().AddInputAction(InputAction(P1Attack, InputTriggerState::Pressed, VK_SPACE, XINPUT_GAMEPAD_A, GamepadIndex::PlayerOne),
 		std::make_shared<DigDugAttackCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P2Up, InputTriggerState::Down, 'W', XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerTwo),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Up, InputTriggerState::Down, VK_UP, XINPUT_GAMEPAD_DPAD_UP, GamepadIndex::PlayerTwo),
 		std::make_shared<MoveUpCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P2Down, InputTriggerState::Down, 'S', XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerTwo),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Down, InputTriggerState::Down, VK_DOWN, XINPUT_GAMEPAD_DPAD_DOWN, GamepadIndex::PlayerTwo),
 		std::make_shared<MoveDownCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P2Left, InputTriggerState::Down, 'A', XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerTwo),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Left, InputTriggerState::Down, VK_LEFT, XINPUT_GAMEPAD_DPAD_LEFT, GamepadIndex::PlayerTwo),
 		std::make_shared<MoveLeftCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P2Right, InputTriggerState::Down, 'D', XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerTwo),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Right, InputTriggerState::Down, VK_RIGHT, XINPUT_GAMEPAD_DPAD_RIGHT, GamepadIndex::PlayerTwo),
 		std::make_shared<MoveRightCommand>());
-	InputManager::GetInstance().AddInputAction(InputAction(P2Attack, InputTriggerState::Pressed, 'Q', XINPUT_GAMEPAD_A, GamepadIndex::PlayerTwo),
+	InputManager::GetInstance().AddInputAction(InputAction(P2Attack, InputTriggerState::Pressed, VK_RETURN, XINPUT_GAMEPAD_A, GamepadIndex::PlayerTwo),
 		std::make_shared<DigDugAttackCommand>());
 
 	std::shared_ptr<GameObject> LevelObject = std::make_shared<GameObject>();
@@ -108,6 +109,16 @@ void CoopLevel::Update()
 	else if (GameOver)
 	{
 		//load end screen
+		QuadCollisionComponent::GetCollisionObjects().clear();
+		for (auto element : ServiceLocator::GetAgents())
+		{
+			auto comp = element.second->GetComponent<AgentComponent>();
+			element.second->RemoveComponent(comp);
+		}
+		ServiceLocator::GetAgents().clear();
+		ServiceLocator::GetPlayers().clear();
+		AgentComponent::ResetCount();
+		ClearGameObjects();
 		std::static_pointer_cast<DeadScreen>(dae::SceneManager::GetInstance().GetGameScene("DeadScreen"))->SetScore(Score::GetInstance().GetScore());
 		dae::SceneManager::GetInstance().SetActive("DeadScreen");
 	}
